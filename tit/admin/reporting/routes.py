@@ -17,15 +17,7 @@ def data_reports():
     jsondata = get_db('archive', 'Archives', 'get_Created', '%m-%d')
     return json.dumps(jsondata)
 
-@reporting.route('/')
-def adminRedirect():
-    return redirect('/admin/dashboard')
-
-@reporting.route('/dashboard')
-def dashboard():
-    return render_template('admin_home.html')
-
-@reporting.route('/reports', methods=['GET', 'POST'])
+@reporting.route('/', methods=['GET', 'POST'])
 def reports():
     tab = request.args.get('tab')
     if tab is None:

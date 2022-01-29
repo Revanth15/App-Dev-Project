@@ -16,19 +16,19 @@
         <div class="menu">
             <ul class="menu-links">
                 {% set navList = [
-                    ('#', 'dashboard', 'Dashboard', 'bx bxs-dashboard'),
+                    (url_for('admin.dashboard'), 'dashboard', 'Dashboard', 'bx bxs-dashboard'),
                     ('#', 'users', 'Users', 'bx bx-user'),
                     ('/admin/inventory/retrieve_product', 'inventory', 'Inventory', 'bx bx-package'),
                     ('#', 'rewards', 'Rewards', 'bx bxs-discount'),
-                    ('/', 'reports', 'Reports', 'bx bx-bar-chart-alt-2'),
+                    (url_for('admin.reporting.reports'), 'reports', 'Reports', 'bx bx-bar-chart-alt-2'),
                     ('#', 'customer_support', 'Customer Support', 'bx bx-support')
                 ] -%}
                 
                 {% set active_page = active_page|default('dashboard') -%}
                 {% for href, id, caption, icon in navList %}
-                <li class="nav-link">
+                <li class="nav-link position-relative">
                     <a href="{{ href|e }}" class="{% if id == active_page %}active{% endif %}">
-                        <i class='{{icon}} icon' ></i>
+                        <i class='{{icon}} icon'></i>
                         <span class="text nav-text">{{caption|e}}</span>
                     </a>
                 </li>

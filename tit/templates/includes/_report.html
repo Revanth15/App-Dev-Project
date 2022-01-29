@@ -1,0 +1,51 @@
+{% extends "baseAdmin.html" %}
+{% block title %} Admin - Reports {% endblock %}
+{% set active_page = "reports" %}
+{% from 'includes/formhelper.html' import render_field %}
+
+{% block content %}
+    <div class="admin-padding">
+        <div class="card">
+            <div class="card-header">
+                <ul id="reportTabs" class="nav nav-tabs card-header-tabs", role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link {% if 'inventory' == tab %}active{% endif %}" data-bs-toggle="tab" data-bs-target="#inventory" type="button" role="tab" aria-controls="inventory" aria-selected="{% if 'inventory' == tab %}true{% else %}false{% endif %}">Inventory</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link {% if 'sales' == tab %}active{% endif %}" data-bs-toggle="tab" data-bs-target="#sales" type="button" role="tab" aria-controls="sales" aria-selected="{% if 'sales' == tab %}true{% else %}false{% endif %}">Sales</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link {% if 'traffic' == tab %}active{% endif %}" data-bs-toggle="tab" data-bs-target="#traffic" type="button" role="tab" aria-controls="traffic" aria-selected="{% if 'traffic' == tab %}true{% else %}false{% endif %}">Traffic</a>
+                    </li>
+                    {% block create %}
+                    {% endblock %}
+                </ul>
+            </div>
+            <div class="card-body">
+                <p>Last Updated: {{datetime.strftime('%D, %I:%M %p')}}</p>
+                <div class="tab-content" id="reportTabContent">
+                    <div id="inventory" class="tab-pane fade {% if 'inventory' == tab %}show active{% endif %}" role="tabpanel" aria-labelledby="inventory-tab">
+                        {% block inventory -%}
+                        {% endblock -%}
+                    </div>
+                    <div id="sales" class="tab-pane fade {% if 'sales' == tab %}show active{% endif %}" role="tabpanel" aria-labelledby="sales-tab">
+                        {% block sales -%}
+                        {% endblock -%}
+                    </div>
+                    <div id="traffic" class="tab-pane fade {% if 'traffic' == tab %}show active{% endif %}" role="tabpanel" aria-labelledby="traffic-tab">
+                        {% block traffic -%}
+                        {% endblock -%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% block chartjs %}
+    {% endblock %}
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script src="/static/scripts/reports.js"></script>
+{% endblock %}
