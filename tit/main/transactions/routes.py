@@ -3,6 +3,8 @@ from flask import render_template, request, redirect, url_for, Blueprint
 import shelve
 from tit import app 
 
+print('please give me head')
+
 transactions = Blueprint('transactions', __name__, template_folder='templates', static_url_path='static', url_prefix='/transactions')
 
 @transactions.route('/cart', methods=['GET','POST'])
