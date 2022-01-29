@@ -1,0 +1,100 @@
+{% extends "includes/_report.html" %}
+{% from 'includes/_formHelper.html' import render_field %}
+
+{% block header %}
+{{super()}}
+<link rel="stylesheet" href="/static/styles/graph.css">
+{% endblock %}
+
+{% block create %}
+<button type="button" class="btn btn-primary ms-auto align-self-start" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Create report &nbsp; <i class="bi bi-plus-square"></i>
+</button>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Create</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="{{url_for('admin.reporting.reports')}}">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-floating ">
+                            {{ render_field(form.filename, class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating ">
+                            {{ render_field(form.filetype, class="form-select") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-floating ">
+                            {{ render_field(form.tags, class="form-control") }}
+                            {{ form.images }}
+                        </div>
+                    </div>
+                    <span id="result">Result: newReport.pdf</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onsubmit="done()">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}
+{% block inventory -%}
+<div class="row">
+    <div class="container-fluid card col-xl-5 col-md-10">
+        <canvas id="restockChart"></canvas>
+    </div>
+    <div class="container-fluid card col-xl-5 col-md-10">
+        <canvas id="outofstockChart"></canvas>
+    </div>
+</div>
+<div class="row">
+</div>
+<a href="{{url_for('admin.reporting.logs', tab='inventory')}}">See Logs</a>
+{% endblock -%}
+{% block sales -%}
+<div class="row">
+    <div class="container-fluid card col-5">
+        <canvas id="revenueChart"></canvas>
+    </div>
+    <div class="container-fluid card col-5">
+        <canvas id="salesChart"></canvas>
+    </div>
+</div>
+<a href="{{url_for('admin.reporting.logs', tab='sales')}}">See Logs</a>
+{% endblock -%}
+{% block traffic -%}
+<div class="row">
+    <div class="container-fluid card col-5">
+        <canvas id="visitorChart"></canvas>
+    </div>
+    <div class="container-fluid card col-5">
+        <canvas id="purchaseChart"></canvas>
+    </div>
+</div>
+<a id="test" href="{{url_for('admin.reporting.logs', tab='traffic')}}">See Logs</a>
+{% endblock -%}
+
+{% block chartjs %}
+    <script type="text/javascript">
+        data = {{inventory|tojson}}
+        function done() {
+            image = document.getElementById('restockChart').toDataURL()
+            document.getElementById('images').value = image            
+        }
+
+
+
+    </script>
+{% endblock %}

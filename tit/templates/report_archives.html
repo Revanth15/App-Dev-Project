@@ -1,0 +1,156 @@
+{% extends 'baseAdmin.html' %}
+{% block title %} Report {% endblock %}
+{% set active_page = "reports" %}
+
+{% from "includes/_formHelper.html" import render_field %}
+{% block content %}
+    <div class="admin-padding">
+        {% if 'create_exist' in session %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            A file with the name <strong>{{session.pop('create_exist', None)}}</strong>  already exists
+        </div>
+        {% endif %}
+        {% if 'create_success' in session %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            Click <a href="{{url_for('admin.reporting.open', id=session['create_success'][2])}}" target="_blank"><strong>{%for text in session.pop('create_success', None)%}{% if loop.index != 3 %}{{text}}{%endif%}{%endfor%}</strong></a> to download the file.
+        </div>
+        {% elif 'update_success' in session %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {% set list = session.pop('update_success', None) %}
+            {% if list[0] == 'tags' %}
+            The tags in <strong>{{list[1]}}</strong> were updated
+            {% elif list[0] == 'filename' %}
+            The filename of <strong>{{list[1]}}</strong> was changed to <strong>{{list[2]}}</strong> 
+            {% else %}
+            The filename of <strong>{{list[0]}}</strong> was changed to <strong>{{list[1]}}</strong> and its tags were updated.
+            {% endif %}
+        </div>
+        {% elif 'update_none' in session %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            No changes were made.
+        </div>
+        {% endif %}
+        <div class="card">
+            <div class="card-header">
+                Report Archives
+            </div>
+            <div class="card-body">
+                <table id="archive-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Filename</th>
+                            <th scope="col">Filetype</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Tags</th>
+                            <th width="100px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for filename, filetype, tags, date, time, id in archives %}
+                        {% set ext = filetype|replace('1', '.pdf')|replace('2', '.xlsx')|replace('3', '.csv') %}
+                        {% set file = [filename+ext, tags] %}
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td><a href="{{url_for('admin.reporting.open', id=id)}}" target="_blank">{{file[0]}}</a></td>
+                            <td>{% if filetype == '1' %}Report(.pdf){% else %}{{ext}}{% endif %}</td>
+                            <td>{{date}}</td>
+                            <td>{{time}}</td>
+                            <td>{{tags}}</td>
+                            <td class="d-flex justify-content-end">
+                                <a class="btn btn-primary mx-2" href="{{url_for('admin.reporting.download_reports', id=id)}}"><i class="bi bi-download"></i></a>
+                                <form action="{{url_for('admin.reporting.update_archive', id=id)}}" method="POST">
+                                    <!-- Button to Open the Modal -->
+                                    <button type="button" class="update btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#update{{id}}" role="button"><i class="bi bi-arrow-clockwise"></i></button>
+                                    <!-- The Modal -->
+                                    <div class="modal fade" id="update{{id}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                      
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                <h4 class="modal-title">Update</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                            
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <div class="row my-3">
+                                                        <div class="col-6">
+                                                            <div class="form-floating ">
+                                                                {{ render_field(u_form.filename, class="form-control", value=filename) }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="form-floating ">
+                                                                {{ render_field(u_form.filetype, class="form-select", value=filetype, disabled=true) }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row my-3">
+                                                        <div class="col-12">
+                                                            <div class="form-floating ">
+                                                                {{ render_field(u_form.tags, class="form-control", value=tags) }}
+                                                            </div>
+                                                        </div>
+                                                        <span id="result">Result: newReport.pdf</span>
+                                                    </div>
+                                                </div>
+                            
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                <input type="submit" value="Update" class="btn btn-primary">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form action="{{url_for('admin.reporting.delete_archive', key=file[0])}}" method="POST">
+                                    <!-- Button to Open the Modal -->
+                                    <button type="button" class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#delete{{id}}" role="button"><i class="bi bi-trash-fill"></i></button>
+                                    <!-- The Modal -->
+                                    <div class="modal fade" id="delete{{id}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                      
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                <h4 class="modal-title">Delete Confirmation</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                            
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                Are you sure you want to delete {{key}}?
+                                                </div>
+                            
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                <input type="submit" value="Delete" class="btn btn-danger">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script src="/static/scripts/archives.js"></script>
+{% endblock %}
