@@ -1,0 +1,23 @@
+{% extends "baseAdmin.html" %}
+{% block title %}Threads in time - Add Product{% endblock %}
+
+{% set active_page = 'inventory' %}
+{% block content %}
+{% from "includes/formhelper.html" import render_field %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<div class="admin-padding">
+  <div class="col py-3">
+    <h1 class="display-4">Import File</h1><span id="datetime"></span>
+
+    <form method="POST" enctype="multipart/form-data">
+      <div class="form-group col py-3">
+        {{ form.hidden_tag() }}
+        {{ form.xlsx }}
+      </div>
+      <input type="submit" value="Import File" class="btn btn-primary col py-3"/>
+      <button onclick="location.href = '/admin/inventory/retrieve_product';" id="goBack" class="align-right submit-button" >Go Back</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

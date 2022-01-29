@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %} Threads in Time - Cart{% endblock %}
+
+
+{% block content %}
+<link rel="stylesheet" href="../static/styles/cart.css">
+<script src="../static/scripts/cart.js"  async></script> 
+
+
+<section class="container content-section">
+  <h2 class="section-header">CART</h2>
+  <div class="cart-row">
+      <span class="cart-item cart-header cart-column">ITEM</span>
+      <span class="cart-price cart-header cart-column">PRICE</span>
+      <span class="cart-quantity cart-header cart-column">QUANTITY</span>
+  </div>
+  <div class="cart-items">
+    {% for product in cart_list %}
+    <div class="cart-row">
+      <div class="cart-item cart-column">
+        <img class="cart-item-image" src="{{ url_for('static', filename='uploads/' + product.get_filename()) }}" width="100" height="100">
+        <span class="cart-item-title">{{ product.get_product_name() }}</span>
+      </div>
+      <span class="cart-price cart-column">S${{ product.get_product_price() }}</span>
+      <div class="cart-quantity cart-column">
+          <input class="cart-quantity-input" type="number" value="1">
+          <form action="{{url_for('main.transactions.remove_cart', sku=product.get_sku())}}" method="POST">
+
+            <button type="submit" class="btn btn-danger">
+              Delete Product
+            </button>
+
+          </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="cart-total">
+      <strong class="cart-total-title">Total</strong>
+      <span class="cart-total-price">$0</span>
+  </div>
+  <button class="btn btn-primary btn-purchase" type="button">PURCHASE</button>
+</section>
+
+{% endblock%} 

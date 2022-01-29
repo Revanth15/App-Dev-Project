@@ -1,0 +1,114 @@
+{% extends "baseAdmin.html" %}
+{% block title %}Threads in Time - Retrieve Products{% endblock %}
+
+{% set active_page = 'inventory' %}
+{% block content %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-end">
+    <h1 class="display-4">Retrieve Products</h1><span id="datetime"></span>
+  </div>
+  <div id='noofproduct'>
+    {% if count == 0 %}
+    <p>There are no products.</p>
+    {% elif count == 1 %}
+    <p>There is 1 products.</p>
+    {% else %}
+    <p>There are {{ count }} products.</p>
+    {% endif %}
+  </div>
+  <div class="card-body">
+    <table class="table table-striped" id="inventory-table">
+      <thead>
+        <tr>
+          <th>Product Image</th>
+          <th>SKU</th>
+          <th>Product Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Product Description</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products_list %}
+        <tr>
+          <td>
+            <img src="{{ url_for('static', filename='uploads/' + product.get_filename()) }}" width="60px" height="60px" >
+          </td>                               
+          <td>{{ product.get_sku() }}</td>
+          <td>{{ product.get_product_name() }}</td>
+          <td>{{ product.get_product_price() }}</td>
+
+          {% if product.get_quantity() <= 30%}
+            <td style="color:red;">{{ product.get_quantity() }}</td>
+          {% elif product.get_quantity() <=100 %}
+            <td style="color:orange;">{{ product.get_quantity() }}</td>
+          {% else%}
+            <td style="color:green;">{{ product.get_quantity() }}</td>
+          {% endif %}
+          
+          <td>{{ product.get_product_description() }}</td>
+          <td>{{ product.get_category()}}</td>
+          <td><a href="/admin/inventory/edit_product/{{product.get_sku()}}" class="btn btn-warning">Edit Product</a></td>
+          <td>
+            <form action="{{url_for('admin.inventory.delete_product', sku=product.get_sku())}}" method="POST">
+
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{product.get_sku()}}">
+                Delete Product
+              </button>
+
+              <div class="modal" id="myModal_{{product.get_sku()}}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+
+                    <div class="modal-header">
+                      <h4 class="modal-title">Delete Confirmation</h4>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                      Are you sure you want to delete the {{product.get_product_name()}}?
+                    </div>
+
+                    <div class="modal-footer">
+                      <input type="submit" value="Delete" class="btn btn-danger">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div style="padding-top:10px">
+  <button onclick="location.href = '/admin/inventory/add_product';" id="goTo" class="float-left submit-button" >Add a Product</button>
+  <button onclick="location.href = '/admin/inventory/restock_product';" id="goright" class="float-left submit-button" >Restock Product</button>
+  <button onclick="location.href = '/admin/inventory/import_xlsx';" id="goright" class="float-middle submit-button" style="margin-right: 10px;">Import Excel</button>
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', event => {
+
+    const inventoryTable = document.getElementById('inventory-table');
+    if (inventoryTable) {
+        new simpleDatatables.DataTable(inventoryTable);
+    }
+
+    const salesTable = document.getElementById('sales-table');
+    if (salesTable) {
+        new simpleDatatables.DataTable(salesTable);
+    }
+
+    const trafficTable = document.getElementById('traffic-table');
+    if (trafficTable) {
+        new simpleDatatables.DataTable(trafficTable);
+    }
+
+  });
+</script>
+{% endblock %}

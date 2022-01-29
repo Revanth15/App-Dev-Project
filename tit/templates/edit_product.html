@@ -1,0 +1,42 @@
+{% extends "baseAdmin.html" %}
+{% block title %}Threads in Time - Edit Product{% endblock %}
+
+{% set active_page = 'inventory' %}
+{% block content %}
+{% from "includes/formhelper.html" import render_field %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<div class="admin-padding">
+  <div class="col py-3">
+    <h1 class="display-4">Edit Product</h1><span id="datetime"></span>
+
+    <form method="POST" enctype="multipart/form-data">
+      <div class="form-group col py-3">
+        {{ render_field(form.product_name, class="form-control") }}
+      </div>
+      <div class="form-group col py-3">
+        {{ render_field(form.category, class="form-control") }}
+      </div>
+      <div class="form-group col py-3">
+        {{ render_field(form.sku, class="form-control") }}
+      </div>
+      <div class="form-group col py-3">
+        {{ render_field(form.product_price, class="form-control") }}
+      </div>
+      <div class="form-group col py-3">
+        {{ render_field(form.quantity, class="form-control") }}
+      </div>
+      <div class="form-group col py-3">
+        {{ render_field(form.product_description, class="form-control") }}
+      </div>
+      <div class="form-group col py-3">
+        {{ form.hidden_tag() }}
+        <img src="{{ url_for('static', filename='uploads/' + filename) }}" width="200px" height="200px" >
+        {{ form.file }}
+      </div>
+      <input type="submit" value="Edit Product" class="btn btn-primary col py-3"/><button onclick="location.href = '/admin/inventory/retrieve_product';" id="goBack" class="align-right submit-button" >Go Back</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

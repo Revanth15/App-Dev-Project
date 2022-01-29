@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %} Threads in Time - Payment{% endblock %}
+
+<!-- {% set active_page = 'inventory' %} -->
+{% block content %}
+{% from "includes/formhelper.html" import render_field %}
+<link rel="stylesheet" href="static/styles/payment.css">
+<body>
+
+<div class="container">
+    <div class="card-container">
+        <div class="front">
+            <div class="image">
+                <img src="static/images/chip.png" alt="">
+                <img src="static/images/all3.png" class='card_type'>
+            </div>
+            <div class="card-number-box">################</div>
+            <div class="flexbox">
+                <div class="box">
+                    <span>Card Holder</span>
+                    <div class="card-holder-name">Full Name</div>
+                </div>
+                <div class="box">
+                    <span>Expires</span>
+                    <div class="expiration">
+                        <span class="exp-month">MM</span>
+                        <span class="exp-year">YY</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="back">
+            <div class="stripe"></div>
+            <div class="box">
+                <span>CVV</span>
+                <div class="cvv-box"></div>
+                <img src="" class='card_type'>
+            </div>
+        </div>
+    </div>
+    <form method='post' action=''>
+        <div class="inputBox"> 
+            {{ render_field(form.card_number, class="form-control card-number-input", id="card-number") }}
+        </div>
+        <div class="inputBox">
+            {{ render_field(form.card_holder, class="form-control card-holder-input") }}
+        </div>
+        <div class="flexbox">
+            <div class="inputBox">
+                {{ form.csrf_token }}
+                {{ render_field(form.exp_mm, class="form-check month-input" , style="list-style-type: none")}} 
+            </div>
+            <div class="inputBox">
+                {{ form.csrf_token }}
+                {{ render_field(form.exp_yy, class="form-check year-input" , style="list-style-type: none") }} 
+            </div>
+            <div class="inputBox">
+                {{ render_field(form.cvv, class="form-control cvv-input" , maxlength="4") }}
+            </div>
+        </div>
+        <input type="submit" value="submit" class="submit-btn">
+    </form>
+</div>    
+<script>
+
+document.querySelector('.card-number-input').oninput = () =>{
+    document.querySelector('.card-number-box').innerText = document.querySelector('.card-number-input').value;
+    value = document.querySelector('.card-number-input').value
+    var card_type = document.querySelectorAll('.card_type')
+    if (value[0] == '4') {
+        card_type.forEach(element => {
+            element.src = 'static/images/visa.png'
+        });
+    }
+    else if (value[0] == '5') {
+        card_type.forEach(element => {
+            element.src = 'static/images/mastercard.png'
+        });
+    }
+    else if (value[0] == '3' && value[1] == '4' || value[0] == '3' && value[1] == '7') {
+        card_type.forEach(element => {
+            element.src = 'static/images/amex.png'
+        });
+    }
+    else {
+        card_type.forEach(element => {
+            element.src = 'static/images/all3.png'
+
+        });
+        document.querySelector('.card-number-box').innerText = '################'
+    }
+}
+
+document.querySelector('.card-holder-input').oninput = () =>{
+    value = document.querySelector('.card-holder-input').value
+    if (value != '') {
+        document.querySelector('.card-holder-name').innerText = document.querySelector('.card-holder-input').value;
+    }
+    else {
+        document.querySelector('.card-holder-name').innerText = 'full name'
+    }
+}
+
+document.querySelector('.month-input').oninput = () =>{
+    document.querySelector('.exp-month').innerText = document.querySelector('.month-input').value;
+}
+
+document.querySelector('.year-input').oninput = () =>{
+    document.querySelector('.exp-year').innerText = document.querySelector('.year-input').value;
+}
+
+document.querySelector('.cvv-input').onmouseenter = () =>{
+    document.querySelector('.front').style.transform = 'perspective(1000px) rotateY(-180deg)';
+    document.querySelector('.back').style.transform = 'perspective(1000px) rotateY(0deg)';
+}
+
+document.querySelector('.cvv-input').onmouseleave = () =>{
+    document.querySelector('.front').style.transform = 'perspective(1000px) rotateY(0deg)';
+    document.querySelector('.back').style.transform = 'perspective(1000px) rotateY(180deg)';
+}
+
+document.querySelector('.cvv-input').oninput = () =>{
+    document.querySelector('.cvv-box').innerText = document.querySelector('.cvv-input').value;
+}
+</script>
+</body>
+{% endblock %}

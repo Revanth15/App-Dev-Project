@@ -1,0 +1,19 @@
+homepage with products (wishlist button, when hover over image, show description and wishlist button)
+cart
+- get data of item clicked when add to cart
+- get all data in python and send to cart
+- show cart
+- go to shipping
+-
+-
+
+products coming in page in admin
+import xlsx *KIA
+
+add to cart- related to create a new product
+inorder to relate- onlick(use fetch or ajax, what ill be giving is sku)
+on success-add to client
+can use fetch and still use my cart.js
+
+1:{12345678 {2},
+    2:{}}
