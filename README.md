@@ -17,6 +17,7 @@ git remote -v
 --To clone--
 
 git clone https://github.com/Revanth15/App-Dev-Project.git
+  
 -----------------
 
 --To create venv--
