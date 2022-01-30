@@ -18,7 +18,6 @@ def get_db(database, key, get_x=None, params=None):
             dict = db[f'{key}']
         except Exception as ex:
             print(ex)
-        db.close()
 
     if get_x is None:
         return dict
@@ -49,7 +48,6 @@ def get_db(database, key, get_x=None, params=None):
 def set_db(database, key, value):
     with shelve.open(f"tit/admin/{database}.db", 'w') as db:
         db[f'{key}'] = value
-        db.close()
 
 
 def b64toimg(b64str):

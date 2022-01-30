@@ -33,7 +33,7 @@
         {% for product in products_list %}
         <tr>
           <td>
-            <img src="{{ url_for('static', filename='uploads/' + product.get_filename()) }}" width="60px" height="60px" >
+            <img src="{{ url_for('static', filename='product_uploads/' + product.get_filename()) }}" width="60px" height="60px" >
           </td>                               
           <td>{{ product.get_sku() }}</td>
           <td>{{ product.get_product_name() }}</td>

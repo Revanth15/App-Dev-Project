@@ -32,7 +32,7 @@
       </div>
       <div class="form-group col py-3">
         {{ form.hidden_tag() }}
-        <img src="{{ url_for('static', filename='uploads/' + filename) }}" width="200px" height="200px" >
+        <img src="{{ url_for('static', filename='product_uploads/' + filename) }}" width="200px" height="200px" >
         {{ form.file }}
       </div>
       <input type="submit" value="Edit Product" class="btn btn-primary col py-3"/><button onclick="location.href = '/admin/inventory/retrieve_product';" id="goBack" class="align-right submit-button" >Go Back</button>

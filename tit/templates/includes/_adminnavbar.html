@@ -18,8 +18,8 @@
                 {% set navList = [
                     (url_for('admin.dashboard'), 'dashboard', 'Dashboard', 'bx bxs-dashboard'),
                     ('#', 'users', 'Users', 'bx bx-user'),
-                    ('/admin/inventory/retrieve_product', 'inventory', 'Inventory', 'bx bx-package'),
-                    ('#', 'rewards', 'Rewards', 'bx bxs-discount'),
+                    (url_for('admin.inventory.retrieve_products'), 'inventory', 'Inventory', 'bx bx-package'),
+                    (url_for('admin.rewards.viewVouchers_admin'), 'rewards', 'Rewards', 'bx bxs-discount'),
                     (url_for('admin.reporting.reports'), 'reports', 'Reports', 'bx bx-bar-chart-alt-2'),
                     ('#', 'customer_support', 'Customer Support', 'bx bx-support')
                 ] -%}
@@ -38,7 +38,7 @@
 
         <div class="bottom-content">
             <li class="">
-                <a href="#">
+                <a href="/">
                     <i class='bx bx-log-out icon' ></i>
                     <span class="text nav-text">Logout</span>
                 </a>

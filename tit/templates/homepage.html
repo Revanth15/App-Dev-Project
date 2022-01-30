@@ -14,7 +14,7 @@
     {% for product in products_list %}
       <div class="col-12 col-xs-12 col-md-6 col-lg-4 col-xl-3" id="product_card">
         <div class="card">
-          <img class="card-img-top product-image" src="{{ url_for('static', filename='uploads/' + product.get_filename()) }}" alt="Card image cap" width="150px" height="370px">
+          <img class="card-img-top product-image" src="{{ url_for('static', filename='product_uploads/' + product.get_filename()) }}" alt="Card image cap" width="150px" height="370px">
           <div class="card-body">
             <p class="price product-price">${{ product.get_product_price() }}</p>
             <h5 class="card-title product-title">{{product.get_product_name()}}</h5>

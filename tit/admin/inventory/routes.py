@@ -13,7 +13,7 @@ inventory = Blueprint('inventory', __name__, template_folder='templates', static
 def add_product():
     create_product_form = CreateProductForm()
     if request.method == 'POST' and create_product_form.validate_on_submit():
-        with shelve.open('products.db', 'c') as products_db:
+        with shelve.open('tit/database/products.db', 'c') as products_db:
             products_dict = {}
 
             try:
@@ -22,7 +22,7 @@ def add_product():
                 print("Error in retrieving Products from products.db")
 
             filename = create_product_form.sku.data + "." + create_product_form.file.data.filename.split(".")[-1]
-            create_product_form.file.data.save('tit/static/uploads/' + filename)
+            create_product_form.file.data.save(app.config['STATIC_PATH']+ 'product_uploads/' + filename)
 
             product = Product.Product(
                 product_name = create_product_form.product_name.data, 
@@ -45,14 +45,14 @@ def add_product():
             
 
             return redirect(url_for('admin.inventory.add_product',  products_list = products_list))  
-    return render_template('add_product.html', form=create_product_form)
+    return render_template('inventory/add_product.html', form=create_product_form)
 
 
 @inventory.route('/retrieve_product')
 def retrieve_products():
     products_dict = {}
     try:
-        products_db = shelve.open('products.db', 'r')
+        products_db = shelve.open('tit/database/products.db', 'r')
         products_dict = products_db['products']
         products_db.close()
     except:
@@ -63,13 +63,13 @@ def retrieve_products():
         product = products_dict.get(key)
         products_list.append(product)
 
-    return render_template('retrieve_product.html', count=len(products_list), products_list=products_list)
+    return render_template('inventory/retrieve_product.html', count=len(products_list), products_list=products_list)
 
 
 @inventory.route('/restock_product', methods=['GET', 'POST'])
 def restock_product():
     restock_form = RestockForm(request.form)     
-    with shelve.open('products.db', 'w') as products_db:
+    with shelve.open('tit/database/products.db', 'w') as products_db:
         products_dict = {}
         products_dict = products_db['products']
 
@@ -78,7 +78,7 @@ def restock_product():
             sku = product.get_sku()
             restock_form.sku_select.choices += [(sku)]
     if request.method == 'POST' and restock_form.validate_on_submit():
-        with shelve.open('products.db', 'w') as products_db:
+        with shelve.open('tit/database/products.db', 'w') as products_db:
             products_dict = {}
             delivery_dict = {}
             try:
@@ -117,14 +117,14 @@ def restock_product():
             
             return redirect(url_for('admin.inventory.retrieve_products'))
     else:
-        return render_template('restock_product.html', form = restock_form)
+        return render_template('inventory/restock_product.html', form = restock_form)
 
 
 @inventory.route('/edit_product/<sku>/', methods=['GET', 'POST'])
 def edit_product(sku):
     update_product_form = CreateProductForm()
     if request.method == 'POST' and update_product_form.validate():
-        with shelve.open('products.db', 'w') as products_db:
+        with shelve.open('tit/database/products.db', 'w') as products_db:
             products_dict = {}
             products_dict = products_db['products']
 
@@ -138,17 +138,16 @@ def edit_product(sku):
 
             if update_product_form.file.data:
                 filename = update_product_form.sku.data + "." + update_product_form.file.data.filename.split(".")[-1]
-                os.remove('tit/static/uploads/' + product.get_filename())
+                os.remove(app.config['STATIC_PATH']+ 'product_uploads/' + product.get_filename())
                 product.set_filename(filename)
-                update_product_form.file.data.save('tit/static/uploads/' + filename)
+                update_product_form.file.data.save(app.config['STATIC_PATH']+ 'product_uploads/' + filename)
 
             products_db['products'] = products_dict
 
             return redirect(url_for('admin.inventory.retrieve_products'))
     else:
-        with shelve.open('products.db', 'r') as products_db:
+        with shelve.open('tit/database/products.db', 'r') as products_db:
             products_dict = {}
-            products_db = shelve.open('products.db', 'r')
             products_dict = products_db['products']
 
             product = products_dict.get(sku)
@@ -159,18 +158,18 @@ def edit_product(sku):
             update_product_form.product_description.data = product.get_product_description()
             update_product_form.category.data = product.get_category()
 
-            return render_template('edit_product.html', form=update_product_form, filename=product.get_filename())
+            return render_template('inventory/edit_product.html', form=update_product_form, filename=product.get_filename())
 
 
 @inventory.route('/delete_product/<sku>', methods=['POST'])
 def delete_product(sku):
     products_dict = {}
-    products_db = shelve.open('products.db', 'w')
+    products_db = shelve.open('tit/database/products.db', 'w')
     products_dict = products_db['products']
     product = products_dict.get(sku)
 
     products_dict.pop(sku)
-    os.remove('tit/static/uploads/' + product.get_filename())
+    os.remove(app.config['STATIC_PATH']+ 'product_uploads/' + product.get_filename())
 
     products_db['products'] = products_dict
     products_db.close()
@@ -185,6 +184,6 @@ def import_xlsx():
     if request.method == 'POST' and form.validate_on_submit():
         print("hell2o")
         filename = form.xlsx.data.filename
-        form.xlsx.data.save('static/xlsx/' + filename)
+        form.xlsx.data.save(app.config['STATIC_PATH']+ 'xlsx/' + filename)
         return redirect(url_for('admin.inventory.retrieve_products'))
-    return render_template('import_xlsx.html', form= form)
+    return render_template('inventory/import_xlsx.html', form= form)

@@ -4,17 +4,19 @@ import shelve
 import datetime
 
 from tit.main.transactions.routes import transactions
+from tit.main.rewards.routes import rewards
 import tit.classes.payment as Payment
 
 main = Blueprint('main', __name__)
 main.register_blueprint(transactions)
+main.register_blueprint(rewards)
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
     products_dict = {}
     session['cart'] = []
     try:
-        products_db = shelve.open('products.db', 'r')
+        products_db = shelve.open('tit/database/products.db', 'r')
         products_dict = products_db['products']
         products_db.close()
     except:
@@ -31,7 +33,7 @@ def home():
 def payment():
     payment_form = PaymentForm()
     if request.method == 'POST' and payment_form.validate_on_submit():
-        with shelve.open('payment.db', 'c') as payment_db:
+        with shelve.open('tit/database/payment.db', 'c') as payment_db:
             payment_dict = {}
 
             try:

@@ -9,33 +9,25 @@ transactions = Blueprint('transactions', __name__, template_folder='templates', 
 def cart(): 
     user_id = 1
     if request.method == 'POST':
-        with shelve.open('cart.db','c') as cart_db:
-            with shelve.open('products.db','r') as product_db:
-                cart_dict = {}
-                product_dict = {}
-                try:
-                    cart_dict = cart_db['cart']
-                except:
-                    print("Error in retrieving Items from cart.db")
-                try:
-                    product_dict = product_db['products']
-                except:
-                    print("Error in retrieving Products from products.db")
-                sku = int(request.form['sku'])
-                print(sku)
-                print(user_id)
-                print(cart_dict)
-                if cart_dict.get(user_id) is None:
-                    cart_dict[user_id] = {}
+        with shelve.open('tit/database/cart.db','c') as cart_db:
+            cart_dict = {}
+            product_dict = {}
+            try:
+                cart_dict = cart_db['cart']
+            except:
+                print("Error in retrieving Items from cart.db")
+            sku = int(request.form['sku'])
+            if cart_dict.get(user_id) is None:
+                cart_dict[user_id] = {}
+                
+            if sku in cart_dict.get(user_id):
+                cart_dict[user_id][sku] = cart_dict[user_id][sku] + 1
+            else:
+                cart_dict[user_id].update({sku: 1})
 
-                if sku in cart_dict.get(user_id):
-                    cart_dict[user_id][sku] = cart_dict[user_id][sku] + 1
-                else:
-                    cart_dict[user_id] = {sku: 1}
-
-                print(cart_dict)
-                cart_db['cart'] = cart_dict
-    with shelve.open('cart.db','c') as cart_db: 
+            print(cart_dict)
+            cart_db['cart'] = cart_dict
+    with shelve.open('tit/database/cart.db','c') as cart_db: 
         cart_dict = {}
         try:
             cart_dict = cart_db['cart']
@@ -44,14 +36,14 @@ def cart():
         cart_list = cart_dict.get(user_id)
         if cart_list is None:
             cart_list = []
-    return render_template('cart.html', cart_list = cart_list)
+    return render_template('inventory/cart.html', cart_list = cart_list)
 
 
 @transactions.route('/remove_cart/<sku>', methods=['POST'])
 def remove_cart(sku):
     user_id = 1
     cart_dict = {}
-    cart_db = shelve.open('cart.db', 'w')
+    cart_db = shelve.open('tit/database/cart.db', 'w')
     cart_dict = cart_db['cart']
     cart_dict[user_id].pop(int(sku))
 
@@ -63,7 +55,7 @@ def remove_cart(sku):
 @transactions.route('/delete_cart/<user_id>', methods=['POST'])
 def delete_cart(user_id):
     cart_dict = {}
-    cart_db = shelve.open('cart.db', 'w')
+    cart_db = shelve.open('tit/database/cart.db', 'w')
     cart_dict = cart_db['cart']
     cart_dict.pop(user_id)
 

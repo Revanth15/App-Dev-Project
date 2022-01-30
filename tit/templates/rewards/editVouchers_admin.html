@@ -1,0 +1,56 @@
+{% extends "baseAdmin.html" %}
+{% block title %} Admin - Edit Voucher {% endblock %}
+
+{% block content %} 
+{% from "includes/_formHelper.html" import render_field %}    
+
+    
+<!-- MY CODE -->
+<div class="container-fluid">
+  <div class="col-md-12 text-center">
+    <p class="h3 my-4">Rewards Management</p>
+    </div>
+
+    <div class="container-sm my-2" style="width: 90%;">
+      <h1 class="display-7">Update Voucher</h1>      
+      <form method="POST" enctype="multipart/form-data">
+    
+        <div class="form-group">
+          {{ render_field(form.vname, class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.vdescription, class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.vcode, class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.spools_needed, class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.vamount, class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.vexpirydate, class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ render_field(form.vquantity, class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ form.hidden_tag() }}
+          <a class="rounded float-start"><img src="{{url_for('static', filename='reward_uploads/' + filename) }}" width="250" height="150"></a>
+          {{ form.file }}
+        </div>
+        
+        <div style="width: 95%;">
+          <input type="submit" value="Update Voucher" class="float-end mb-3" style="background-color: rgba(196, 250, 247, 0.904); padding: 1px 5px; margin-top: 10px;">
+        </div>
+    </form>
+    </div>
+    
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends "baseAdmin.html" %}
+{% block title %} Admin - Rewards Management {% endblock %}
+
+{% block content %} 
+
+<style>
+  .slider {
+  position:relative;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(21, 11, 105);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: right;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: rgb(66, 21, 21);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
+
+<!-- MY CODE -->
+<div class="card">
+
+  {% if 'voucher_created' in session %}
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ session.pop('voucher_created', None) }} was added.
+  </div>
+  {% elif 'voucher_updated' in session %}
+  <div class="alert alert-warning alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ session.pop('voucher_updated', None) }} was updated.
+  </div>
+  {% elif 'voucher_deleted' in session %}
+  <div class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ session.pop('voucher_deleted', None) }} was deleted.
+  </div>
+  {% elif 'voucher_unaccepted' in session %}
+  <div class="alert alert-danger alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  {{ session.pop('voucher_unaccepted', None) }} was not able to add as this discount code exist!
+  </div>
+  {% endif %}
+    
+  <div class="container-fluid">
+    <div class="col-md-12 text-center">
+      <p class="h3 mt-4">Rewards Management</p>
+    </div>
+
+    <div>
+      {% if count == 0 %}
+      <p>There are no vouchers.</p>
+      {% elif count == 1 %}
+      <p>There is 1 voucher.</p>
+      {% else %}
+      <p>There are {{ count }} vouchers.</p>
+      {% endif %}
+    </div>
+
+    {% for voucher in vouchers_list %}
+    <div class="container-sm my-5 vouchers" style="width: 80%;">
+      <div class="row align-items-center">
+        <div class="col">
+          <a class="rounded float-start pic"><img src="{{url_for('static', filename='reward_uploads/' + voucher.get_filename()) }}" width="250" height="150"></a>
+        </div>
+        <div class="col-6 mx-3">
+          <p class="fs-5 mb-0" style="font-weight: 600;">{{ voucher.get_name() }}</p>
+          <p class="text-start mb-1">{{ voucher.get_description() }} </p>
+          <p class="fs-6 my-0" style="font-weight: 600;">Code: {{ voucher.get_discount_code() }}</p>
+          <p class="fs-6 my-0" style="font-weight: 600;">Spools Needed: {{ voucher.get_spools() }}</p>
+          <p class="fs-6 my-0" style="font-weight: 600;">Discount Amount: {{ voucher.get_discount_amount() }}%</p>
+          <p class="fs-6 my-0" style="font-weight: 600;">Expiry Date: {{ voucher.get_expiry_date() }}</p>
+          <p class="fs-6 my-0" style="font-weight: 600;">QTY: {{ voucher.get_quantity() }}</p>
+        </div>
+        <div class="col align-self-center">
+          <!-- <button class="btn btn-secondary hide" onclick="myFunction()">Hide</button> -->
+          <!-- <br> -->
+          <button id="hide">Hide</button>
+          <button id="show">Show</button>
+
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+
+          <a href="/admin/rewards/edit/{{voucher.get_voucher_id()}}" class="btn btn-warning my-2" >Edit</a>
+
+          <form action="{{url_for('admin.rewards.delete_voucher', id=voucher.get_voucher_id())}}" method="POST">
+              <!-- Button to Open the Modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{voucher.get_voucher_id()}}">
+              Delete
+            </button>
+
+            <!-- The Modal -->
+            <div class="modal" id="myModal_{{voucher.get_voucher_id()}}">
+              <div class="modal-dialog">
+                <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">Delete Confirmation</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                    Are you sure you want to delete {{voucher.get_name()}}?
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </form>
+
+              
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="" style="width: 95%; padding: 15px;">
+    <a href="/admin/rewards/add" class="btn btn-warning" >Add Voucher</a>   
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/scripts/hideVoucher.js"></script>
+{% endblock %}

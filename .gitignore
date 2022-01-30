@@ -6,5 +6,7 @@ tit/admin/__pycache__/
 tit/main/__pycache__/
 tit/admin/reporting/__pycache__/
 tit/admin/inventory/__pycache__/
+tit/admin/rewards/__pycache__/
 tit/main/transactions/__pycache__/
+tit/main/rewards/__pycache__/
 tit/classes/__pycache__/
