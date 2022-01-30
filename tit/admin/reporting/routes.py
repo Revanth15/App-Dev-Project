@@ -17,6 +17,7 @@
 #     jsondata = get_db('archive', 'Archives', 'get_Created', '%m-%d')
 #     return json.dumps(jsondata)
 
+<<<<<<< HEAD
 # @reporting.route('/')
 # def adminRedirect():
 #     return redirect('/admin/dashboard')
@@ -30,6 +31,13 @@
 #     tab = request.args.get('tab')
 #     if tab is None:
 #         tab = 'inventory'
+=======
+@reporting.route('/', methods=['GET', 'POST'])
+def reports():
+    tab = request.args.get('tab')
+    if tab is None:
+        tab = 'inventory'
+>>>>>>> 3a6e142ccb599479807a354f611951343d606092
 
 #     createReportForm = CreateReportForm(request.form)
 #     if request.method == 'POST' and createReportForm.validate():
