@@ -1,10 +1,4 @@
-if (document.readyState == 'loading') {
-    document.addEventListener('DOMContentLoaded', ready)
-} else {
-    ready()
-}
-
-function ready() {
+$(document).ready (function() {
     var quantityInputs = document.getElementsByClassName('cart-quantity-input')
     for (var i = 0; i < quantityInputs.length; i++) {
         var input = quantityInputs[i]
@@ -16,8 +10,20 @@ function ready() {
         var button = addToCartButtons[i]
         button.addEventListener('click', addToCartClicked)
     }
-
-}
+    var cartItemContainer = document.getElementsByClassName('cart-items')[0]
+    var cartRows = cartItemContainer.getElementsByClassName('cart-row')
+    var total = 0
+    for (var i = 0; i < cartRows.length; i++) {
+        var cartRow = cartRows[i]
+        var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+        var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+        var price = parseFloat(priceElement.innerText.replace('S$', ''))
+        var quantity = quantityElement.value
+        total = total + (price * quantity)
+    }
+    total = Math.round(total * 100) / 100
+    document.getElementsByClassName('cart-total-price')[0].innerText = '$' + total
+})
 
 function addtocartClicked(element) {
     var item = element.value;
@@ -25,7 +31,6 @@ function addtocartClicked(element) {
     {
         sku: item
     })
-    console.log('test')
 }
 
 
@@ -53,3 +58,13 @@ function updateCartTotal() {
     total = Math.round(total * 100) / 100
     document.getElementsByClassName('cart-total-price')[0].innerText = '$' + total
 }
+
+$('.cart-quantity-input').change(function() {
+    var sku = $(this).next().attr('action').split('/')[3]
+    var quantity = $(this).val()
+
+    $.getJSON('/transactions/update_cart', {
+        sku: sku,
+        quantity : quantity
+      })
+}) 
