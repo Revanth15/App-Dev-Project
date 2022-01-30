@@ -38,7 +38,7 @@ git add . # adds everything to staging
 
 git commit -m "<insert your message>" # to commit changes into locak repo
 
-git push -u origin master
+git push -u origin <branch_name>
   
 ---------------------------------------------------------------------------------------
 
