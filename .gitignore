@@ -1,4 +1,6 @@
 .venv/
+.idea/
+.vscode/
 venv/
 __pycache__/
 tit/__pycache__/
@@ -10,3 +12,4 @@ tit/admin/rewards/__pycache__/
 tit/main/transactions/__pycache__/
 tit/main/rewards/__pycache__/
 tit/classes/__pycache__/
+*.pyc
