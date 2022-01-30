@@ -1,7 +1,7 @@
 # App-Dev-Project
 git commands
 
-----first time commands----------------------------------------------------------------
+----FIRST TIME COMMANDS----------------------------------------------------------------
 
 git config --global user.name "<Your name>"
 
@@ -38,6 +38,7 @@ git add . # adds everything to staging
 git commit -m "<insert your message>" # to commit changes into locak repo
 
 git push -u origin master
+  
 ---------------------------------------------------------------------------------------
 
 ----To pull repo------------------------------------------------------------------------
