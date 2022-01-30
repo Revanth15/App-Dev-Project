@@ -2,5 +2,8 @@
 {% block header %} {{ super() }} 
     <link rel="stylesheet" href="/static/styles/admin.css">
 {% endblock %}
-{% block navbar %} {% include 'includes/_adminnavbar.html' %} {% endblock %}
+{% block navbar %}
+{% include 'includes/_adminnavbar.html' %}
+{% include 'includes/_breadcrumb.html' %}
+{% endblock %}
 <!-- {% block scripts %} <script src="/static/scripts/admin_nav.js"></script> {% endblock %} -->
