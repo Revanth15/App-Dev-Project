@@ -10,6 +10,7 @@ git config --global user.email <email>
 git remote add origin https://github.com/Revanth15/App-Dev-Project.git
 
 git remote -v
+  
 --------------
 
 
