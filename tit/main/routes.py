@@ -33,8 +33,12 @@ def getSession():
             lines = (str(time)+userIP).encode('utf-8')
             session['user'] = hashlib.md5(lines).hexdigest()
             sessionID = session['user']
+        else:
+            sessionID = session['user']
+        
+        sessions_dict = get_db('traffic', 'Sessions')
+        if sessionID not in sessions_dict:
             api = "https://www.iplocate.io/api/lookup/" + userIP
-
             userCity = None
             userContinent = None
             userCountry = None
@@ -48,18 +52,15 @@ def getSession():
             except:
                 print("Could not find: ", userIP)
             viewer = Session(userIP, sessionID, userCountry, userContinent, userCity)
-            sessions_dict = get_db('traffic', 'Sessions')
             sessions_dict[viewer.get_session()] =  viewer
             set_db('traffic', 'Sessions', sessions_dict)
-            print('Success')
-        else:
-            sessionID = session['user']
             
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
     data = ['home', datetime.datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), request.method]
-    parseVisitor(data, session['user'])
+    print(session['user'])
+    print(parseVisitor(data, session['user']))
     products_dict = {}
     session['cart'] = []
     try:

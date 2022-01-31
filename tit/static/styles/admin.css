@@ -391,4 +391,8 @@ body.dark .home .text{
     color: var(--sidebar-color);
 }
 
+#back-link {
+    z-index: 5000;
+  }
+
 

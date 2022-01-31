@@ -1,0 +1,42 @@
+{% extends "baseAdmin.html" %}
+{% block title %} Admin - Session {% endblock %}
+{% set back = ['logs', 'traffic'] %}
+{% set active_page = 'reports' %}
+
+{% block content %}
+    <div>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="m-0">{{session.get_session()}}</h2>
+            </div>
+            <div class="card-body">
+                <table id="session-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Datetime</th>
+                            <th scope="col">View</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for view in session.get_views()%}
+                        <tr>
+                            <td>{{loop.index}}</td>
+                            <td>{{view[1]}}</td>
+                            <td>{{view[0]}}</td>
+                            <td>{{view[2]}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="/static/scripts/reports.js"></script>
+{% endblock %}

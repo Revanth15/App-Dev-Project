@@ -2,7 +2,7 @@
     <div class="container-fluid">
       <nav class="nav navbar-light admin-padding">
         {% if back is defined %}
-        <a class="fs-1" href="{{url_for('admin.reporting.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-circle"></i></a>
+        <a id='back-link' class="fs-1" href="{{url_for('admin.reporting.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-circle"></i></a>
         {% endif %}
         suck my tehteh
       </nav>

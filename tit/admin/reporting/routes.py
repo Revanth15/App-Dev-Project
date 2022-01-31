@@ -1,3 +1,4 @@
+from inspect import ArgSpec
 from flask import render_template, request, redirect, url_for, session, send_file, Blueprint
 
 from tit.classes.Archive import Archive
@@ -56,9 +57,21 @@ def logs():
     tab = request.args.get('tab')
     if tab is None:
         tab = 'inventory'
+    sessions_dict = get_db('traffic', 'Sessions')
+    traffic = []
+    for viewer in sessions_dict.values():
+        traffic.append((viewer.get_ip(), viewer.get_session(), viewer.get_time(), viewer.get_views()[-1][0], viewer.get_views()[-1][-1]))
+    
     deliveries = []
     deliveries.append(('111111', '100', '2019', '18:00', '200$'))
-    return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(), deliveries= deliveries, tab=tab)
+    return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(), deliveries= deliveries, traffic = traffic, tab=tab)
+
+@reporting.route('/session/<id>')
+def get_session(id):
+    sessions_dict = get_db('traffic', 'Sessions')
+    viewer = sessions_dict[id]
+    return render_template('reports/sessionviewer.html', session = viewer)
+    
 
 #ARCHIVES SECTION
 
@@ -98,7 +111,6 @@ def archives():
         for key in archive_dict:
             file = archive_dict[key]
             archives.append((file.get_filename(), file.get_filetype(), file.get_tags(), file.get_Created('date'), file.get_Created('time'), file.get_id()))
-
         return render_template('reports/report_archives.html', archives=archives, form=createReportForm, u_form= updateReportForm)
 
 @reporting.route('/archives/delete/<key>', methods=['POST']) 

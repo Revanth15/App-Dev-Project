@@ -8,10 +8,12 @@ from collections import Counter
 def parseVisitor(data, session_id):
     sessions_dict = get_db('traffic', 'Sessions')
     viewer = sessions_dict.get(session_id)
+    if viewer is None:
+        return 'Session ID does not exist'
     viewer.update_views(data)
     sessions_dict[session_id] = viewer
     set_db('traffic', 'Sessions', sessions_dict)
-    return session_id
+    return f'{session_id} Parsed'
 
 def get_ip():
     return request.remote_addr

@@ -1,13 +1,6 @@
-from ast import Pass
-from xml.dom import ValidationErr
-from xmlrpc.client import Boolean
-from flask_login import current_user
 from wtforms import StringField, BooleanField, SelectField, validators, PasswordField, IntegerField, TextAreaField, RadioField, EmailField, TelField, Form
-from wtforms.validators import InputRequired, EqualTo, DataRequired, Length, Email
-from flask import request, flash
+from wtforms.validators import Email
 from flask_wtf import FlaskForm
-from tit.classes.Admin import User
-from tit.classes.Customer import Customer
 # from wtforms.fields.html5 import EmailField, DateField
 
 

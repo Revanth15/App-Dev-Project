@@ -17,6 +17,11 @@ window.addEventListener('DOMContentLoaded', event => {
         new simpleDatatables.DataTable(trafficTable);
     }
 
+    const sessionTable = document.getElementById('session-table');
+    if (sessionTable) {
+        new simpleDatatables.DataTable(sessionTable);
+    }
+
 });
 
 
