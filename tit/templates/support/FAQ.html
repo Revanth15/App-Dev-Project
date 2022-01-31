@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex flex-column min-vh-100">
+<div class="header">
+<h2 class ="greeting">Hello!<br> How can we help?</h2>
+<!--Search bar code-->
+
+<!--Search bar code-->
+<hr>
+</div>
+<div>
+
+
+<h2 class="faq">Frequently Asked Questions</h2>
+<hr>
+</div>
+
+
+<div class ="container-fluid border">
+
+{% for i in question %}
+    
+    <h3 class="q">{{i}}</h3>
+    <p class ="ans">{{question[i]}}</p>
+{% endfor %}
+        
+
+</div>
+</div>
+
+<style>
+     
+    
+    [class="header"]{
+      background-color: blue;
+      height: 200px;
+      border-top: black;
+      border-color: black;
+
+    }
+    [class="greeting"]{
+      color: white;
+      margin-left: 240px;
+      margin-top: 80px;
+
+    }
+    [class="faq"]{
+      text-align: center;
+      font-family:sans-serif;
+      font-style: italic;
+      margin-top: 100px;
+    }
+     [class="footer"]{
+      height:100px;
+      text-align: center;
+      font-style: italic;
+      font-family: Verdana;
+      background-color: #36454F;
+      color: white;
+      border-radius: 1.5em;
+    }
+    [class="q"]{
+      font-family:sans-serif;
+      margin-left: 20px;
+    }
+    [class="ans"]{
+      font-family:sans-serif;
+      
+    }
+    a{
+      color: white;
+    }
+    a:hover{
+      color: red;
+    }
+    hr{
+      margin:0;
+    }
+    
+</style>
+
+<div class="mt auto">
+<hr>
+
+<p class ="footer">Customer Support Page| <a href="/ContactInfo">Contact Information</a>|<a href= "/ContactUs"><i class="bi bi-reply"></i>Back to Customer Support</a></p>
+
+</div>
+{% endblock %}
