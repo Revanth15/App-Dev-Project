@@ -48,7 +48,7 @@ def reports():
         return redirect(url_for('admin.reporting.archives', filetype=get_ext(archive.get_filetype())))
 
     inventorydata = get_db('archive', 'Archives', 'get_Created', '%m-%d')
-    return render_template('admin_reports.html', inventory=inventorydata, form=createReportForm, datetime=datetime.datetime.now(), tab=tab)
+    return render_template('reports/admin_reports.html', inventory=inventorydata, form=createReportForm, datetime=datetime.datetime.now(), tab=tab)
 
 @reporting.route('/logs')
 def logs():
@@ -57,7 +57,7 @@ def logs():
         tab = 'inventory'
     deliveries = []
     deliveries.append(('111111', '100', '2019', '18:00', '200$'))
-    return render_template('admin_logs.html', datetime=datetime.datetime.now(), deliveries= deliveries, tab=tab)
+    return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(), deliveries= deliveries, tab=tab)
 
 #ARCHIVES SECTION
 
@@ -98,7 +98,7 @@ def archives():
             file = archive_dict[key]
             archives.append((file.get_filename(), file.get_filetype(), file.get_tags(), file.get_Created('date'), file.get_Created('time'), file.get_id()))
 
-        return render_template('report_archives.html', archives=archives, form=createReportForm, u_form= updateReportForm)
+        return render_template('reports/report_archives.html', archives=archives, form=createReportForm, u_form= updateReportForm)
 
 @reporting.route('/archives/delete/<key>', methods=['POST']) 
 def delete_archive(key):

@@ -12,7 +12,7 @@ from fpdf import FPDF
 from pandas import DataFrame, ExcelWriter
 
 def get_db(database, key, get_x=None, params=None):
-    with shelve.open(f"tit/admin/{database}.db", 'c') as db:
+    with shelve.open(f"tit/database/{database}.db", 'c') as db:
         dict = {}
         try:
             dict = db[f'{key}']
@@ -46,7 +46,7 @@ def get_db(database, key, get_x=None, params=None):
         return jsondata
 
 def set_db(database, key, value):
-    with shelve.open(f"tit/admin/{database}.db", 'w') as db:
+    with shelve.open(f"tit/database/{database}.db", 'w') as db:
         db[f'{key}'] = value
 
 
