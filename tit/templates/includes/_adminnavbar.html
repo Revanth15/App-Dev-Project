@@ -23,6 +23,8 @@
                     (url_for('admin.reporting.reports'), 'reports', 'Reports', 'bx bx-bar-chart-alt-2'),
                     ('#', 'customer_support', 'Customer Support', 'bx bx-support')
                 ] -%}
+
+                admin.reporting.archives
                 
                 {% set active_page = active_page|default('dashboard') -%}
                 {% for href, id, caption, icon in navList %}
@@ -32,6 +34,8 @@
                         <span class="text nav-text">{{caption|e}}</span>
                     </a>
                 </li>
+                {% if id='reports'%}
+                {% endif %}
                 {% endfor %}
             </ul>
         </div>

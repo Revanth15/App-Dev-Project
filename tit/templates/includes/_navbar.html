@@ -61,7 +61,7 @@
       </form>
 
       <ul class="navbar-nav d-flex flex-row me-1">
-        <li class="nav-item me-3 me-lg-0">
+        <li class="nav-item me-3 me-lg-0 cart">
           <a class="nav-link" href="{{url_for('main.transactions.cart')}}"><i class="bx bxs-cart" style="font-size: 1.5em;"></i></a>
         </li>
 
@@ -91,3 +91,16 @@
 
   </div>
 </nav>
+
+<style type="text/css">
+  @media only screen and (min-width: 768px) {
+  .dropdown:hover .dropdown-menu{
+    display: block;
+  }
+  .dropdown:hover .dropdown-menu-end{
+    display: block;
+    right: 10px;
+  }
+  }
+
+</style>
