@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %} Admin - Manage Customers {% endblock %}
+
+{% block content %}
+
+<!-- Display users in admin account via Manage Users/ View Users-->
+<h1 class="display-4">View Users</h1>
+<div>
+  {% if count == 0 %}
+  <p>There are no customers.</p>
+  {% elif count == 1 %}
+  <p>There is 1 customer.</p>
+  {% else %}
+  <p>There are {{ count }} customers.</p>
+  {% endif %}
+</div>
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>         
+<!-- first_name, last_name, email, gender, phone_number, address, unit_number, postal_code, password --> 
+
+        <th>Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Phone Number</th>
+        <th>Password</th>
+        
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Fellow</td>
+        <td></td>
+        <td><a href="#" class="btn btn-warning">Update</a></td>
+        <td>
+          <form action="" method="POST">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

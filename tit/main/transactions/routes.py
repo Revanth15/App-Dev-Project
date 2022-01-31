@@ -11,7 +11,6 @@ def cart():
     if request.method == 'POST':
         with shelve.open('tit/database/cart.db','c') as cart_db:
             cart_dict = {}
-            product_dict = {}
             try:
                 cart_dict = cart_db['cart']
             except:
@@ -25,29 +24,42 @@ def cart():
             else:
                 cart_dict[user_id].update({sku: 1})
 
-            print(cart_dict)
             cart_db['cart'] = cart_dict
     with shelve.open('tit/database/cart.db','c') as cart_db: 
-        cart_dict = {}
-        try:
-            cart_dict = cart_db['cart']
-        except:
-            print("Error in retrieving Items from cart.db")
-        cart_list = cart_dict.get(user_id)
-        if cart_list is None:
+        with shelve.open('tit/database/products.db','r') as db:
+            cart_dict = {}
+            product_dict = {}
+            try:
+                cart_dict = cart_db['cart']
+            except:
+                print("Error in retrieving Items from cart.db")
+            try:
+                product_dict = db['products']
+            except:
+                print("Error in retrieving Products from products.db")
+            user_cart = cart_dict.get(user_id)
+            if user_cart is None:
+                user_cart = {}
             cart_list = []
+            for sku in user_cart:
+                if str(sku) in product_dict:
+                    product = product_dict.get(str(sku))
+                    cart_list.append([product,user_cart[sku]])
+
     return render_template('inventory/cart.html', cart_list = cart_list)
 
 
-@transactions.route('/remove_cart/<sku>', methods=['POST'])
-def remove_cart(sku):
+@transactions.route('/remove_item/<sku>', methods=['POST'])
+def remove_item(sku):
+    print(sku)
     user_id = 1
     cart_dict = {}
     cart_db = shelve.open('tit/database/cart.db', 'w')
     cart_dict = cart_db['cart']
+    print(cart_dict[user_id])
     cart_dict[user_id].pop(int(sku))
 
-    cart_db['products'] = cart_dict
+    cart_db['cart'] = cart_dict
     cart_db.close() 
 
     return redirect(url_for('main.transactions.cart'))
@@ -57,12 +69,31 @@ def delete_cart(user_id):
     cart_dict = {}
     cart_db = shelve.open('tit/database/cart.db', 'w')
     cart_dict = cart_db['cart']
-    cart_dict.pop(user_id)
+    print(cart_dict)
+    cart_dict.pop(int(user_id))
+    print(cart_dict)
 
-    cart_db['products'] = cart_dict
+    cart_db['cart'] = cart_dict
     cart_db.close() 
 
     return redirect(url_for('main.transactions.cart'))
+
+@transactions.route('/update_cart' ,methods=['GET'])
+def update_cart():
+    with shelve.open('tit/database/cart.db','c') as cart_db: 
+        user_id = 1
+        cart_dict = {}
+        try:
+            cart_dict = cart_db['cart']
+        except:
+            print("Error in retrieving Items from cart.db")
+        sku = int(request.args.get('sku'))
+        quantity = int(request.args.get('quantity'))
+        if int(quantity) <= 0:
+            quantity = 1
+        cart_dict[user_id].update({sku: quantity})
+        cart_db['cart'] = cart_dict
+    return '1'
 
 # def cart(): 
 #     user_id = 1

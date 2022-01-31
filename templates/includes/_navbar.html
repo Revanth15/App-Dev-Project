@@ -42,7 +42,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('main.rewards.discover')}}">Rewards</a>
+          <a class="nav-link" href="/">Rewards</a>
         </li>
 
         <li class="nav-item">
@@ -62,30 +62,14 @@
 
       <ul class="navbar-nav d-flex flex-row me-1">
         <li class="nav-item me-3 me-lg-0">
-          <a class="nav-link" href="{{url_for('main.transactions.cart')}}"><i class="bx bxs-cart" style="font-size: 1.5em;"></i></a>
+          <a class="nav-link" href="/cart"><i class="bx bxs-cart" style="size: 200%;"></i></a>
         </li>
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            User
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li>
-              <a class="dropdown-item" href="#">Log In</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Sign Up</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Wish List</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">My Orders</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Spools:88</a>
-            </li>
-          </ul>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('main.accounts.login')}}" style="color:blue;">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('main.accounts.sign_up')}}" style="color:blue;">Sign Up</a>
         </li>
       </ul>
 
