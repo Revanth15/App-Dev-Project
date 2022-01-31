@@ -9,15 +9,11 @@ accounts = Blueprint('accounts', __name__, template_folder='templates', static_u
 @accounts.route('/retrieveCustomers')
 def retrieveCustomers():
     customers_dict = {}
-    db = shelve.open('customers.db', 'r')
-
+    db = shelve.open('tit/database/customers.db', 'c')
     try:
         customers_dict = db['Customers']
     except:
         print("Error in retrieving Customers from storage.db.")
-
-    customers_dict = db['Customers']
-    print(db['Customers'])
     db.close()
 
     customers_list = []
@@ -25,7 +21,7 @@ def retrieveCustomers():
         customer = customers_dict.get(key)
         customers_list.append(customer)
 
-    return render_template('retrieveCustomers.html', count=len(customers_list), customers_list=customers_list)
+    return render_template('accounts/retrieveCustomers.html', count=len(customers_list), customers_list=customers_list)
 
 
 
@@ -35,7 +31,7 @@ def update_customer(id):
     update_customer_form = CustomerSignUpForm(request.form)
     if request.method == 'POST':
         customers_dict = {}
-        db = shelve.open('customers.db', 'w')
+        db = shelve.open('tit/database/customers.db', 'w')
         customers_dict = db['Customers']
 
         customer = customers_dict.get(id)
@@ -57,7 +53,7 @@ def update_customer(id):
         return redirect(url_for('admin.accounts.retrieveCustomers'))
     else:
         customers_dict = {}
-        db = shelve.open('customers.db', 'r')
+        db = shelve.open('tit/database/customers.db', 'r')
 
         try:
            customers_dict = db['Customers']
@@ -75,14 +71,14 @@ def update_customer(id):
         update_customer_form.password.data = customer.get_password()
 
 # PROMPT: CUSTOMER PROFILE HAS BEEN UPDATED
-        return render_template('updateCustomer.html', form=update_customer_form)
+        return render_template('accounts/updateCustomer.html', form=update_customer_form)
 
 
 # Admin deletes customer
 @accounts.route('/deleteCustomer/<int:id>', methods=['POST'])
 def delete_customer(id):
     customers_dict = {}
-    db = shelve.open('customers.db', 'w')
+    db = shelve.open('tit/database/customers.db', 'w')
 
     try: 
         customers_dict = db['Customers']

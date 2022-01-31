@@ -6,8 +6,8 @@ from wtforms import StringField, BooleanField, SelectField, validators, Password
 from wtforms.validators import InputRequired, EqualTo, DataRequired, Length, Email
 from flask import request, flash
 from flask_wtf import FlaskForm
-from Admin import User
-from Customer import Customer
+from tit.classes.Admin import User
+from tit.classes.Customer import Customer
 # from wtforms.fields.html5 import EmailField, DateField
 
 

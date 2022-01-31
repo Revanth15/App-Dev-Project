@@ -1,7 +1,7 @@
 import shelve
 from flask import flash, redirect, render_template, request, url_for, Blueprint
 
-import Customer
+import tit.classes.Customer as Customer
 from tit.main.accounts.Forms import CustomerSignUpForm, LoginForm, ChangePasswordForm
 
 from flask_login import login_required, login_user, logout_user
@@ -17,7 +17,7 @@ def sign_up():
     customer_signup_form = CustomerSignUpForm(request.form)
     if request.method == 'POST':
         customers_dict = {}
-        db = shelve.open('customers.db', 'c')
+        db = shelve.open('tit/database/customers.db', 'c')
 
         try:
             customers_dict = db['Customers']
@@ -57,7 +57,7 @@ def login():
     login_form = LoginForm(request.form)  
     if request.method == 'POST':
         customers_dict = {}
-        db = shelve.open('customers.db', 'r')
+        db = shelve.open('tit/database/customers.db', 'r')
         try:
             customers_dict = db['Customers']
         except:
@@ -80,7 +80,7 @@ def login():
                         # add a next page route
                         next_page = request.args.get('next')
                         print(next_page)
-                        return redirect(next_page) if next_page else redirect(url_for("home"))
+                        return redirect(next_page) if next_page else redirect(url_for("main.home"))
 
         flash('Incorrect email or password.')
             
@@ -101,7 +101,7 @@ def logout():
 def retrieveProfile():
     customers_dict = {}
 
-    db = shelve.open('customers.db', 'r')
+    db = shelve.open('tit/database/customers.db', 'r')
     try:
         customers_dict = db['Customers']
     except:
@@ -113,7 +113,7 @@ def retrieveProfile():
         customer = customers_dict.get(key)
         customers_list.append(customer)
 
-    return render_template('retrieveProfile.html', customers_list=customers_list)
+    return render_template('accounts/retrieveProfile.html', customers_list=customers_list)
 
 
 
@@ -123,7 +123,7 @@ def update_profile(id):
     update_customer_form = CustomerSignUpForm(request.form)
     if request.method == 'POST':
         customers_dict = {}
-        db = shelve.open('customers.db', 'w')
+        db = shelve.open('tit/database/customers.db', 'w')
         customers_dict = db['Customers']
 
         customer = customers_dict.get(id)
@@ -138,7 +138,7 @@ def update_profile(id):
         return redirect(url_for('main.accounts.retrieveProfile/<int:id>/'))
     else:
         customers_dict = {}
-        db = shelve.open('customers.db', 'r')
+        db = shelve.open('tit/database/customers.db', 'r')
 
         try:
            customers_dict = db['Customers']
@@ -154,7 +154,7 @@ def update_profile(id):
         db.close()
 
 # PROMPT: CUSTOMER PROFILE HAS BEEN UPDATED
-        return render_template('updateProfile.html', form=update_customer_form)
+        return render_template('accounts/updateProfile.html', form=update_customer_form)
 
 # Customer Enter correct Password, then direct to change password page
 @accounts.route('/currentAdminPW', methods=['GET','POST'])
@@ -165,7 +165,7 @@ def currentAdminPW():
             flash("Type in yur new password.")
         else:
             customers_dict = {}
-            db = shelve.open('customers.db', 'r')
+            db = shelve.open('tit/database/customers.db', 'r')
             try:
                 customers_dict = db['Customers']
             except:
@@ -188,7 +188,7 @@ def currentAdminPW():
                 
             # return redirect(url_for('updatePassword/<int:id>/'))
             return redirect(url_for('main.accounts.updateAdminPW/<int:id>/'))
-    return render_template('currentAdminPW.html', form=change_password_form)
+    return render_template('accounts/currentAdminPW.html', form=change_password_form)
 
 
 # Update/Change Password
@@ -197,7 +197,7 @@ def update_password(id):
     update_password_form = CustomerSignUpForm(request.form)
     if request.method == 'POST':
         customers_dict = {}
-        db = shelve.open('customers.db', 'w')
+        db = shelve.open('tit/database/customers.db', 'w')
         customers_dict = db['Customers']
 
         customer = customers_dict.get(id)
@@ -209,7 +209,7 @@ def update_password(id):
         return redirect(url_for('main.accounts.retrievePassword'))
     else:
         customers_dict = {}
-        db = shelve.open('customers.db', 'r')
+        db = shelve.open('tit/database/customers.db', 'r')
 
         try:
            customers_dict = db['Customers']
@@ -225,7 +225,7 @@ def update_password(id):
 
 
         # PROMPT: CUSTOMER PROFILE HAS BEEN UPDATED
-        return render_template('updateAdminPW.html', form=update_password_form)
+        return render_template('accounts/updateAdminPW.html', form=update_password_form)
 
 
 
@@ -234,7 +234,7 @@ def update_password(id):
 @accounts.route('/deleteAccount/<int:id>', methods=['POST'])
 def delete_account(id):
     customers_dict = {}
-    db = shelve.open('customers.db', 'w')
+    db = shelve.open('tit/database/customers.db', 'w')
 
     try: 
         customers_dict = db['Customers']

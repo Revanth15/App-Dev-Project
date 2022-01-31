@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex flex-column min-vh-100">
+<div class = "header">
+
+<h1 class ="greeting">Contact Information</h1>
+</div>
+<div>
+    
+    <h2 class="ask">Ask A Question!</h2>
+    <hr style="height: 10px;">
+    </div>
+<div>
+    <h3 class="title">Threads In Time</h3>
+    <p class="info">PO Box 123<br>8 Singapore 569830</p>
+
+    <h3 class= "title">Working hours</h3>
+    <p class ="info">10AM - 7PM, Monday to Sunday</p>
+    <h3 class="title">Social Media</h3>
+    
+        <p class="info"><a href="https://www.facebook.com/"><i class="bi bi-facebook" style="color: black;" ></i></a>
+            <a href="https://www.instagram.com/"><i class="bi bi-instagram" style="color: black;"></i></a>
+            <a href="https://twitter.com/home?lang=en"><i class="bi bi-twitter" style="color: black;"></i></a>
+            <a href="https://www.blogger.com/"><i class="bi bi-envelope" style="color: black;"></i></a>
+          </p>
+    
+
+</div>
+</div>
+<style>
+    [class="title"]{
+    text-align: center;
+    font-family: fantasy;
+    font-size: xx-large;
+    }
+    [class="info"]{
+        text-align: center;
+        font-size: 2em;
+        font-family: monospace;
+    }
+    [class="header"]{
+      background-color: blue;
+      height: 200px;
+      border-top: black;
+      border-color: black;
+
+    }
+    [class="greeting"]{
+      color: white;
+      margin-left: 240px;
+      margin-top: 80px;
+
+    }
+    [class="ask"]{
+      text-align: center;
+      font-family:sans-serif;
+      font-style: italic;
+      margin-top: 100px;
+    }
+    [class="footer"]{
+      height:100px;
+      text-align: center;
+      font-style: italic;
+      font-family: Verdana;
+      background-color: #36454F;
+      color: white;
+      border-radius: 1.5em;
+      
+    }
+    a{
+      color: white;
+    }
+    a:hover{
+      color: red;
+    }
+    hr{
+      margin:0;
+    }
+    i:hover{
+      color: red;
+    }
+    
+    
+    
+</style>
+
+
+
+
+   
+
+<div class="mt auto">
+    <hr>
+    <p class ="footer">Customer Support Page| <a  href="{{url_for('main.support.create_user')}}">Feedback Form</a>|<a   href= "/ContactUs"><i class="bi bi-reply" ></i>Back to Customer Support</a></p>
+</div>
+{% endblock %}

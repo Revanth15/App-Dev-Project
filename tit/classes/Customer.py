@@ -1,33 +1,39 @@
 import tit.classes.User as User
 
-class Admin(User.User):
+class Customer(User.User):
     count_id = 0
 
-    # Admin
+    # Customer
     def __init__(self, name, email, gender, phone_number, password, confirm_password):
 
     #   User
         super().__init__(name, email, phone_number, password)
-        Admin.count_id += 1
-        self.__admin_id = Admin.count_id
+        Customer.count_id += 1
+        self.__customer_id = Customer.count_id
         self.__gender = gender
         self.__confirm_password = confirm_password
+        # self.__spools = spools
 
-
-    def get_admin_id(self):
-        return self.__admin_id
+    def get_customer_id(self):
+        return self.__customer_id
 
     def get_gender(self):
         return self.__gender
     
     def get_confirm_password(self):
         return self.__confirm_password
+    
+    # def get_spools(self):
+    #     return self.__spools
 
-    def set_admin_id(self, admin_id):
-        self.__admin_id = admin_id
+    def set_customer_id(self, customer_id):
+        self.__customer_id = customer_id
 
     def set_gender(self, gender):
         self.__gender = gender
 
     def set_confirm_password(self, confirm_password):
         self.__confirm_password = confirm_password
+    
+    # def set_spools(self, spools):
+    #     self.__spools = spools

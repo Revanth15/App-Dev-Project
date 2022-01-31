@@ -1,0 +1,61 @@
+<div id="sideNav" class="p-2 position-fixed bg-dark rounded-end h-100 text-white">
+  <nav class="nav flex-column navbar-dark fs-4">
+    <button type="button" onclick="toggleNav()" class="btn btn-dark border-0 fs-4 mt-2">
+      <i class="bi bi-list"></i>
+    </button>
+    {% set navList = [
+      ('/admin/dashboard', 'dashboard', 'Dashboard', 'bi bi-grid'),
+      ('/admin/users', 'users', 'Users', 'bi bi-people-fill'),
+      ('/admin/inventory', 'inventory', 'Inventory', '"bi bi-boxes'),
+      ('/admin/reports', 'reports', 'Reports', 'bi bi-graph-up'),
+      ('/admin/AdminFeedbackPage', 'feedback', 'Feedback', 'bi bi-pencil-square')
+    ] -%}
+  
+    {% set active_page = active_page|default('dashboard') -%}
+  
+    {% for href, id, caption, icon in navList %}
+    <a href="{{ href|e }}" class="nav-link link-light rounded my-2 {% if id == active_page %}active{% endif %}">
+      <i class="{{icon}}"></i>
+      <span class="navText d-none align-self-end mx-2">{{caption|e}}</span>
+    </a>
+    {% if id == 'reports' %}
+    <ul class="navText d-none list-unstyled ps-5">
+      <li><a class="nav-link link-light rounded ms-0 fs-5" href="/admin/reports/archives">Archives</a></li>
+
+    </ul>
+    {% endif %}
+    {% endfor %}
+
+    <!--
+    <a class="nav-link link-light rounded" href="dashboard">
+      <i class="bi bi-grid"></i>
+      <span class="navText d-none">Dashboard</span>
+    </a>
+    <a class="nav-link link-light rounded" href="admin/">
+      <i class="bi bi-grid"></i>
+      <span class="navText d-none">Link1</span>
+    </a>
+    <a class="nav-link link-light rounded" href="admin/">
+      <i class="bi bi-grid"></i>
+      <span class="navText d-inline d-none">Linkkkk2</span>
+    </a>
+    <a class="nav-link link-light rounded" href="reports">
+      <i class="bi bi-graph-up"></i>
+      <span class="navText d-none">Reports</span>
+    </a>
+    -->
+  </nav>
+</div>
+<div class="shadow-sm ">
+  <div class="container-fluid">
+    <nav class="nav navbar-light admin-padding">
+      {% if back is defined %}
+      <a class="fs-1" href="{{back}}"><i class="bi bi-arrow-left-circle"></i></a>
+      {% endif %}
+      <a class="nav-link ms-auto" href="#">
+        <img src="/static/images/logo.png" alt="" width="50" height="50">
+        <span class="fs-4">Login</span>
+      </a>
+    </nav>
+  </div>
+</div>

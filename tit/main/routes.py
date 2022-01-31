@@ -5,11 +5,15 @@ import datetime
 
 from tit.main.transactions.routes import transactions
 from tit.main.rewards.routes import rewards
+from tit.main.accounts.routes import accounts
+from tit.main.support.routes import support
 import tit.classes.payment as Payment
 
 main = Blueprint('main', __name__)
 main.register_blueprint(transactions)
 main.register_blueprint(rewards)
+main.register_blueprint(accounts)
+main.register_blueprint(support)
 
 @main.route('/', methods=['GET', 'POST'])
 def home():

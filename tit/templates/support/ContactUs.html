@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex flex-column min-vh-100">
+
+<div class = "header">
+  <hr>
+  
+<h2 class = "greeting">Hello!<br> How can we help?</h2>
+<!--Search bar code-->
+
+
+<!--Search bar code-->
+<hr>
+</div>
+
+<div>
+
+
+<h1 class ="Tp">Topics</h1>
+
+</div>
+
+
+<div>
+  <form>
+  <ul style="list-style-type: none;">
+    <div class = "container-sm border">
+    <div class="row">
+    <div class="col"><li class= "topics"><a href="{{url_for('main.support.FAQ_GS')}}" ><div class="card" style="width: 18rem;">
+      <img src="/static/images/GS.png" class="card-img-top" >
+      <div class="card-body">
+        <p class="card-text">Getting Started.</p>
+      </div>
+    </div></a></li></div>
+    
+    <div class="col"><li class= "topics"><a href="{{url_for('main.support.FAQ_MA')}}" ><div class="card" style="width: 18rem;">
+      <img src="/static/images/MA.png" class="card-img-top" >
+      <div class="card-body">
+        <p class="card-text">My Account</p>
+      </div>
+    </div></a></li></div>
+    <div class="col"><li class= "topics"><a href="{{url_for('main.support.FAQ_PAS')}}" ><div class="card" style="width: 18rem;">
+      <img src="/static/images/P&S.png" class="card-img-top" >
+      <div class="card-body">
+        <p class="card-text">Payment & Shipping</p>
+      </div>
+    </div></a></li></div>
+    </div>
+
+
+    <div class="row">
+    <div class= "col"><li class= "topics"><a href="{{url_for('main.support.FAQ_RAO')}}" ><div class="card" style="width: 18rem;">
+      <img src="/static/images/R&O.png" class="card-img-top" >
+      <div class="card-body">
+        <p class="card-text">Rewards and Offers</p>
+      </div>
+    </div></a></li></div>
+    <div class="col"><li class= "topics"><a href="{{url_for('main.support.FAQ_T')}}" ><div class="card" style="width: 18rem;">
+      <img src="/static/images/TS.png" class="card-img-top" >
+      <div class="card-body">
+        <p class="card-text">Troubleshooting</p>
+      </div>
+    </div></a></li></div>
+    <div class= "col"><li class= "topics"><a href="{{url_for('main.support.FAQ_OS')}}" ><div class="card" style="width: 18rem;">
+      <img src="/static/images/OS.png" class="card-img-top" >
+      <div class="card-body">
+        <p class="card-text">Other Support</p>
+      </div>
+    </div></a></li></div>
+    </div>
+    </div>
+    </ul>
+  
+  </form>
+
+  
+    
+
+</div>
+</div>
+<style>
+  [class = "col"]{
+   
+    text-align: center;
+    }
+    [class = "greeting"]{
+      font-family:arial narrow bold;
+      font-size: 2.5em;
+
+    }
+  [class="topics"]{
+    
+		background-color:whitesmoke;
+		
+		width: 18rem;
+    height:200px;
+		margin-top: 40px;
+    margin-left: 65px;
+    margin-bottom: 40px;
+  }
+  [class="header"]{
+      background-color: blue;
+      height: 200px;
+      border-top: black;
+      border-color: black;
+
+    }
+    [class="greeting"]{
+      color: white;
+      margin-left: 240px;
+      margin-top: 80px;
+
+    }
+    
+      
+
+    
+    [class="Tp"]{
+      
+      margin-left: 240px;
+      margin-top: 100px;
+    }
+    [class="footer"]{
+      height:100px;
+      text-align: center;
+      font-style: italic;
+      font-family: Verdana;
+      background-color: #36454F;
+      color: white;
+      border-radius: 1.5em;
+    }
+    [ class = "container-sm border"]{
+      background-color: whitesmoke;
+      margin-bottom: 90px;
+    }
+    a{
+      color: black;
+    }
+    a:hover{
+      color: red;
+    }
+    hr{
+      margin:0;
+    }
+
+    
+  
+      
+    
+</style>
+<div class="mt auto">
+<hr>
+
+<p class = "footer">Customer Support Page  | <a style="color: white;" href="/ContactInfo">Contact Information</a></p> 
+
+</div>
+
+{% endblock %}

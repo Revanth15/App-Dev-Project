@@ -46,7 +46,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="/">Support</a>
+          <a class="nav-link" href="{{url_for('main.support.create_user')}}">Support</a>
         </li>
 
       </ul>
@@ -67,14 +67,14 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            User
+            Profile
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li>
-              <a class="dropdown-item" href="#">Log In</a>
+              <a class="dropdown-item" href="{{url_for('main.accounts.login')}}">Log In</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Sign Up</a>
+              <a class="dropdown-item" href="{{url_for('main.accounts.sign_up')}}">Sign Up</a>
             </li>
             <li>
               <a class="dropdown-item" href="#">Wish List</a>
