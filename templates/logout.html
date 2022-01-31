@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %} User - Logout {% endblock %}
+
+{% block content %}
+
+
+<div class="card">
+<div class='admin-padding troll'>
+<h1 class="display-4">Logout</h1>
+
+<div>
+  <table class="table table-striped">
+    <tbody>
+    {% for customer in customers_list %}
+      <tr> 
+        <td>
+          <form action="{{url_for('main.accounts.logout', id=customer.get_customer_id())}}" method="POST">
+            <!--<input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{customer.get_name()}}?');">-->
+            <!-- Button to Open the Modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{customer.get_customer_id()}}">
+              Logout
+            </button>
+        
+            <!-- The Modal -->
+            <div class="modal" id="myModal_{{customer.get_customer_id()}}">
+              <div class="modal-dialog">
+                <div class="modal-content">
+        
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">Logout Confirmation</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+        
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                     {{customer.get_name()}} are you sure you want to logout?
+                  </div>
+        
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <input type="submit" value="Logout" class="btn btn-danger">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+        
+                </div>
+              </div>
+            </div>
+          </form>
+        </td>
+        
+
+
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</div>
+</div>
+
+        
+{% endblock %}

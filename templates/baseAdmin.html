@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% with messages=get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+ <div class='alert alert-{{category}} text-center alert-dismissible fade show m-auto'>
+   {{ message }}
+  </div>
+{% endfor %}
+{% endwith %}
+
+{% block header %} {{ super() }} 
+    <link rel="stylesheet" href="/static/styles/admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block navbar %} {% include 'includes/_adminnavbar.html' %} {% endblock %}
+{% block scripts %}
+<!-- <script src="/static/scripts/admin_nav.js"></script> -->
+<!-- <script src="/static/scripts/test.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+{% endblock %}
