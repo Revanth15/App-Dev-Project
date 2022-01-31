@@ -2,7 +2,8 @@ from flask import render_template, request, redirect, url_for, session, send_fil
 
 from tit.classes.Archive import Archive
 from tit.admin.reporting.Forms import CreateReportForm, UpdateReportForm
-from tit.admin.reporting.utils import createExcel, get_db, set_db, createPDF, get_ext, createCSV
+from tit.admin.reporting.utils import createExcel, createPDF, get_ext, createCSV
+from tit.utils import get_db, set_db
 from tit import app
 
 import shelve

@@ -1,6 +1,3 @@
-import shelve
-from collections import Counter
-
 from PIL import Image
 import base64
 from io import BytesIO
@@ -10,44 +7,6 @@ from tit import app
 
 from fpdf import FPDF
 from pandas import DataFrame, ExcelWriter
-
-def get_db(database, key, get_x=None, params=None):
-    with shelve.open(f"tit/database/{database}.db", 'c') as db:
-        dict = {}
-        try:
-            dict = db[f'{key}']
-        except Exception as ex:
-            print(ex)
-
-    if get_x is None:
-        return dict
-    else:
-        datalist = []
-        for key in dict:
-            obj = dict[key]
-            func = getattr(obj, get_x)
-            if params is None:
-                data = func()
-            else:
-                data = func(str(params))
-            datalist.append(data)
-        datalist = Counter(datalist)
-        x = []
-        y = []
-        for xtick in datalist:
-            ytick = datalist[xtick]
-            if ytick== '':
-                ytick = 0
-            if xtick=='':
-                xtick = 'undefined'
-            x.append(xtick)
-            y.append(ytick)
-        jsondata = {'x': x, 'y': y}
-        return jsondata
-
-def set_db(database, key, value):
-    with shelve.open(f"tit/database/{database}.db", 'w') as db:
-        db[f'{key}'] = value
 
 
 def b64toimg(b64str):

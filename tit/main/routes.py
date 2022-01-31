@@ -2,17 +2,60 @@ from flask import render_template, session, Blueprint, request, redirect, url_fo
 from tit.admin.inventory.forms import PaymentForm
 import shelve
 import datetime
+import urllib
+import json
+import hashlib
+
+from tit.classes.Traffic import Session
+from tit.utils import get_db, set_db, parseVisitor
 
 from tit.main.transactions.routes import transactions
 from tit.main.rewards.routes import rewards
 import tit.classes.payment as Payment
 
+
+
 main = Blueprint('main', __name__)
 main.register_blueprint(transactions)
 main.register_blueprint(rewards)
 
+
+@main.before_request
+def getSession():
+    if 'static' not in request.url:
+        time = datetime.datetime.now().replace(microsecond=0)
+        userIP = request.remote_addr
+        if 'user' not in session:
+            lines = (str(time)+userIP).encode('utf-8')
+            session['user'] = hashlib.md5(lines).hexdigest()
+            sessionID = session['user']
+            api = "https://www.iplocate.io/api/lookup/" + userIP
+
+            userCity = None
+            userContinent = None
+            userCountry = None
+            try:
+                resp = urllib.request.urlopen(api)
+                result = resp.read()
+                result = json.loads(result.decode("utf-8"))                                                                                                     
+                userCountry = result["country"]
+                userContinent = result["continent"]
+                userCity = result["city"]
+            except:
+                print("Could not find: ", userIP)
+            viewer = Session(userIP, sessionID, userCountry, userContinent, userCity)
+            sessions_dict = get_db('traffic', 'Sessions')
+            sessions_dict[viewer.get_session()] =  viewer
+            set_db('traffic', 'Sessions', sessions_dict)
+            print('Success')
+        else:
+            sessionID = session['user']
+            
+
 @main.route('/', methods=['GET', 'POST'])
 def home():
+    data = ['home', datetime.datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), request.method]
+    parseVisitor(data, session['user'])
     products_dict = {}
     session['cart'] = []
     try:
