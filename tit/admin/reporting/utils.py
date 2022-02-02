@@ -1,3 +1,4 @@
+from operator import index
 from PIL import Image
 import base64
 from io import BytesIO
@@ -9,20 +10,29 @@ from fpdf import FPDF
 from pandas import DataFrame, ExcelWriter
 
 
-def b64toimg(b64str):
-
-    b64str = b64str.replace('data:image/png;base64,', '')
-    im = Image.open(BytesIO(base64.b64decode(b64str)))
-    im.save('tit/tmp/image.png', 'PNG')
+def b64toimg(b64strs):
+    b64strs = b64strs.split(',')
+    index = 0
+    for string in b64strs:
+        if not string.startswith('data') and string != '':
+            imgdata = base64.b64decode(str(string))
+            print(index)
+            print(str)
+            im = Image.open(BytesIO(imgdata))    
+            im.save(f'tit/tmp/chart{index}.png', 'PNG')
+            index += 1
 
 def createPDF(output, imgs):
     WIDTH = 210
     HEIGHT = 297
 
+
+    b64toimg(imgs)
+
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_font('BebasNeue', '', 'BebasNeue-Regular.ttf', uni=True)
     pdf.add_page()
-    pdf.image("tit/tmp/Letterhead.png", 0, 0, WIDTH)
+    pdf.image(f"{app.config['STATIC_PATH']}/images/Letterhead.png", 0, 0, WIDTH)
     pdf.set_fill_color(255,255,255)
     pdf.rect(5, 50, 100, 50, 'D')
     pdf.set_draw_color(255,255,255)
@@ -37,8 +47,8 @@ def createPDF(output, imgs):
     pdf.set_font('BebasNeue', '', 32)
     pdf.cell(0, 0, "Report")
 
-    pdf.image("tit/tmp/image.png", 10, 50, WIDTH/2-20)
-    pdf.image("tit/tmp/image.png", WIDTH/2+10, 50, WIDTH/2-20)
+    pdf.image("tit/tmp/chart0.png", 10, 50, WIDTH/2-20)
+    pdf.image("tit/tmp/chart1.png", WIDTH/2+10, 50, WIDTH/2-20)
     #pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\test.pdf')
     pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\{output}')
     

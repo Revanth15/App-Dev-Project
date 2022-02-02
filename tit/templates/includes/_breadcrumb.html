@@ -1,10 +1,24 @@
-<div class="container-fluid home shadow-sm">
-    <div class="container-fluid">
-      <nav class="nav navbar-light admin-padding">
-        {% if back is defined %}
-        <a id='back-link' class="fs-1" href="{{url_for('admin.reporting.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-circle"></i></a>
-        {% endif %}
-        suck my tehteh
-      </nav>
+<div class="container-fluid home shadow-sm d-flex align-items-center">
+  <nav class="nav navbar-light d-flex align-items-center flex-fill">
+    {% if back is defined %}
+    <a id='back-link' class="fs-1" href="{{url_for('admin.reporting.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-circle"></i></a>
+    {% endif %}
+    suck my tehteh
+    <div class="dropdown ms-auto">
+      <button class="btn btn-white" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-bell"></i>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        {% for notif in notif_list %}
+        <li>
+          <a class="dropdown-item" href="#">
+            <p class="h3">{{notif.get_name()}}</p>
+            <p class="h5">{{notif.get_type()}}</p>
+            <p class="h4">{{notif.get_message()}}</p>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
     </div>
+  </nav>
 </div>

@@ -166,9 +166,6 @@ const revenueChart = new Chart(revenuectx, {
         }]
     },
     options: {
-        animation: {
-            onComplete: done
-        },
         plugins: {
             title: {
                 display: true,
@@ -276,9 +273,6 @@ const visitorChart = new Chart(visitorctx, {
         }]
     },
     options: {
-        animation: {
-            onComplete: done
-        },
         plugins: {
             title: {
                 display: true,

@@ -90,8 +90,14 @@
     <script type="text/javascript">
         data = {{inventory|tojson}}
         function done() {
-            image = document.getElementById('restockChart').toDataURL()
-            document.getElementById('images').value = image            
+            const imgarray = []
+            document.querySelectorAll('canvas').forEach(element => {
+                image = element.toDataURL()
+                console.log(image)        
+                imgarray.push(image)
+
+            });
+            document.getElementById('images').value = imgarray
         }
 
 

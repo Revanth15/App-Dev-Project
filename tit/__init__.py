@@ -24,7 +24,7 @@ app.register_blueprint(main)
 @login_manager.user_loader
 def load_user(customer_id):
     customers_dict = {}
-    db = shelve.open('customers.db', 'c')
+    db = shelve.open('tit/database/customers.db', 'c')
     try:
 
         customers_dict = db['Customers']
