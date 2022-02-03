@@ -2,11 +2,11 @@ from webbrowser import get
 from flask import render_template, request, redirect, url_for, session, send_file, Blueprint
 
 from tit.classes.Archive import Archive
-from tit.classes.Notification import Notification
 from tit.admin.reporting.Forms import CreateReportForm, UpdateReportForm
 from tit.admin.reporting.utils import createExcel, createPDF, get_ext, createCSV
-from tit.utils import get_db, set_db
+from tit.utils import get_db, set_db, get_notifications, set_notifications
 from tit import app
+from flask_login import current_user
 
 import shelve
 import json
@@ -48,11 +48,6 @@ def reports():
             createCSV(f"{archive.get_filename()}.csv", archive_dict)
 
         session['create_success'] = [archive.get_filename(), get_ext(archive.get_filetype()), archive.get_id()]
-
-        notification_dict = get_db('notification', 'Notifications')
-        notification = Notification(f'Report {archive.get_filename()} created', 'report', f'Report {archive.get_filename()} has been created. Click to view')
-        notification_dict[notification.get_id()] = notification
-        set_db('notification', 'Notifications', notification_dict)
 
         return redirect(url_for('admin.reporting.archives', filetype=get_ext(archive.get_filetype())))
 
@@ -114,7 +109,6 @@ def archives():
         archive_dict = get_db('archive', 'Archives')
         notif_dict = get_db('notification', 'Notifications')
         notif_list = notif_dict.values()
-        print(notif_list)
         archives = []
         for key in archive_dict:
             file = archive_dict[key]

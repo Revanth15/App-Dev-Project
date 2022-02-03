@@ -1,8 +1,9 @@
-from traceback import print_tb
 from flask import request
 
 import shelve
 from collections import Counter
+
+from tit.classes.Notification import Notification
 
 
 def parseVisitor(data, session_id):
@@ -55,3 +56,15 @@ def get_db(database, key, get_x=None, params=None):
 def set_db(database, key, value):
     with shelve.open(f"tit/database/{database}.db", 'w') as db:
         db[f'{key}'] = value
+
+def get_notifications(id=None):
+    notification_dict = get_db('notification', 'Notifications')
+    if id is None:
+        return notification_dict
+    return notification_dict.get(id)
+
+def set_notifications(name, type, message, url):
+    notification_dict = get_db('notification', 'Notifications')
+    notification = Notification(name, type, message, url)
+    notification_dict[notification.get_id()] = notification
+    set_db('notification', 'Notifications', notification_dict)

@@ -1,11 +1,12 @@
 from tit.classes.logData import logData
 
 class Notification(logData):
-    def __init__(self, name, type, message):
+    def __init__(self, name, type, message, url):
         super().__init__()
         self.__name = name
         self.__type = type
         self.__message = message
+        self.__url = url
         self.__seenby = []
 
     def get_name(self):
@@ -17,11 +18,14 @@ class Notification(logData):
     def get_message(self):
         return self.__message
 
+    def get_url(self):
+        return self.__url
+
     def get_seenby(self):
         return self.__seenby
 
     def set_message(self, message):
         self.__message = message
 
-    def update_message(self, user_id):
+    def update_seenby(self, user_id):
         self.__seenby.append(user_id)

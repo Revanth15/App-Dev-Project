@@ -5,20 +5,31 @@
     {% endif %}
     suck my tehteh
     <div class="dropdown ms-auto">
-      <button class="btn btn-white" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-bell"></i>
+      <button class="btn btn-white" type="button" id="notificationdropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fs-5 position-relative bi bi-bell">
+          <span class="position-absolute start-100 top-0 translate-middle p-1 bg-danger border border-light rounded-circle">
+            <span class="visually-hidden">New alerts</span>
+          </span>
+        </i>
       </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      {% if notif_list %}
+      <ul class="dropdown-menu p-0" aria-labelledby="notificationdropdown">
         {% for notif in notif_list %}
         <li>
-          <a class="dropdown-item" href="#">
-            <p class="h3">{{notif.get_name()}}</p>
-            <p class="h5">{{notif.get_type()}}</p>
-            <p class="h4">{{notif.get_message()}}</p>
+          <a class="position-relative py-2 dropdown-item notification-link" href="{{url_for('admin.opennotif', id = notif.get_id())}}">
+            <p class="m-0 text-wrap {% if current_user.get_id() not in notif.get_seenby()%} fw-bold {% endif %} notification-title">{{notif.get_name()}}&nbsp;&nbsp;&nbsp;<span class="notification-time fw-normal" style="white-space: nowrap;">{{notif.get_Created('%d %b %H:%m%p')}}</span></p>
+            <p class="m-0 text-wrap notification-body">{{notif.get_message()}}</p>
+            {% if current_user.get_id() not in notif.get_seenby()%}
+              <span class="position-absolute end-0 top-50 translate-middle p-1 bg-danger border border-light rounded-circle">
+            {% endif %}
           </a>
         </li>
+        {% if not loop.last %}
+        <hr class="m-0">
+        {% endif %}
         {% endfor %}
       </ul>
+      {% endif %}
     </div>
   </nav>
 </div>

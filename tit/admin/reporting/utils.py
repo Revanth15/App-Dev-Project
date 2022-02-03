@@ -1,4 +1,3 @@
-from operator import index
 from PIL import Image
 import base64
 from io import BytesIO
@@ -16,8 +15,6 @@ def b64toimg(b64strs):
     for string in b64strs:
         if not string.startswith('data') and string != '':
             imgdata = base64.b64decode(str(string))
-            print(index)
-            print(str)
             im = Image.open(BytesIO(imgdata))    
             im.save(f'tit/tmp/chart{index}.png', 'PNG')
             index += 1
@@ -25,7 +22,6 @@ def b64toimg(b64strs):
 def createPDF(output, imgs):
     WIDTH = 210
     HEIGHT = 297
-
 
     b64toimg(imgs)
 

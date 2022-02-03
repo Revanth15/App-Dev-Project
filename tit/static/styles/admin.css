@@ -269,7 +269,7 @@ body.dark .switch::before{
 .home.shadow-sm{
     position: absolute;
     top: 0px;
-    padding-left: 30px;
+    padding: 0px 30px;
     left: 250px;
     height: 50px;
     width: calc(100% - 250px);
@@ -395,4 +395,25 @@ body.dark .home .text{
     z-index: 5000;
   }
 
+#notificationdropdown + ul {
+    width: 300px;
+}
+
+
+.notification-title {
+    font-size: 14px;
+}
+
+.notification-time {
+    color: gray;
+    font-size: 12px;
+}
+
+.notification-body {
+    font-size: 12px;
+}
+
+#notificationdropdown:focus{
+    box-shadow: 0 0 0 0 !important;
+}
 

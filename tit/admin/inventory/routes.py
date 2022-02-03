@@ -1,5 +1,7 @@
+from re import S
 from flask import render_template, request, redirect, url_for, Blueprint
 from tit.admin.inventory.forms import CreateProductForm, RestockForm, ImportForm, PaymentForm, Delivery
+from tit.utils import set_notifications, get_notifications
 import datetime
 import os
 import shelve
@@ -143,6 +145,12 @@ def edit_product(sku):
                 update_product_form.file.data.save(app.config['STATIC_PATH']+ 'product_uploads/' + filename)
 
             products_db['products'] = products_dict
+
+            for sku in products_dict:
+                if products_dict[sku].get_quantity() < 30:
+                    if products_dict[sku].get_quantity() == 0:
+                        set_notifications(f'{sku} is out of stock', 'OutOfStock', 'Click here to go to restock', 'inventory.retrieve_products')
+                    set_notifications(f'{sku} is low in stock', 'LowStock', 'Click here to go to restock', 'inventory.retrieve_products' )
 
             return redirect(url_for('admin.inventory.retrieve_products'))
     else:
