@@ -4,37 +4,46 @@
 
 {% block content %}
 <link rel="stylesheet" href="../static/styles/cart.css">
-<script src="../static/scripts/cart.js"  async></script> 
 
 
 <div class="row">
   <div class="container content-section col-12 col-md-9">
-    <h2 class="section-header">CART</h2>
-    <div class="cart-row">
-        <span class="cart-item cart-header cart-column">ITEM</span>
-        <span class="cart-price cart-header cart-column">PRICE</span>
-        <span class="cart-quantity cart-header cart-column">QUANTITY</span>
-    </div>
-    <div class="cart-items">
-    {% for product in cart_list %}
-    <div class="cart-row">
-      <div class="cart-item cart-column">
-        <img class="cart-item-image" src="{{ url_for('static', filename='product_uploads/' + product[0].get_filename()) }}" width="100" height="100">
-        <span class="cart-item-title">{{ product[0].get_product_name() }}</span>
+    <div class="card cart-card">
+      <div class="card-header">
+        <h2>Item Summary</h2>
       </div>
-      <span class="cart-price cart-column">S${{ product[0].get_product_price() }}</span>
-      <div class="cart-quantity cart-column">
-          <input class="cart-quantity-input" type="number" value="{{product[1]}}">
-          <form action="{{url_for('main.transactions.remove_item', sku=product[0].get_sku())}}" method="POST">
 
-            <button type="submit" class="btn"data-toggle="tooltip" data-placement="right" title="Clicking this will remove the item from cart"> 
-              <i class="bx bx-x"></i>
-            </button>
-
-          </form>
+      <div class="card-body">
+        <div class="cart-row">
+            <span class="cart-item cart-header cart-column">ITEM</span>
+            <span class="cart-price cart-header cart-column">PRICE</span>
+            <span class="cart-quantity cart-header cart-column">QUANTITY</span>
+            <span class="c-t cart-header cart-column">Total</span>
+        </div>
+        <div class="cart-items">
+        {% for product in cart_list %}
+        <div class="cart-row">
+          <div class="cart-item cart-column">
+            <img class="cart-item-image" src="{{ url_for('static', filename='product_uploads/' + product[0].get_filename()) }}" width="100" height="100">
+            <span class="cart-item-title">{{ product[0].get_product_name() }}</span>
+          </div>
+          <span class="cart-price cart-column">S${{ product[0].get_product_price() }}</span>
+          <div class="cart-quantity cart-column">
+              <input class="cart-quantity-input" type="number" value="{{product[1]}}">
+          </div>
+          <div class="c-t cart-column d-flex">
+            <p class="cart-total cart-column">S$0</p>
+            <form action="{{url_for('main.transactions.remove_item', sku=product[0].get_sku())}}" method="POST" class="align-self-center ms-auto">
+              <button type="submit" class="btn"data-toggle="tooltip" data-placement="right" title="Clicking this will remove the item from cart"> 
+                <i class="bx bx-x"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
         </div>
       </div>
-      {% endfor %}
+    
     </div> 
   </div>
 
@@ -53,16 +62,23 @@
       </div>
     </div>
 
-    <div class="card summaryy-card">
+    <div class="card summary-card">
       <div class="cart-header">
-        <p>Cart Summary</p>
+        <p>Order Summary</p>
       </div>
 
       <div class="cart-body">
-        <p>Subtotal</p>
-        <div class="cart-total">
-          <strong class="cart-total-title">Total</strong>
-          <span class="cart-total-price">$0</span>
+        <div class="total  d-flex">
+          <p>Subtotal</p>
+          <p class="cart-total-price ms-auto">$0</p>
+        </div>
+        <div class="shipping d-flex">
+          <p>Shipping</p>
+          <p class="ms-auto">Calculated at checkout</p>
+        </div>
+        <div class="grandtotal d-flex">
+          <p>Grand Total</p>
+          <p class="cart-total-price ms-auto">$0</p>
         </div>
       </div>
 
@@ -95,7 +111,7 @@
             </div>
           </div>
         </form>
-        <button class="btn btn-purchase" type="button">Go to Checkout</button>
+        <button class="btn btn-purchase" type="button">Checkout</button>
       </div>
       
     </div>
@@ -108,6 +124,10 @@
 
 
 {% endblock%} 
+
+{% block scripts %}
+<script src="../static/scripts/cart.js"  async></script> 
+{% endblock %}
 
 <!-- <section class="container content-section">
   <h2 class="section-header">CART</h2>

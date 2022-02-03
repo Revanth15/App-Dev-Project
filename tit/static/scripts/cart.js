@@ -12,17 +12,22 @@ $(document).ready (function() {
     }
     var cartItemContainer = document.getElementsByClassName('cart-items')[0]
     var cartRows = cartItemContainer.getElementsByClassName('cart-row')
-    var total = 0
+    var subtotal = 0
     for (var i = 0; i < cartRows.length; i++) {
         var cartRow = cartRows[i]
         var priceElement = cartRow.getElementsByClassName('cart-price')[0]
         var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
         var price = parseFloat(priceElement.innerText.replace('S$', ''))
         var quantity = quantityElement.value
-        total = total + (price * quantity)
+        total = price * quantity
+        subtotal = subtotal + (price * quantity)
+
+        cartRow.getElementsByClassName('cart-total')[0].innerText = 'S$' + total
     }
-    total = Math.round(total * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText = 'S$' + total
+    // subtotal = Math.round(subtotal * 100) / 100
+    document.getElementsByClassName('cart-total-price')[0].innerText = 'S$' + subtotal
+
+
 })
 
 function addtocartClicked(element) {
@@ -46,21 +51,24 @@ function quantityChanged(event) {
 function updateCartTotal() {
     var cartItemContainer = document.getElementsByClassName('cart-items')[0]
     var cartRows = cartItemContainer.getElementsByClassName('cart-row')
-    var total = 0
+    var subtotal = 0
     for (var i = 0; i < cartRows.length; i++) {
         var cartRow = cartRows[i]
         var priceElement = cartRow.getElementsByClassName('cart-price')[0]
         var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
         var price = parseFloat(priceElement.innerText.replace('S$', ''))
         var quantity = quantityElement.value
-        total = total + (price * quantity)
+        total = price * quantity
+        subtotal = subtotal + (price * quantity)
+
+        cartRow.getElementsByClassName('cart-total')[0].innerText = 'S$' + total
     }
-    total = Math.round(total * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText = 'S$' + total
+    // subtotal = Math.round(subtotal * 100) / 100
+    document.getElementsByClassName('cart-total-price')[0].innerText = 'S$' + subtotal
 }
 
 $('.cart-quantity-input').change(function() {
-    var sku = $(this).next().attr('action').split('/')[3]
+    var sku = $(this).parent('div').next().find("form").attr('action').split('/')[3]
     var quantity = $(this).val()
 
     $.getJSON('/transactions/update_cart', {
