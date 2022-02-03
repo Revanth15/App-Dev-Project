@@ -14,6 +14,59 @@
     {% for product in products_list %}
       <div class="col-12 col-xs-12 col-md-6 col-lg-4 col-xl-3" id="product_card">
         <div class="card">
+          <img class="card-img-top product-image" src="{{ url_for('static', filename='product_uploads/' + product.get_filename()) }}" alt="Card image cap" width="153px" height="372px">
+          <div class="card-button">
+            <button type="button" class="btn show-item" data-bs-toggle="modal" data-bs-target="#myModal_{{product.get_sku()}}">
+              Shop This Product
+            </button>
+          </div>
+          
+          <div class="modal" id="myModal_{{product.get_sku()}}">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <div class="row">
+                  <div class="container col-12 col-md-6">
+                      <img src="{{ url_for('static', filename='product_uploads/' + product.get_filename()) }}" height="541px" width="381px" class="image">
+                  </div>
+                  
+                  <div class="container col-12 col-md-6 modal-info">
+                    <button type="button" class="btn-close x-button" data-bs-dismiss="modal"></button>
+                    <div class="modal-header">
+                        <h6 class="modal-title">{{product.get_product_name()}}</h6>
+                        <div class="review">
+                          <span class="bx bxs-star"></span>
+                          <span class="bx bxs-star"></span>
+                          <span class="bx bxs-star"></span>
+                          <span class="bx bxs-star"></span>
+                          <span class="bx bx-star"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="price">${{ product.get_product_price() }}</div>
+                        <div class="desc">{{ product.get_product_description() }}</div> 
+                    </div>
+
+                    <div class="modal-footer">
+                        <button value="{{ product.get_sku() }}" class="btn btn-primary shop-item-button" value="1" onclick="addtocartClicked(this)" data-bs-dismiss="modal">Add to Cart</button>
+                        <button type="button" class="wishlist btn bx bx-heart" onclick="wishList(this)"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- <div class="container">
+  <div class="row mt-3">
+    {% for product in products_list %}
+      <div class="col-12 col-xs-12 col-md-6 col-lg-4 col-xl-3" id="product_card">
+        <div class="card">
           <img class="card-img-top product-image" src="{{ url_for('static', filename='product_uploads/' + product.get_filename()) }}" alt="Card image cap" width="150px" height="370px">
           <div class="card-body">
             <p class="price product-price">${{ product.get_product_price() }}</p>
@@ -25,28 +78,10 @@
           </div>
         </div>
       </div>
+      
     {% endfor %}
   </div>
-</div>
-
-<!-- <div class="dropdown">
-  <div class="dropdown">
-    <div class="dropdown">
-      {% for items in card_list %}
-      <div class="dropdown">
-        <div class="cart-item cart-column">
-          <img class="cart-item-image" src="{{ url_for('static', filename='uploads/' + product.get_filename()) }}" width="100" height="100">
-          <span class="cart-item-title">{{product.get_product_name()}}</span>
-        </div>
-        <span class="cart-price cart-column">{{ product.get_product_price() }}</span>
-        <div class="cart-quantity cart-column">
-            <input class="cart-quantity-input" type="number" value="1">
-            <button class="btn btn-danger" type="button">REMOVE</button>
-        </div>
-      </div>
-      {%endfor%}
-    </div>
-  </div>
 </div> -->
+
 
 {% endblock%} 

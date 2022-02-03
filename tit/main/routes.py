@@ -18,7 +18,6 @@ main.register_blueprint(support)
 @main.route('/', methods=['GET', 'POST'])
 def home():
     products_dict = {}
-    session['cart'] = []
     try:
         products_db = shelve.open('tit/database/products.db', 'r')
         products_dict = products_db['products']
@@ -29,7 +28,8 @@ def home():
     products_list = []
     for key in products_dict:
         product = products_dict.get(key)
-        products_list.append(product)
+        if product.get_quantity() >= 5:
+            products_list.append(product)
 
     return render_template('homepage.html',products_list=products_list)
 

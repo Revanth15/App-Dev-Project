@@ -2,6 +2,7 @@ from io import SEEK_CUR
 from flask import render_template, request, redirect, url_for, Blueprint
 import shelve
 from tit import app 
+from flask_login import current_user
 
 transactions = Blueprint('transactions', __name__, template_folder='templates', static_url_path='static', url_prefix='/transactions')
 
@@ -51,12 +52,10 @@ def cart():
 
 @transactions.route('/remove_item/<sku>', methods=['POST'])
 def remove_item(sku):
-    print(sku)
     user_id = 1
     cart_dict = {}
     cart_db = shelve.open('tit/database/cart.db', 'w')
     cart_dict = cart_db['cart']
-    print(cart_dict[user_id])
     cart_dict[user_id].pop(int(sku))
 
     cart_db['cart'] = cart_dict
@@ -69,9 +68,7 @@ def delete_cart(user_id):
     cart_dict = {}
     cart_db = shelve.open('tit/database/cart.db', 'w')
     cart_dict = cart_db['cart']
-    print(cart_dict)
     cart_dict.pop(int(user_id))
-    print(cart_dict)
 
     cart_db['cart'] = cart_dict
     cart_db.close() 

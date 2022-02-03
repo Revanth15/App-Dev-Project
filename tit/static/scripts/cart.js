@@ -22,7 +22,7 @@ $(document).ready (function() {
         total = total + (price * quantity)
     }
     total = Math.round(total * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText = '$' + total
+    document.getElementsByClassName('cart-total-price')[0].innerText = 'S$' + total
 })
 
 function addtocartClicked(element) {
@@ -56,7 +56,7 @@ function updateCartTotal() {
         total = total + (price * quantity)
     }
     total = Math.round(total * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText = '$' + total
+    document.getElementsByClassName('cart-total-price')[0].innerText = 'S$' + total
 }
 
 $('.cart-quantity-input').change(function() {
@@ -68,3 +68,7 @@ $('.cart-quantity-input').change(function() {
         quantity : quantity
       })
 }) 
+
+function wishList(wishlist) {
+    wishlist.classList.toggle("bxs-heart")
+}

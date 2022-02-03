@@ -57,7 +57,7 @@ class CreateProductForm(FlaskForm):
     sku = StringField('SKU', [validators.length(min=8, max=12), validators.data_required()]) #SKU = Stock Keeping Unit
     product_price = IntegerField('Product Price', [validators.NumberRange(min=1, max=10000), validators.data_required()], widget=NumberInput())
     quantity = IntegerField('Quantity', [validators.NumberRange(min=1, max=10000), validators.data_required()], widget=NumberInput())
-    product_description = TextAreaField('Product Description', [validators.length(min=0, max=500), validators.data_required()])
+    product_description = TextAreaField('Product Description', [validators.length(min=0, max=250), validators.data_required()])
     file = FileField('Product Photo', [validators.data_required()])
     category = SelectField('Category', [validators.data_required()], choices=[('T-Shirts & Polos','T-Shirts & Polos'),('Jeans','Jeans'),('Shorts','Shorts'),('Shoes','Shoes'),('Dresses','Dresses'),('Hoodies','Hoodies'),('T-Shirts & Tank Tops','T-Shirts & Tank Tops')], coerce=str)
 
