@@ -1,5 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, g
+from flask import Blueprint, render_template, redirect, url_for, g, request
 
+import json
+
+from tit import app
 from tit.admin.inventory.routes import inventory
 from tit.admin.reporting.routes import reporting
 from tit.admin.rewards.routes import rewards
@@ -40,3 +43,22 @@ def opennotif(id):
     notification_dict[id] = notif
     set_db('notification', 'Notifications', notification_dict)
     return redirect(url_for(f'admin.{notif.get_url()}'))
+
+@admin.route('/updateURLMap', methods=['GET', 'POST'])
+def update_url_map():
+    file = open('index.txt', 'r')
+    index = file.read()
+    file.close()
+    index = json.loads(index)
+    if request.method == 'POST':
+        for rule in app.url_map.iter_rules():
+            if rule.__str__() not in index:
+                rule_dict = {}
+                for method in rule.methods:
+                    if method == 'GET':
+                        rule_dict.update({method:'view'})
+                    elif method == 'POST':
+                        rule_dict.update({method:''})
+                index.update({rule.__str__():rule_dict})
+    
+    return render_template('')
