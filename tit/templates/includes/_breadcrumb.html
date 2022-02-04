@@ -12,9 +12,9 @@
           </span>
         </i>
       </button>
-      {% if notif_list %}
       <ul class="dropdown-menu p-0" aria-labelledby="notificationdropdown">
-        {% for notif in notif_list %}
+        {% if current_user.is_authenticated and g.notif_list %}
+        {% for notif in g.notif_list|reverse %}
         <li>
           <a class="position-relative py-2 dropdown-item notification-link" href="{{url_for('admin.opennotif', id = notif.get_id())}}">
             <p class="m-0 text-wrap {% if current_user.get_id() not in notif.get_seenby()%} fw-bold {% endif %} notification-title">{{notif.get_name()}}&nbsp;&nbsp;&nbsp;<span class="notification-time fw-normal" style="white-space: nowrap;">{{notif.get_Created('%d %b %H:%m%p')}}</span></p>
@@ -28,8 +28,13 @@
         <hr class="m-0">
         {% endif %}
         {% endfor %}
+        {% elif not current_user.is_authenticated %}
+        You are not logged in!
+        {% else%}
+        No Notifications to show
+        {% endif %}
       </ul>
-      {% endif %}
+      
     </div>
   </nav>
 </div>

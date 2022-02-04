@@ -1,5 +1,4 @@
 from flask import render_template, session, Blueprint, request, redirect, url_for
-from tit.admin.inventory.forms import PaymentForm
 import shelve
 import datetime
 import urllib

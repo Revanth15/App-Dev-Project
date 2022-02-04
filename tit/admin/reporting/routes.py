@@ -1,12 +1,10 @@
-from webbrowser import get
-from flask import render_template, request, redirect, url_for, session, send_file, Blueprint
+from flask import render_template, request, redirect, url_for, session, send_file, Blueprint, g
 
 from tit.classes.Archive import Archive
 from tit.admin.reporting.Forms import CreateReportForm, UpdateReportForm
 from tit.admin.reporting.utils import createExcel, createPDF, get_ext, createCSV
-from tit.utils import get_db, set_db, get_notifications, set_notifications
+from tit.utils import get_db, set_db
 from tit import app
-from flask_login import current_user
 
 import shelve
 import json
@@ -78,6 +76,7 @@ def logs():
 def get_session(id):
     sessions_dict = get_db('traffic', 'Sessions')
     viewer = sessions_dict[id]
+
     return render_template('reports/sessionviewer.html', session = viewer)
     
 
@@ -107,13 +106,11 @@ def archives():
     elif request.method == 'GET':
         archive_dict = {}
         archive_dict = get_db('archive', 'Archives')
-        notif_dict = get_db('notification', 'Notifications')
-        notif_list = notif_dict.values()
         archives = []
         for key in archive_dict:
             file = archive_dict[key]
             archives.append((file.get_filename(), file.get_filetype(), file.get_tags(), file.get_Created('date'), file.get_Created('time'), file.get_id()))
-        return render_template('reports/report_archives.html', archives=archives, form=createReportForm, u_form= updateReportForm, notif_list=notif_list)
+        return render_template('reports/report_archives.html', archives=archives, form=createReportForm, u_form= updateReportForm)
 
 @reporting.route('/archives/delete/<key>', methods=['POST']) 
 def delete_archive(key):

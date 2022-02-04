@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, g
 
 from tit.admin.inventory.routes import inventory
 from tit.admin.reporting.routes import reporting
@@ -15,6 +15,14 @@ admin.register_blueprint(reporting)
 admin.register_blueprint(rewards)
 admin.register_blueprint(accounts)
 admin.register_blueprint(support)
+
+@admin.before_request
+def get_notifications():
+    notif_dict = get_db('notification', 'Notifications')
+    notif_list = notif_dict.values()
+    g.notif_list = notif_list
+    
+
 
 @admin.route('/')
 def adminRedirect():

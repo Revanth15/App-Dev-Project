@@ -13,3 +13,8 @@ $('#notificationdropdown').click( function(){
   
 })
 
+$(document).ready(function(){
+  if($('li span.p-1').length == 0) {
+    $('span.p-1').remove()
+  }
+})
