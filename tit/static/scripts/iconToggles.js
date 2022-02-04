@@ -14,7 +14,7 @@ $('#notificationdropdown').click( function(){
 })
 
 $(document).ready(function(){
-  if($('li span.p-1').length == 0) {
-    $('span.p-1').remove()
+  if($('li span.p-1').length > 0) {
+    $('i.position-relative').append('<span class="position-absolute start-100 top-0 translate-middle p-1 bg-danger border border-light rounded-circle"><span class="visually-hidden">New alerts</span></span>')
   }
 })
