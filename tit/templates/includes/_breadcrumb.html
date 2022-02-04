@@ -7,12 +7,9 @@
     <div class="dropdown ms-auto">
       <button class="btn btn-white" type="button" id="notificationdropdown" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="fs-5 position-relative bi bi-bell">
-          <!-- <span class="position-absolute start-100 top-0 translate-middle p-1 bg-danger border border-light rounded-circle">
-            <span class="visually-hidden">New alerts</span>
-          </span> -->
         </i>
       </button>
-      <ul class="dropdown-menu p-0" aria-labelledby="notificationdropdown">
+      <ul class="dropdown-menu p-0 overflow-auto" aria-labelledby="notificationdropdown">
         {% if current_user.is_authenticated and g.notif_list %}
         {% for notif in g.notif_list|reverse %}
         <li>

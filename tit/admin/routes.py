@@ -30,7 +30,7 @@ def adminRedirect():
 
 @admin.route('/dashboard')
 def dashboard():
-    return render_template('admin_home.html')
+    return render_template('dashboard.html')
 
 @admin.route('/opennotif/<id>')
 def opennotif(id):
