@@ -15,7 +15,7 @@ reporting = Blueprint('reporting', __name__,template_folder='templates', static_
 
 @reporting.route('/data')
 def data_reports():
-    jsondata = get_db('archive', 'Archives', 'get_Created', '%m-%d')
+    jsondata = get_db('archive', 'Archives', 'get_created', '%m-%d')
     return json.dumps(jsondata)
 
 @reporting.route('/', methods=['GET', 'POST'])
@@ -49,7 +49,7 @@ def reports():
 
         return redirect(url_for('admin.reporting.archives', filetype=get_ext(archive.get_filetype())))
 
-    inventorydata = get_db('archive', 'Archives', 'get_Created', '%m-%d')
+    inventorydata = get_db('archive', 'Archives', 'get_created', '%m-%d')
     return render_template('reports/admin_reports.html', inventory=inventorydata, form=createReportForm, datetime=datetime.datetime.now(), tab=tab)
 
 @reporting.route('/logs')
@@ -62,12 +62,12 @@ def logs():
     sessions_dict = get_db('traffic', 'Sessions')
     traffic = []
     for viewer in sessions_dict.values():
-        traffic.append((viewer.get_ip(), viewer.get_session(), viewer.get_time(), viewer.get_views()[-1][0], viewer.get_views()[-1][-1]))
+        traffic.append((viewer.get_ip(), viewer.get_session(), viewer.get_created(), viewer.get_views()[-1][0], viewer.get_views()[-1][-1]))
     
     delivery_dict = get_db('products', "delivery")
     deliveries = []
     for delivery in delivery_dict.values():
-        deliveries.append((delivery.get_Created(), delivery.get_sku(), delivery.get_restock_quantity(), delivery.get_delivery_date(), delivery.get_restock_price()))
+        deliveries.append((delivery.get_created(), delivery.get_sku(), delivery.get_restock_quantity(), delivery.get_delivery_date(), delivery.get_restock_price()))
 
 
     return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(), deliveries= deliveries, traffic = traffic, tab=tab)
@@ -109,7 +109,7 @@ def archives():
         archives = []
         for key in archive_dict:
             file = archive_dict[key]
-            archives.append((file.get_filename(), file.get_filetype(), file.get_tags(), file.get_Created('date'), file.get_Created('time'), file.get_id()))
+            archives.append((file.get_filename(), file.get_filetype(), file.get_tags(), file.get_created('date'), file.get_created('time'), file.get_id()))
         return render_template('reports/report_archives.html', archives=archives, form=createReportForm, u_form= updateReportForm)
 
 @reporting.route('/archives/delete/<key>', methods=['POST']) 

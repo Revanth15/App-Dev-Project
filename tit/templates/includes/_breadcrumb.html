@@ -14,7 +14,7 @@
         {% for notif in g.notif_list|reverse %}
         <li>
           <a class="position-relative py-2 dropdown-item notification-link" href="{{url_for('admin.opennotif', id = notif.get_id())}}">
-            <p class="m-0 text-wrap {% if current_user.get_id() not in notif.get_seenby()%} fw-bold {% endif %} notification-title">{{notif.get_name()}}&nbsp;&nbsp;&nbsp;<span class="notification-time fw-normal" style="white-space: nowrap;">{{notif.get_Created('%d %b %H:%m%p')}}</span></p>
+            <p class="m-0 text-wrap {% if current_user.get_id() not in notif.get_seenby()%} fw-bold {% endif %} notification-title">{{notif.get_name()}}&nbsp;&nbsp;&nbsp;<span class="notification-time fw-normal" style="white-space: nowrap;">{{notif.get_created('%d %b %H:%m%p')}}</span></p>
             <p class="m-0 text-wrap notification-body">{{notif.get_message()}}</p>
             {% if current_user.get_id() not in notif.get_seenby()%}
               <span class="position-absolute end-0 top-50 translate-middle p-1 bg-danger border border-light rounded-circle">

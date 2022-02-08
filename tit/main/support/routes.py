@@ -104,7 +104,7 @@ def create_user():
     create_user_form = CreateFeedbackForm(request.form)
     if request.method == 'POST' and create_user_form.validate():
         users_dict = {}
-        db = shelve.open('user.db', 'c')
+        db = shelve.open('tit/database/user.db', 'c')
 
         try:
             users_dict = db['Users']
@@ -118,7 +118,8 @@ def create_user():
         # Test codes
         users_dict = db['Users']
         user = users_dict[user.get_user_id()]
-        print(user.get_first_name(), user.get_last_name(), "was stored in user.db successfully with user_id ==", user.get_user_id())
+        #print(user.get_first_name(), user.get_last_name(), "was stored in user.db successfully with user_id ==", user.get_user_id())
+        print(users_dict)
 
         db.close()
 

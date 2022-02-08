@@ -1,9 +1,11 @@
 <nav class="sidebars close">
     <header>
         <div class="image-text">
-            <span class="image">
-                <img src="../../static/images/logo.png">
-            </span>
+            <div class="image">
+                <a href="{{url_for('main.home')}}">
+                    <img src="{{url_for('static', filename='images/logo.png')}}">
+                </a>
+            </div>
 
             <div class="text logo-text">
                 <span class="name">Admin</span>
@@ -21,7 +23,7 @@
                     (url_for('admin.inventory.retrieve_products'), 'inventory', 'Inventory', 'bx bx-package'),
                     (url_for('admin.rewards.viewVouchers_admin'), 'rewards', 'Rewards', 'bx bxs-discount'),
                     (url_for('admin.reporting.reports'), 'reports', 'Reports', 'bx bx-bar-chart-alt-2'),
-                    ('#', 'customer_support', 'Customer Support', 'bx bx-support')
+                    (url_for('admin.support.retrieve_users'), 'support', 'Customer Support', 'bx bx-support')
                 ] -%}
                 
                 {% set active_page = active_page|default('dashboard') -%}
