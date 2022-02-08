@@ -1,8 +1,9 @@
-from flask import render_template, request, redirect, url_for, session, send_file, Blueprint
+from flask import render_template, request, redirect, url_for, session, send_file, Blueprint, g
 
 from tit.classes.Archive import Archive
 from tit.admin.reporting.Forms import CreateReportForm, UpdateReportForm
-from tit.admin.reporting.utils import createExcel, get_db, set_db, createPDF, get_ext, createCSV
+from tit.admin.reporting.utils import createExcel, createPDF, get_ext, createCSV
+from tit.utils import get_db, set_db
 from tit import app
 
 import shelve
@@ -45,6 +46,7 @@ def reports():
             createCSV(f"{archive.get_filename()}.csv", archive_dict)
 
         session['create_success'] = [archive.get_filename(), get_ext(archive.get_filetype()), archive.get_id()]
+
         return redirect(url_for('admin.reporting.archives', filetype=get_ext(archive.get_filetype())))
 
     inventorydata = get_db('archive', 'Archives', 'get_Created', '%m-%d')
@@ -55,9 +57,28 @@ def logs():
     tab = request.args.get('tab')
     if tab is None:
         tab = 'inventory'
+
+
+    sessions_dict = get_db('traffic', 'Sessions')
+    traffic = []
+    for viewer in sessions_dict.values():
+        traffic.append((viewer.get_ip(), viewer.get_session(), viewer.get_time(), viewer.get_views()[-1][0], viewer.get_views()[-1][-1]))
+    
+    delivery_dict = get_db('products', "delivery")
     deliveries = []
-    deliveries.append(('111111', '100', '2019', '18:00', '200$'))
-    return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(), deliveries= deliveries, tab=tab)
+    for delivery in delivery_dict.values():
+        deliveries.append((delivery.get_Created(), delivery.get_sku(), delivery.get_restock_quantity(), delivery.get_delivery_date(), delivery.get_restock_price()))
+
+
+    return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(), deliveries= deliveries, traffic = traffic, tab=tab)
+
+@reporting.route('/session/<id>')
+def get_session(id):
+    sessions_dict = get_db('traffic', 'Sessions')
+    viewer = sessions_dict[id]
+
+    return render_template('reports/sessionviewer.html', session = viewer)
+    
 
 #ARCHIVES SECTION
 
@@ -69,12 +90,7 @@ def archives():
     
     if request.method == 'POST' and createReportForm.validate():
         archive_dict = {}
-        db = shelve.open(app.config['ADMIN_PATH']+'archive.db', 'c')
-
-        try:
-            archive_dict = db['Archives']
-        except:
-            print("Error in retrieving Files from archive.db.")
+        archive_dict = get_db('archive', 'Archives')
         archive = Archive(createReportForm.filetype.data, createReportForm.tags.data)
         if createReportForm.filename.data != "":
             if createReportForm.filename.data+filetypes[createReportForm.filetype.data] in archive_dict:
@@ -83,21 +99,17 @@ def archives():
             archive.set_filename(createReportForm.filename.data)
         
         archive_dict[archive.get_filename()+filetypes[archive.get_filetype()]] = archive
-
-        db['Archives'] = archive_dict
-        db.close()
+        set_db('archive', 'Archives', archive_dict)
         
         return redirect(url_for("archives"))
 
     elif request.method == 'GET':
         archive_dict = {}
         archive_dict = get_db('archive', 'Archives')
-
         archives = []
         for key in archive_dict:
             file = archive_dict[key]
             archives.append((file.get_filename(), file.get_filetype(), file.get_tags(), file.get_Created('date'), file.get_Created('time'), file.get_id()))
-
         return render_template('reports/report_archives.html', archives=archives, form=createReportForm, u_form= updateReportForm)
 
 @reporting.route('/archives/delete/<key>', methods=['POST']) 

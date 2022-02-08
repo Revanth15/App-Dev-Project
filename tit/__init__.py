@@ -1,6 +1,5 @@
 import shelve
 from flask import Flask, render_template
-from flask import Flask
 from flask_recaptcha import ReCaptcha
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
@@ -15,6 +14,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 
+
 from tit.admin.routes import admin
 from tit.main.routes import main
 
@@ -24,7 +24,7 @@ app.register_blueprint(main)
 @login_manager.user_loader
 def load_user(customer_id):
     customers_dict = {}
-    db = shelve.open('customers.db', 'c')
+    db = shelve.open('tit/database/customers.db', 'c')
     try:
 
         customers_dict = db['Customers']

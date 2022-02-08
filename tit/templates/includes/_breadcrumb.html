@@ -1,10 +1,37 @@
-<div class="container-fluid home shadow-sm">
-    <div class="container-fluid">
-      <nav class="nav navbar-light admin-padding">
-        {% if back is defined %}
-        <a class="fs-1" href="{{url_for('admin.reporting.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-circle"></i></a>
+<div class="container-fluid home shadow-sm d-flex align-items-center">
+  <nav class="nav navbar-light d-flex align-items-center flex-fill">
+    {% if back is defined %}
+    <a id='back-link' class="fs-1" href="{{url_for('admin.reporting.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-circle"></i></a>
+    {% endif %}
+    suck my tehteh
+    <div class="dropdown ms-auto">
+      <button class="btn btn-white" type="button" id="notificationdropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fs-5 position-relative bi bi-bell">
+        </i>
+      </button>
+      <ul class="dropdown-menu p-0 overflow-auto" aria-labelledby="notificationdropdown">
+        {% if current_user.is_authenticated and g.notif_list %}
+        {% for notif in g.notif_list|reverse %}
+        <li>
+          <a class="position-relative py-2 dropdown-item notification-link" href="{{url_for('admin.opennotif', id = notif.get_id())}}">
+            <p class="m-0 text-wrap {% if current_user.get_id() not in notif.get_seenby()%} fw-bold {% endif %} notification-title">{{notif.get_name()}}&nbsp;&nbsp;&nbsp;<span class="notification-time fw-normal" style="white-space: nowrap;">{{notif.get_Created('%d %b %H:%m%p')}}</span></p>
+            <p class="m-0 text-wrap notification-body">{{notif.get_message()}}</p>
+            {% if current_user.get_id() not in notif.get_seenby()%}
+              <span class="position-absolute end-0 top-50 translate-middle p-1 bg-danger border border-light rounded-circle">
+            {% endif %}
+          </a>
+        </li>
+        {% if not loop.last %}
+        <hr class="m-0">
         {% endif %}
-        suck my tehteh
-      </nav>
+        {% endfor %}
+        {% elif not current_user.is_authenticated %}
+        You are not logged in!
+        {% else%}
+        No Notifications to show
+        {% endif %}
+      </ul>
+      
     </div>
+  </nav>
 </div>
