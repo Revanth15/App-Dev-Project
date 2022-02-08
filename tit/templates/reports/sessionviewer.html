@@ -20,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {%for view in session.get_views()%}
+                        {%for view in session.get_views()|reverse%}
                         <tr>
                             <td>{{loop.index}}</td>
                             <td>{{view[1]}}</td>

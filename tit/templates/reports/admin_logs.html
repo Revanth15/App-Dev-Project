@@ -59,12 +59,12 @@
             <th scope="col">Session ID</th>
             <th scope="col">Time</th>
             <th scope="col">Last View</th>
-            <th scope="col">Last Action</th>
+            <th scope="col">Last Event</th>
             <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
-        {% for ip, sessionid, time, last_view, last_action in traffic %}
+        {% for ip, sessionid, time, last_view, last_action in traffic|reverse %}
         <tr>
             <th scope="row">{{ ip }}</th>
             <td><a href="{{url_for('admin.reporting.get_session', id = sessionid)}}">{{sessionid}}</a></td>
