@@ -56,7 +56,7 @@ def getSession():
         parseVisitorData(sessionID)
 
 def parseVisitorData(session_id):
-    data = [request.path, datetime.datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), request.method, event()]
+    data = [request.path, datetime.datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), event()]
     sessions_dict = get_db('traffic', 'Sessions')
     viewer = sessions_dict.get(session_id)
     if viewer is None:
@@ -67,7 +67,7 @@ def parseVisitorData(session_id):
     return f'{session_id} Parsed'
             
 
-@main.route('/', methods=['GET', 'POST'])
+@main.route('/')
 def home():
     products_dict = {}
     session['cart'] = []
