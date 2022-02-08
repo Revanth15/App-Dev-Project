@@ -34,3 +34,6 @@ class logData:
 
     def set_Modified(self):
         self.__datetimeModified = datetime.datetime.now()
+
+    # def log_event(event):
+        

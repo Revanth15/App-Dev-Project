@@ -4,7 +4,6 @@ from flask import flash, redirect, render_template, request, url_for, session, B
 import tit.classes.Customer as Customer
 from tit.main.accounts.Forms import CustomerSignUpForm, LoginForm, ChangePasswordForm
 import datetime
-from tit.utils import parseVisitor
 
 from flask_login import login_required, login_user, logout_user
 
@@ -14,8 +13,6 @@ accounts = Blueprint('accounts', __name__, template_folder='templates', static_u
 # Customer Creates Account / Register
 @accounts.route('/signUp', methods=['GET', 'POST'])
 def sign_up():
-    data = ['signup', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), request.method]
-    parseVisitor(data, session['user'])
     # if current_user.is_authenticated:
     #     return redirect(url_for('home'))
     customer_signup_form = CustomerSignUpForm(request.form)
@@ -58,8 +55,6 @@ def sign_up():
 # Customer Login
 @accounts.route('/login', methods=['GET','POST'])
 def login():
-    data = ['login', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), request.method]
-    parseVisitor(data, session['user'])
     login_form = LoginForm(request.form)  
     if request.method == 'POST':
         customers_dict = {}

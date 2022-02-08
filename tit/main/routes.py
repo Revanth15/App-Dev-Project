@@ -6,7 +6,7 @@ import json
 import hashlib
 
 from tit.classes.Traffic import Session
-from tit.utils import get_db, set_db, parseVisitor
+from tit.utils import get_db, set_db, event
 
 from tit.main.transactions.routes import transactions
 from tit.main.rewards.routes import rewards
@@ -53,13 +53,22 @@ def getSession():
             viewer = Session(userIP, sessionID, userCountry, userContinent, userCity)
             sessions_dict[viewer.get_session()] =  viewer
             set_db('traffic', 'Sessions', sessions_dict)
+        parseVisitorData(sessionID)
+
+def parseVisitorData(session_id):
+    data = [request.path, datetime.datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), request.method, event()]
+    sessions_dict = get_db('traffic', 'Sessions')
+    viewer = sessions_dict.get(session_id)
+    if viewer is None:
+        return 'Session ID does not exist'
+    viewer.update_views(data)
+    sessions_dict[session_id] = viewer
+    set_db('traffic', 'Sessions', sessions_dict)
+    return f'{session_id} Parsed'
             
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
-    data = ['home', datetime.datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), request.method]
-    print(session['user'])
-    print(parseVisitor(data, session['user']))
     products_dict = {}
     session['cart'] = []
     try:

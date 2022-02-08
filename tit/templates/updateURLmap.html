@@ -1,0 +1,11 @@
+{% extends "baseAdmin.html" %}
+{% block title %} Admin - Dashboard {% endblock %}
+{% set active_page = "dashboard" %}
+{% from 'includes/formhelper.html' import render_field %}
+{% block content %} 
+    <div class="container-fluid d-flex admin-padding">
+        <form action="">
+            {{}}
+        </form>
+    </div>
+{% endblock %}

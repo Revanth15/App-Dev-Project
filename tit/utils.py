@@ -1,20 +1,15 @@
 from flask import request
 
 import shelve
+import ast
+import json
+
+from tit import app
 from collections import Counter
 
 from tit.classes.Notification import Notification
 
 
-def parseVisitor(data, session_id):
-    sessions_dict = get_db('traffic', 'Sessions')
-    viewer = sessions_dict.get(session_id)
-    if viewer is None:
-        return 'Session ID does not exist'
-    viewer.update_views(data)
-    sessions_dict[session_id] = viewer
-    set_db('traffic', 'Sessions', sessions_dict)
-    return f'{session_id} Parsed'
 
 def get_ip():
     return request.remote_addr
@@ -68,3 +63,31 @@ def set_notifications(name, type, message, url):
     notification = Notification(name, type, message, url)
     notification_dict[notification.get_id()] = notification
     set_db('notification', 'Notifications', notification_dict)
+
+def event():
+    file = open('index.txt', 'r')
+    index = file.read()
+    index = json.loads(index)
+    file.close()
+    print(index)
+    
+    # path = request.path
+    # method = request.method
+    # index = app.url
+    # if path == '/' and 
+        
+def update_url_map():
+    file = open('index.txt', 'r')
+    index = file.read()
+    file.close()
+    index = json.loads(index)
+    if request.method == 'POST':
+        for rule in app.url_map.iter_rules():
+            if rule.__str__() not in index:
+                rule_dict = {}
+                for method in rule.methods:
+                    if method == 'GET':
+                        rule_dict.update({method:'view'})
+                    elif method == 'POST':
+                        rule_dict.update({method:''})
+                index.update({rule.__str__():rule_dict})
