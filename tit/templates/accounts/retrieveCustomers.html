@@ -2,26 +2,12 @@
 {% block title %}Admin - Retrieve Customers{% endblock %}
 
 {% set active_page = 'users' -%}
-
 {% block content %}
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-  $("#hide").click(function(){
-    $("tbody").hide();
-    alert("Customers are now hidden.");
-  });
-  $("#show").click(function(){
-    $("tbody").show();
-  });
-});
-</script>
 
 
 <div class="card">
-<div class='admin-padding troll'>
 <h1 class="display-4">Retrieve Customers</h1>
 <div>
   {% if count == 0 %}
@@ -32,11 +18,11 @@ $(document).ready(function(){
   <p>There are {{ count }} customers.</p>
   {% endif %}
 </div>
-
+<!-- 
 <button id="hide">Hide</button>
-<button id="show">Show</button>
-<div>
-  <table class="table table-striped">
+<button id="show">Show</button> -->
+<div class="card-body">
+  <table class="table table-striped" id="customer-table">
     <thead>
       <tr>
         <th>User ID</th>
@@ -45,14 +31,12 @@ $(document).ready(function(){
         <th>Gender</th>
         <th>Phone Number</th>
         <th>Password</th>
-<!--    <th>Username</th> -->
-        <th></th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
     {% for customer in customers_list %}
-      <tr> <!-- first_name, last_name, email, gender, phone_number, address, unit_number, postal_code, password --> 
+      <tr>
+      
 
         <td>{{ customer.get_customer_id() }}</td>
         <td>{{ customer.get_name() }}</td>
@@ -60,13 +44,13 @@ $(document).ready(function(){
         <td>{{ customer.get_gender() }}</td>
         <td>{{ customer.get_phone_number() }}</td>
         <td>{{ customer.get_password() }}</td>
-        <td><a href="{{url_for('admin.accounts.update_customer', id=customer.get_customer_id())}}" class="btn btn-warning">Update</a></td>
+        <td><a href="{{url_for('admin.accounts.update_customer', id=customer.get_customer_id())}}" class="btn btn-warning">Update Customer</a></td>
         <td>
           <form action="{{url_for('admin.accounts.delete_customer', id=customer.get_customer_id())}}" method="POST">
             <!--<input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{customer.get_name()}}?');">-->
             <!-- Button to Open the Modal -->
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{customer.get_customer_id()}}">
-              Delete
+              Delete Customer
             </button>
         
             <!-- The Modal -->
@@ -104,9 +88,17 @@ $(document).ready(function(){
     </tbody>
   </table>
 </div>
+<script>
+  window.addEventListener('DOMContentLoaded', event => {
 
-</div>
-</div>
+    const customerTable = document.getElementById('customer-table');
+    if (customerTable) {
+        new simpleDatatables.DataTable(customerTable);
+    }
 
-        
+
+  });
+</script>
 {% endblock %}
+
+
