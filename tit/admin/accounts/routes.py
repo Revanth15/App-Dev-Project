@@ -1,9 +1,15 @@
 import shelve
 from tit.main.accounts.Forms import ChangePasswordForm, CustomerSignUpForm
 from flask import redirect, render_template, request, url_for, Blueprint
+from flask_login import login_required
 
 accounts = Blueprint('accounts', __name__, template_folder='templates', static_url_path='static', url_prefix='/accounts')
 
+@accounts.route('/retrieveAdminProfile')
+@login_required
+def retrieveProfile():
+    
+    return render_template('accounts/retrieveAdminProfile.html')
 
 # Admin - Retrieve Customers
 @accounts.route('/retrieveCustomers')

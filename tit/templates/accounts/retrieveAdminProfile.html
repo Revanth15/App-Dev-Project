@@ -1,14 +1,11 @@
 {% extends "baseAdmin.html" %}
 {% block title %}Admin - Retrieve Profile{% endblock %}
 
-<!-- {% set active_page = 'customers' -%} -->
+<!-- {% set active_page = 'current_user' -%} -->
 
 {% block content %}
-
-
-{% endblock %}
 <div class='admin-padding'>
-<h1 class="display-4"> {{ customer.get_name() }}'s Profile</h1>
+<h1 class="display-4"> {{ current_user.get_name() }}'s Profile</h1>
 <div>
   <table class="table table-striped">
     <thead>
@@ -23,63 +20,12 @@
       </tr>
     </thead>
     <tbody>
-    {% for customer in customers_list %}
       <tr> <!-- first_name, last_name, email, gender, phone_number, address, unit_number, postal_code, password --> 
-
-        <td>{{ customer.get_name() }}</td>
-        <td>{{ customer.get_email() }}</td>
-        <td>{{ customer.get_gender() }}</td>
-        <td>{{ customer.get_phone_number() }}</td>
-        <td><a href="{{url_for('updateProfile', id=customer.get_customer_id())}}" class="btn btn-warning">Update</a></td>
-
-
-        <td>
-          <form action="{{url_for('main.accounts.delete_account', id=customer.get_customer_id())}}" method="POST">
-            <!--<input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your account?');">-->
-            <!-- Button to Open the Modal -->
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{customer.get_customer_id()}}">
-              Delete account
-            </button>
-        
-            <!-- The Modal -->
-            <div class="modal" id="myModal_{{customer.get_customer_id()}}">
-              <div class="modal-dialog">
-                <div class="modal-content">
-        
-                  <!-- Modal Header -->
-                  <div class="modal-header">
-                    <h4 class="modal-title">Delete Confirmation</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                  </div>
-        
-                  <!-- Modal body -->
-                  <div class="modal-body">
-                    Are you sure you want to delete your account? You will no longer have an account with us.}}?
-                  </div>
-        
-                  <!-- Modal footer -->
-                  <div class="modal-footer">
-                    <input type="submit" value="Delete" class="btn btn-danger">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  </div>
-        
-
-
-                  <br/>
-
-                 
-                  
-                </div>
-              </div>
-            </div>
-          </form>
-        </td>
-        
-        
-
-
+        <td>{{ current_user.get_name() }}</td>
+        <td>{{ current_user.get_email() }}</td>
+        <td>{{ current_user.get_gender() }}</td>
+        <td>{{ current_user.get_phone_number() }}</td>
       </tr>
-    {% endfor %}
     </tbody>
   </table>
 </div>

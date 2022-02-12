@@ -97,24 +97,11 @@ def logout():
 
 
 # Customer Retrieve Own Profile
-@accounts.route('/retrieveProfile/<int:id>/')
+@accounts.route('/retrieveProfile')
 @login_required
 def retrieveProfile():
-    customers_dict = {}
 
-    db = shelve.open('tit/database/customers.db', 'r')
-    try:
-        customers_dict = db['Customers']
-    except:
-        print("Error in retrieving Customers from storage.db.")
-
-    db.close()
-    customers_list = []
-    for key in customers_dict:
-        customer = customers_dict.get(key)
-        customers_list.append(customer)
-
-    return render_template('accounts/retrieveProfile.html', customers_list=customers_list)
+    return render_template('accounts/retrieveProfile.html')
 
 
 
