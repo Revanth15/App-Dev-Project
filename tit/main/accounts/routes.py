@@ -158,7 +158,7 @@ def update_profile(id):
         return render_template('accounts/updateProfile.html', form=update_customer_form)
 
 # Customer Enter correct Password, then direct to change password page
-@accounts.route('/currentAdminPW', methods=['GET','POST'])
+@accounts.route('/retrievePassword', methods=['GET','POST'])
 def currentAdminPW():
     change_password_form = ChangePasswordForm(request.form)  
     if request.method == 'POST':
@@ -188,8 +188,8 @@ def currentAdminPW():
                 return render_template('currentAdminPW.html', form=change_password_form)
                 
             # return redirect(url_for('updatePassword/<int:id>/'))
-            return redirect(url_for('main.accounts.updateAdminPW/<int:id>/'))
-    return render_template('accounts/currentAdminPW.html', form=change_password_form)
+            return redirect(url_for('main.accounts.updatePassword/<int:id>/'))
+    return render_template('templates/retrievePassword.html', form=change_password_form)
 
 
 # Update/Change Password
