@@ -1,12 +1,19 @@
 import shelve
 from tit.main.accounts.Forms import ChangePasswordForm, CustomerSignUpForm
 from flask import redirect, render_template, request, url_for, Blueprint
+from flask_login import login_required
 
 accounts = Blueprint('accounts', __name__, template_folder='templates', static_url_path='static', url_prefix='/accounts')
 
+@accounts.route('/retrieveAdminProfile')
+@login_required
+def retrieveProfile():
+
+    return render_template('accounts/retrieveAdminProfile.html')
 
 # Admin - Retrieve Customers
 @accounts.route('/retrieveCustomers')
+@login_required
 def retrieveCustomers():
     customers_dict = {}
     db = shelve.open('tit/database/customers.db', 'c')
@@ -27,6 +34,7 @@ def retrieveCustomers():
 
 # Admin Updates Customer profile
 @accounts.route('/updateCustomer/<int:id>/', methods=['GET', 'POST'])
+@login_required
 def update_customer(id):
     update_customer_form = CustomerSignUpForm(request.form)
     if request.method == 'POST':
@@ -76,6 +84,7 @@ def update_customer(id):
 
 # Admin deletes customer
 @accounts.route('/deleteCustomer/<int:id>', methods=['POST'])
+@login_required
 def delete_customer(id):
     customers_dict = {}
     db = shelve.open('tit/database/customers.db', 'w')
@@ -98,6 +107,7 @@ def delete_customer(id):
 
 # Admin Enter correct Password, then direct to change password page
 @accounts.route('/currentAdminPW', methods=['GET','POST'])
+@login_required
 def currentAdminPW():
     change_password_form = ChangePasswordForm(request.form)  
     if request.method == 'POST':
@@ -127,6 +137,7 @@ def currentAdminPW():
 
 # Update/Change Password
 @accounts.route('/updateAdminPW/<int:id>/', methods=['GET', 'POST'])
+@login_required
 def update_password(id):
     update_password_form = CustomerSignUpForm(request.form)
     if request.method == 'POST':
