@@ -382,6 +382,7 @@ body.dark .home .text{
     margin-bottom: 0;
 }
 
+
 .sidebars li a.active {
     background-color: var(--primary-color);
 }

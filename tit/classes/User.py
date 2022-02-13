@@ -4,7 +4,7 @@ class User(UserMixin):
     count_id = 0
 
 # more, use this. User class
-    def __init__(self, name, email, phone_number, password):
+    def __init__(self, name, email, phone_number, password, role='Customer'):
         super().__init__()
         User.count_id += 1
         self.__user_id = User.count_id
@@ -12,6 +12,7 @@ class User(UserMixin):
         self.__email = email 
         self.__phone_number = phone_number
         self.__password = password
+        self.__role = role
 
     def get_id(self):
         return self.__user_id
@@ -30,6 +31,9 @@ class User(UserMixin):
 
     def get_password(self):
         return self.__password
+
+    def get_role(self):
+        return self.__role
 
     def set_user_id(self, user_id):
         self.__user_id = user_id

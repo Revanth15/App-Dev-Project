@@ -9,6 +9,7 @@
                 <span class="name">Admin</span>
                 <span class="profession">Threads in Time</span>
             </div>
+            <a class="stretched-link" href="{{url_for('admin.accounts.retrieveProfile')}}"></a>
         </div>
         <i class='bx bx-menu toggle'></i>
     </header>
@@ -17,7 +18,7 @@
             <ul class="menu-links">
                 {% set navList = [
                     (url_for('admin.dashboard'), 'dashboard', 'Dashboard', 'bx bxs-dashboard'),
-                    (url_for('admin.accounts.retrieveCustomers'), 'users', 'Users', 'bx bx-user'),
+                    (url_for('admin.accounts.retrieveUsers'), 'users', 'Users', 'bx bx-user'),
                     (url_for('admin.inventory.retrieve_products'), 'inventory', 'Inventory', 'bx bx-package'),
                     (url_for('admin.rewards.viewVouchers_admin'), 'rewards', 'Rewards', 'bx bxs-discount'),
                     (url_for('admin.reporting.reports'), 'reports', 'Reports', 'bx bx-bar-chart-alt-2'),
