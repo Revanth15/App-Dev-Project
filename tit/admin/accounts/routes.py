@@ -30,7 +30,7 @@ def updateAdminProfile(id):
         db['Customers'] = customers_dict
         db.close()
 
-        return redirect(url_for('admin.accounts.retrieveAdminProfile/<int:id>/'))
+        return redirect(url_for('admin.accounts.retrieveAdminProfile'))
     else:
         customers_dict = {}
         db = shelve.open('tit/database/customers.db', 'r')

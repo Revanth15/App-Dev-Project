@@ -6,7 +6,7 @@
 {% block content %}
 
 <div class='admin-padding'>
-  <h1 class="display-4"> {{ current_user.get_name() }}'s Profile</h1>
+  <h1 class="display-4" style="margin-left: 20px;"> {{ current_user.get_name() }}'s Profile</h1>
   <div>
   <table class="table table-striped">
     <thead>
@@ -23,14 +23,46 @@
       <td>{{ current_user.get_email() }}</td>
       <td>{{ current_user.get_gender() }}</td>
       <td>{{ current_user.get_phone_number() }}</td>
+      <td><a href="{{url_for('main.accounts.update_profile', id=current_user.get_customer_id())}}" style="margin-right: 20px;" class="btn btn-warning">Update Profile</a></td>
+
     </tr>
     
+  
     </tbody>
   </table>
 
-<td><a href="{{url_for('main.accounts.update_profile', id=current_user.get_customer_id())}}" class="btn btn-warning">Update</a></td>
 
-<td><a href="{{url_for('main.accounts.retrieve_password', id=current_user.get_customer_id())}}" class="btn btn-warning">Change Password</a></td>
+<td><a href="{{url_for('main.accounts.retrieve_password', id=current_user.get_customer_id())}}" style="margin-right: 10px;" class="btn btn-warning">Change Password</a></td>
+<td><a href="{{url_for('main.accounts.logout', id=current_user.get_customer_id())}}" style="margin-right: 10px;" class="btn btn-warning">Logout</a></td>
+
+<form action="{{url_for('main.accounts.delete_account', id=current_user.get_customer_id())}}" style="margin-top: 10px;" method="POST">
+
+  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{current_user.get_customer_id()}}">
+    Delete Account
+  </button>
+
+  <div class="modal" id="myModal_{{current_user.get_customer_id()}}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="modal-title">Delete Account Confirmation</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+         {{current_user.get_name()}}, are you sure you want to delete your account? You will no longer have an account with us..
+        </div>
+
+        <div class="modal-footer">
+          <input type="submit" value="Delete" class="btn btn-danger">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
 
 
 <!-- <input type="submit" value="Add Product" class="btn btn-primary col py-3"/>

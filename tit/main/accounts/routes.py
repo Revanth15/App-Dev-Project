@@ -124,7 +124,7 @@ def update_profile(id):
         db['Customers'] = customers_dict
         db.close()
 
-        return redirect(url_for('main.accounts.retrieveProfile/<int:id>/'))
+        return redirect(url_for('main.accounts.retrieveProfile'))
     else:
         customers_dict = {}
         db = shelve.open('tit/database/customers.db', 'r')
@@ -153,24 +153,20 @@ def retrieve_password():
     if request.method == 'POST':
         customers_dict = {}
         db = shelve.open('tit/database/customers.db', 'r')
+        
         try:
             customers_dict = db['Customers']
-        except:
-            print("Error in retrieving Customers from customers.db.")   
-
-        try:
             for customer in customers_dict.values():
                 if customer.get_password() == change_password_form.password.data:
                     redirect()
                     print('Customer keyed in the correct password.')
                     flash('You are able to change password.')
-                    redirect(url_for("main.accounts.update_password/<int:id>/"))
+                    redirect(url_for("main.accounts.update_password"))
                     # redirect(url_for("updatePassword/<int:id>/"))
 
         except:
             print("Error in retrieving Customers from customers.db")
 
-        return redirect(url_for('main.accounts.update_password/<int:id>/'))
         # return redirect(url_for('main.accounts.update_password/<int:id>/'))
     return render_template('accounts/retrievePassword.html', form=change_password_form)
 
@@ -234,6 +230,6 @@ def delete_account(id):
     db['Customers'] = customers_dict
     db.close()
 
-    return redirect(url_for('main.accounts.signUp'))
+    return redirect(url_for('main.accounts.sign_up'))
 
 # Customer Forgot Password (Do last)
