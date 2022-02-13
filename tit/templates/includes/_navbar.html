@@ -21,22 +21,16 @@
               <a class="dropdown-item" href="#">T-Shirts & Polos & Tank Tops</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Jeans</a>
+              <a class="dropdown-item" href="#">Jeans & Joggers</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Shorts</a>
+              <a class="dropdown-item" href="#">Shorts & Skirts</a>
             </li>
             <li>
               <a class="dropdown-item" href="#">Dresses</a>
             </li>
             <li>
               <a class="dropdown-item" href="#">Hoodies</a>
-            </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Shoes</a>
             </li>
           </ul>
         </li>
@@ -85,7 +79,10 @@
               <a class="dropdown-item" href="#">My Orders</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Spools:88</a>
+              <a class="dropdown-item" href="#">{{current_user.get_spools()}} Spools</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Logout</a>
             </li>
           </ul>
         </li>

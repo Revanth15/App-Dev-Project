@@ -12,9 +12,8 @@
     text-transform: uppercase;
 }
 
-.container{
+.payment-container{
     min-height: 100vh;
-    background: #eee;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,7 +21,7 @@
     padding-bottom: 60px;
 }
 
-.container form{
+.payment-container .form{
     background: #fff;
     border-radius: 7px;
     box-shadow: 0 10px 15px rgba(0,0,0,.1);
@@ -31,18 +30,18 @@
     padding-top: 160px;
 }
 
-.container form .inputBox{
+.payment-container .form .inputBox{
     margin-top: 20px;
 }
 
-.container form .inputBox span{
+.payment-container .form .inputBox span{
     display: block;
     color:#999;
     padding-bottom: 5px;
 }
 
-.container form .inputBox input,
-.container form .inputBox select{
+.payment-container .form .inputBox input,
+.payment-container .form .inputBox select{
     width: 100%;
     padding: 10px;
     border-radius: 10px;
@@ -50,16 +49,16 @@
     color:#444;
 }
 
-.container form .flexbox{
+.payment-container .form .flexbox{
     display: flex;
     gap:15px;
 }
 
-.container form .flexbox .inputBox{
+.payment-container .form .flexbox .inputBox{
     flex:1 1 150px;
 }
 
-.container form .submit-btn{
+.payment-container .form .submit-btn{
     width: 100%;
     background: linear-gradient(309deg, rgba(68,205,221,1) 20%, rgba(255,226,80,1) 56%, rgba(250,138,108,1) 87%);
     margin-top: 20px;
@@ -71,19 +70,19 @@
     transition: .2s linear;
 }
 
-.container form .submit-btn:hover{
+.payment-container .form .submit-btn:hover{
     letter-spacing: 2px;
     opacity: .8;
 }
 
-.container .card-container{
+.payment-container .card-container{
     margin-bottom: -150px;
     position: relative;
     height: 250px;
     width: 400px;
 }
 
-.container .card-container .front{
+.payment-container .card-container .front{
     position: absolute;
     height: 100%;
     width: 100%;
@@ -97,37 +96,37 @@
     transition:transform .4s ease-out;
 }
 
-.container .card-container .front .image{
+.payment-container .card-container .front .image{
     display: flex;
     align-items:center;
     justify-content: space-between;
     padding-top: 10px;
 }
 
-.container .card-container .front .image img{
+.payment-container .card-container .front .image img{
     height: 50px;
 }
 
-.container .card-container .front .card-number-box{
+.payment-container .card-container .front .card-number-box{
     padding:30px 0;
     font-size: 22px;
     color:#fff;
 }
 
-.container .card-container .front .flexbox{
+.payment-container .card-container .front .flexbox{
     display: flex;
 }
 
-.container .card-container .front .flexbox .box:nth-child(1){
+.payment-container .card-container .front .flexbox .box:nth-child(1){
     margin-right: auto;
 }
 
-.container .card-container .front .flexbox .box{
+.payment-container .card-container .front .flexbox .box{
     font-size: 15px;
     color:#fff;
 }
 
-.container .card-container .back{
+.payment-container .card-container .back{
     position: absolute;
     top:0; left: 0;
     height: 100%;
@@ -142,23 +141,23 @@
     transition:transform .4s ease-out;
 }
 
-.container .card-container .back .stripe{
+.payment-container .card-container .back .stripe{
     background: #000;
     width: 100%;
     margin: 10px 0;
     height: 50px;
 }
 
-.container .card-container .back .box{
+.payment-container .card-container .back .box{
     padding: 0 20px;
 }
 
-.container .card-container .back .box span{
+.payment-container .card-container .back .box span{
     color:#fff;
     font-size: 15px;
 }
 
-.container .card-container .back .box .cvv-box{
+.payment-container .card-container .back .box .cvv-box{
     height: 50px;
     padding: 10px;
     margin-top: 5px;
@@ -168,7 +167,7 @@
     width: 100%;
 }
 
-.container .card-container .back .box img{
+.payment-container .card-container .back .box img{
     margin-top: 30px;
     height: 30px;
 }

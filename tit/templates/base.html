@@ -12,7 +12,10 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'  type='text/css'>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/styles/wholeweb.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/wholeweb.css')}}">
+    <link rel="icon" type="image/x-icon" href="../static/images/logo.png">
+    <link rel="stylesheet" href="../static/styles/footer.css">
+
     <title>{% block title %}Threads In Time{% endblock %}</title>
     {% endblock %}
 </head>
@@ -40,4 +43,3 @@
     {% endblock %}
 </body>
 </html>
-

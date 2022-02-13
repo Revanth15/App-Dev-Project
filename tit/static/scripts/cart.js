@@ -10,23 +10,8 @@ $(document).ready (function() {
         var button = addToCartButtons[i]
         button.addEventListener('click', addToCartClicked)
     }
-    var cartItemContainer = document.getElementsByClassName('cart-items')[0]
-    var cartRows = cartItemContainer.getElementsByClassName('cart-row')
-    var subtotal = 0
-    for (var i = 0; i < cartRows.length; i++) {
-        var cartRow = cartRows[i]
-        var priceElement = cartRow.getElementsByClassName('cart-price')[0]
-        var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
-        var price = parseFloat(priceElement.innerText.replace('S$', ''))
-        var quantity = quantityElement.value
-        total = price * quantity
-        subtotal = subtotal + (price * quantity)
 
-        cartRow.getElementsByClassName('cart-total')[0].innerText = 'S$' + total
-    }
-    // subtotal = Math.round(subtotal * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText = 'S$' + subtotal
-
+    updateCartTotal()
 
 })
 
@@ -63,19 +48,49 @@ function updateCartTotal() {
 
         cartRow.getElementsByClassName('cart-total')[0].innerText = 'S$' + total
     }
-    // subtotal = Math.round(subtotal * 100) / 100
+    subtotal = Math.round(subtotal * 100) / 100
     document.getElementsByClassName('cart-total-price')[0].innerText = 'S$' + subtotal
+    document.getElementsByClassName('cart-grandtotal-price')[0].innerText = 'S$' + subtotal
+    // if(subtotal == 0) {
+    //     var checkout = document.getElementsById('checkout').disabled = true;
+    // }
+    
 }
 
 $('.cart-quantity-input').change(function() {
     var sku = $(this).parent('div').next().find("form").attr('action').split('/')[3]
     var quantity = $(this).val()
-
+    // var subtotal = $(this).parent('div').parent('div').parent('div').parent('div').parent('div').next().children().next().children().next().children().find('cart-total-price').text()
     $.getJSON('/transactions/update_cart', {
         sku: sku,
-        quantity : quantity
+        quantity : quantity,
       })
 }) 
+
+$('.apply-discount-button').click(function() {
+    var discountcode = document.getElementsByClassName('discount-input')[0].value
+    console.log(discountcode)
+    document.getElementById('discountcode').value = discountcode
+    $.getJSON('/transactions/discount', {
+        discount_code: discountcode
+    })
+    var discountamount = $('.cart-discount').text().replace('%', '')
+    var subtotal = $('.cart-grandtotal-price').text().replace('S$', '')
+    subtotal = (subtotal/100) * (100- discountamount)
+    document.getElementsByClassName('cart-grandtotal-price')[0].innerText = 'S$' + subtotal
+    
+})
+
+$('.checkout').click(function() {
+    var subtotal = $('.cart-grandtotal-price').text().replace('S$', '')
+    localStorage.setItem('total',subtotal)
+    console.log(subtotal)
+
+    $.getJSON('/transactions/update_total', {
+        subtotal : subtotal,
+    })
+})
+
 
 function wishList(wishlist) {
     wishlist.classList.toggle("bxs-heart")
