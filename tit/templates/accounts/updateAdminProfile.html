@@ -1,14 +1,13 @@
-{% extends "base.html" %}
-{% block title %}Update Customer Profile{% endblock %}
+{% extends "baseAdmin.html" %}
+{% block title %}Update Admin Profile{% endblock %}
 
 
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
 
 <div class='admin-padding'>
-<h1 class="display-4">Update Profile</h1>
+<h1 class="display-4">Update Admin Profile</h1>
 
-<br>
 <form method="POST" action="">
   <div class="form-group">
     {{ render_field(form.name, class="form-control") }}
@@ -22,7 +21,6 @@
   <div class="form-group">
     {{ render_field(form.phone_number, class="form-control") }}
   </div>
-  <br>
   <input type="submit" value="Submit" class="btn btn-primary"/>
 </form>
 

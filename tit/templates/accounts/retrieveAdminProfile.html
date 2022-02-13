@@ -1,5 +1,5 @@
 {% extends "baseAdmin.html" %}
-{% block title %}Admin - Retrieve Profile{% endblock %}
+{% block title %}Admin {{ current_user.get_name() }} - Retrieve Profile{% endblock %}
 
 <!-- {% set active_page = 'current_user' -%} -->
 
@@ -23,10 +23,15 @@
       <td>{{ current_user.get_email() }}</td>
       <td>{{ current_user.get_gender() }}</td>
       <td>{{ current_user.get_phone_number() }}</td>
-    </tr>
 
+      <td><a href="{{url_for('admin.accounts.updateAdminProfile', id=current_user.get_customer_id())}}" class="btn btn-warning">Update</a></td>
+
+    </tr>
     </tbody>
   </table>
+
+<td><a href="{{url_for('admin.accounts.retrieveAdminPW', id=current_user.get_customer_id())}}" class="btn btn-warning">Change Password</a></td>
+
 </div>
 
 </div>

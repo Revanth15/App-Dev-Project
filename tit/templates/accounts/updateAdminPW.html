@@ -58,9 +58,9 @@ img{
     <div class="container">
         <div class="row no-gutters">
             <div class="col-lg-7 px-5 pt-5">
-                <h1 class="font-weight-bold py-3">Reset Password</h1>
+                <h1 class="font-weight-bold py-3">Update Password</h1>
                 <h4>Type your new password.</h4>
-                <form method="POST" action="/updateAdminPW">
+                <form method="POST" action="/admin/accounts/updateAdminPW">
                   
                     <div class="form-row">
                         <div class="col-lg-7">
@@ -87,12 +87,14 @@ img{
                             <button type="submit" type="submit" class="btn btn-primary mt-3 mb-5">Change Password</button>
                         </div>
                     </div>
-                    <a href="/admin_profile"><strong>Back to Profile</strong></a>
+
                   </form>
               
             
             </div>
         </div>
+        <td><a href="{{url_for('admin.accounts.retrieveAdminProfile', id=current_user.get_customer_id())}}" class="btn btn-warning">Back to Profile</a></td>
+
   </div>
         
         

@@ -1,5 +1,5 @@
 {% extends "baseAdmin.html" %}
-{% block title %} Type current Admin Password {% endblock %}
+{% block title %} Current Admin Password {% endblock %}
 
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
@@ -59,24 +59,20 @@ img{
         <div class="row no-gutters">
             <div class="col-lg-7 px-5 pt-5">
                 <h1 class="font-weight-bold py-3">Reset Password</h1>
-                <form method="POST" action="/currentAdminPW">
+                <form method="POST" action="{{url_for('admin.accounts.currentAdminPW')}}">
                     
                     <div class="form-row">
                         <div class="col-lg-7">
                             {{ render_field(form.password, class="form-control my-3 p-2" ) }}
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="col-lg-7">
-                            <button type="submit" type="submit" class="btn btn-primary mt-3 mb-5">Change Password</button>
-                        </div>
-                    </div>
-                    <a href="{{url_for('admin.admin_home')}}"><strong>Back to Profile</strong></a>
-                  </form>
-              
+               
             
             </div>
+            <a href="{{url_for('admin.accounts.retrieveAdminProfile', id=customer.get_customer_id())}}" class="btn btn-warning">Back to Profile</a>
+
         </div>
+
   </div>
         
         

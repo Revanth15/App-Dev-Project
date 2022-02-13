@@ -1,38 +1,95 @@
 {% extends "baseAdmin.html" %}
-{% block title %}Admin - Retrieve Password{% endblock %}
+{% block title %}Admin {{ current_user.get_name}} - Retrieve Password{% endblock %}
 
 {% block content %}
+{% from "includes/_formHelper.html" import render_field %}
 
+
+<style>
+  *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+  
+  }
+  
+  body{ 
+      background: rgb(219, 226, 226);
+  }
+  
+  .row{
+      background: white;
+      border-radius: 30px;
+      box-shadow: 12px 12px 22px grey;
+  }
+  
+  
+  
+  img{
+      border-top-left-radius: 30px;
+      border-bottom-left-radius: 30px;
+  
+  }
+  
+  .btn {
+      border: none;
+      outline: none;
+      height: 50px;
+      width: 100%;
+      background-color: rgb(95, 153, 207);
+      color: white;
+      border-radius: 4px;
+      font-weight: bold;
+  
+  }
+  
+  .btn:hover{
+      background: white;
+      border: 1px solid;
+      color: rgb(99, 189, 184);
+  
+  }
+  
+  
+  </style>
 
 <div class="card">
 <div class='admin-padding troll'>
-<h1 class="display-4">Retrieve Password</h1>
+<h1 class="display-4">Retrieve Admin Password</h1>
 
+<section class="Form my-4 mx-5">
+  <div class="container">
+      <div class="row no-gutters">
+          <div class="col-lg-7 px-5 pt-5">
+              <h1 class="font-weight-bold py-3">Reset Password</h1>
+              <form method="POST" action="{{url_for('admin.accounts.currentAdminPW')}}">
+                  
 
+                <div class="form-row">
+                  <div class="col-lg-7">
+                      {{ render_field(form.password, class="form-control my-3 p-2" ) }}
+                  </div>
+                </div>
 
-<div class="form-row">
-  <div class="col-lg-7">
-      {{ render_field(form.password, class="form-control my-3 p-2" ) }}
+                <div>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for customer in customers_list %}
+                      <tr>
+                        <td><a href="{{url_for('admin.accounts.updateAdminPW', id=customer.get_customer_id())}}" class="btn btn-warning">Update Password</a></td>
+                        <td><a href="{{url_for('admin.accounts.retrieveAdminProfile', id=customer.get_customer_id())}}" class="btn btn-warning">Back to Profile</a></td>
+
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+
+          </div>
+      </div>
   </div>
-</div>
-
-<div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-      </tr>
-    </thead>
-    <tbody>
-    {% for customer in customers_list %}
-      <tr>
-        <td><a href="{{url_for('update_password', id=customer.get_customer_id())}}" class="btn btn-warning">Update Password</a></td>
-    {% endfor %}
-    </tbody>
-  </table>
-</div>
-
-</div>
-</div>
-
         
 {% endblock %}

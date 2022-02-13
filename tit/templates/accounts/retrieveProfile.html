@@ -27,7 +27,14 @@
     
     </tbody>
   </table>
-</div>
+
+<td><a href="{{url_for('main.accounts.update_profile', id=current_user.get_customer_id())}}" class="btn btn-warning">Update</a></td>
+
+<td><a href="{{url_for('main.accounts.retrieve_password', id=current_user.get_customer_id())}}" class="btn btn-warning">Change Password</a></td>
+
+
+<!-- <input type="submit" value="Add Product" class="btn btn-primary col py-3"/>
+      <button onclick="location.href = '/admin/inventory/retrieve_product';" id="goBack" class="align-right submit-button" >Go Back</button> -->
 
 </div>
 {% endblock %}
