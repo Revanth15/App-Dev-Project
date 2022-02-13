@@ -78,9 +78,11 @@
             <li>
               <a class="dropdown-item" href="#">My Orders</a>
             </li>
+            {% if current_user.is_authenticated %}
             <li>
-              <a class="dropdown-item" href="#">{{current_user.get_spools()}} Spools</a>
+              <a class="dropdown-item" href="#">{{current_user.get_spools() if current_user.get_role=='Customer' else '0'}} Spools</a>
             </li>
+            {% endif %}
             <li>
               <a class="dropdown-item" href="#">Logout</a>
             </li>
