@@ -1,3 +1,4 @@
+from os import abort
 from flask import Blueprint, render_template, redirect, url_for, g, request
 
 import json
@@ -10,7 +11,7 @@ from tit.admin.accounts.routes import accounts
 from tit.admin.support.routes import support
 
 from tit.utils import get_db, set_db
-from flask_login import current_user
+from flask_login import current_user, login_required
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 admin.register_blueprint(inventory)
@@ -25,6 +26,12 @@ def get_notifications():
     notif_list = notif_dict.values()
     g.notif_list = notif_list
     
+@admin.before_request
+@login_required
+def authorize():
+    if current_user.get_role() != 'Admin':
+        abort(404)
+
 
 
 @admin.route('/')

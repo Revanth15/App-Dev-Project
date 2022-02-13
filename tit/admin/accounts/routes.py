@@ -7,33 +7,42 @@ accounts = Blueprint('accounts', __name__, template_folder='templates', static_u
 
 @accounts.route('/retrieveAdminProfile')
 @login_required
+
 def retrieveProfile():
-    
+
     return render_template('accounts/retrieveAdminProfile.html')
 
 # Admin - Retrieve Customers
 @accounts.route('/retrieveCustomers')
-def retrieveCustomers():
+def retrieveUsers():
+    customers_list = []
+    admins_list = []
     customers_dict = {}
-    db = shelve.open('tit/database/customers.db', 'c')
+    admin_dict = {}
+    db = shelve.open('tit/database/users.db', 'r')
     try:
         customers_dict = db['Customers']
     except:
-        print("Error in retrieving Customers from storage.db.")
+        print("Error in retrieving Customers from customers.db.")
+    try:
+        admin_dict = db['Admins']
+    except:
+        print("Error in retrieving Admins from customers.db.")
+
     db.close()
-
-    customers_list = []
-    for key in customers_dict:
-        customer = customers_dict.get(key)
+    for customer in customers_dict.values():
         customers_list.append(customer)
+    for admin in admin_dict.values():
+        admins_list.append(admin)
 
-    return render_template('accounts/retrieveCustomers.html', count=len(customers_list), customers_list=customers_list)
+
+    return render_template('accounts/retrieveCustomers.html', countCust=len(customers_list), cust_list=customers_list, countAdmin=len(admins_list), admins_list=admins_list)
 
 
 
 # Admin Updates Customer profile
 @accounts.route('/updateCustomer/<int:id>/', methods=['GET', 'POST'])
-def update_customer(id):
+def update_user(id):
     update_customer_form = CustomerSignUpForm(request.form)
     if request.method == 'POST':
         customers_dict = {}
@@ -56,7 +65,7 @@ def update_customer(id):
         db['Customers'] = customers_dict
         db.close()
 
-        return redirect(url_for('admin.accounts.retrieveCustomers'))
+        return redirect(url_for('admin.accounts.retrieveUsers'))
     else:
         customers_dict = {}
         db = shelve.open('tit/database/customers.db', 'r')
@@ -82,7 +91,7 @@ def update_customer(id):
 
 # Admin deletes customer
 @accounts.route('/deleteCustomer/<int:id>', methods=['POST'])
-def delete_customer(id):
+def delete_user(id):
     customers_dict = {}
     db = shelve.open('tit/database/customers.db', 'w')
 
@@ -98,7 +107,7 @@ def delete_customer(id):
     db['Customers'] = customers_dict
     db.close()
 
-    return redirect(url_for('admin.accounts.retrieveCustomers'))
+    return redirect(url_for('admin.accounts.retrieveUsers'))
 
     
 
