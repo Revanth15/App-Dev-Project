@@ -21,22 +21,16 @@
               <a class="dropdown-item" href="#">T-Shirts & Polos & Tank Tops</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Jeans</a>
+              <a class="dropdown-item" href="#">Jeans & Joggers</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Shorts</a>
+              <a class="dropdown-item" href="#">Shorts & Skirts</a>
             </li>
             <li>
               <a class="dropdown-item" href="#">Dresses</a>
             </li>
             <li>
               <a class="dropdown-item" href="#">Hoodies</a>
-            </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Shoes</a>
             </li>
           </ul>
         </li>
@@ -61,13 +55,15 @@
       </form>
 
       <ul class="navbar-nav d-flex flex-row me-1">
-        <li class="nav-item me-3 me-lg-0">
-          <a class="nav-link" href="{{url_for('main.transactions.cart')}}"><i class="bx bxs-cart" style="font-size: 1.5em;"></i></a>
+        <li class="nav-item me-3 me-lg-0 cart">
+          <a class="nav-link bx bxs-cart" href="{{url_for('main.transactions.cart')}}">
+
+          </a>
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Profile
+          <a class="nav-link bx bxs-user" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+            
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li>
@@ -83,7 +79,10 @@
               <a class="dropdown-item" href="#">My Orders</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Spools:88</a>
+              <a class="dropdown-item" href="#">{{current_user.get_spools()}} Spools</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Logout</a>
             </li>
           </ul>
         </li>
@@ -91,3 +90,20 @@
 
   </div>
 </nav>
+
+<style type="text/css">
+  @media only screen and (min-width: 768px) {
+  .dropdown:hover .dropdown-menu{
+    display: block;
+  }
+  .dropdown:hover .dropdown-menu-end{
+    display: block;
+    right: 10px;
+  }
+  }
+  
+  .bx {
+    font-size: 1.5em;
+  }
+  
+</style>
