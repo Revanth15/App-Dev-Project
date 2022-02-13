@@ -9,26 +9,13 @@
   margin-right: auto;
 }
 
-.shop-item-button {
-  margin-top: 20px;
-}
-
-.price {
-    position: absolute;
-    bottom: 90px;
-    left: 8px;
-    padding: 3px;
-    background-color: #ffffff;
-    font-size:0.9em;
-}
-
 .card {
     border-radius: 12px;
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     position: relative;
     margin: 1rem;
-    padding-bottom: 48px;
+    padding-bottom:0;
   
   }
 
@@ -36,29 +23,28 @@
     border-radius: 12px;
   }
   
-
-.desc {
-    padding: 15px;
-    text-align: left;
-    border-radius: 5px;
-    display: inline-block;
-    width: 100%;
-    color: #ffffff;
-    padding: 2rem;
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.2);
-    max-height:100%;
-    overflow: auto;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    transform: translateX(-101%);
-    transition: transform 0.3s ease-in;
+.card-button {
+  align-items: center;
+  display: inline-block;
+  width: 100%;
+  position: absolute;
+  max-height:100%;
+  overflow: auto;
+  padding-left:60px;
+  bottom: 0;
+  transform: translateY(101%);
+  transition: transform 0.2s ease-in;
 }
 
-.card:hover .desc {
-    border-radius: 5px;
-    transform: translateX(0);
+.card:hover .card-button {
+  transform: translateY(-120%);
+}
+
+.show-item {
+  text-align: center;
+  background-color: #fff;
+  border: 0.5px solid ;
+  color: black;
 }
 
 :root {
@@ -129,106 +115,88 @@ h1::after {
     opacity: 1;
     transform: translateY(0);
   }
+} 
+
+/* modal-css */
+@media (min-width: 992px) {
+  .modal-lg {
+      width: 960px;
+  }
+}
+
+.price {
+  font-size: 1.5em;
+  font-weight: bold;
+  padding-bottom: 20px;
 }
   
-.cart-header {
-  font-weight: bold;
-  font-size: 1.25em;
-  color: #333;
+.modal .modal-content {
+  padding: 20px 20px 20px 20px;
+  -webkit-animation-name: modal-animation;
+  -webkit-animation-duration: 0.5s;
+  animation-name: modal-animation;
+  animation-duration: 0.5s;
 }
-
-.cart-column {
-  display: flex;
+  
+@-webkit-keyframes modal-animation {
+  from {
+      top: -100px;
+      opacity: 0;
+  }
+  to {
+      top: 0px;
+      opacity: 1;
+  }
+}
+  
+@keyframes modal-animation {
+  from {
+      top: -100px;
+      opacity: 0;
+  }
+  to {
+      top: 0px;
+      opacity: 1;
+  }
+}
+.modal-info {
+  justify-content: center;
   align-items: center;
-  border-bottom: 1px solid black;
-  margin-right: 1.5em;
-  padding-bottom: 10px;
-  margin-top: 10px;
 }
 
-.cart-row {
-  display: flex;
-}
-
-.cart-item {
-  width: 45%;
-}
-
-.cart-price {
-  width: 20%;
-  font-size: 1.2em;
-  color: #333;
-}
-
-.cart-quantity {
-  width: 35%;
-}
-
-.cart-item-title {
-  color: #333;
-  margin-left: .5em;
-  font-size: 1.2em;
-}
-
-.cart-item-image {
-  width: 75px;
-  height: auto;
-  border-radius: 10px;
-}
-
-.btn-danger {
-  color: white;
-  background-color: #EB5757;
-  border: none;
-  border-radius: .3em;
-  font-weight: bold;
-}
-
-.btn-danger:hover {
-  background-color: #CC4C4C;
-}
-
-.cart-quantity-input {
-  height: 34px;
-  width: 50px;
-  border-radius: 5px;
-  border: 1px solid #56CCF2;
-  background-color: #eee;
-  color: #333;
-  padding: 0;
-  text-align: center;
-  font-size: 1.2em;
-  margin-right: 25px;
-}
-
-.cart-row:last-child {
-  border-bottom: 1px solid black;
-}
-
-.cart-row:last-child .cart-column {
-  border: none;
-}
-
-.cart-total {
-  text-align: end;
-  margin-top: 10px;
-  margin-right: 10px;
-}
-
-.cart-total-title {
-  font-weight: bold;
+.bx-heart {
   font-size: 1.5em;
-  color: black;
-  margin-right: 20px;
 }
 
-.cart-total-price {
-  color: #333;
-  font-size: 1.1em;
+.bxs-star {
+  color:orange;
 }
 
-.btn-purchase {
-  display: block;
-  margin: 40px auto 80px auto;
-  font-size: 1.75em;
+.review {
+  padding-top: 30px;
 }
+
+.modal-footer {
+  border-top: 0 none;
+  justify-content: center;
+}
+
+.x-button {
+  position: absolute;
+  right: 5px;
+  top:5px;
+  padding: 10px;
+}
+
+.shop-item-button {
+  background-color:black;
+  border:none;
+  width: 200px;
+  height: 50px;
+  padding-right: 20px;
+}
+
+.shop-item-button:hover {
+  background-color: rgb(94, 92, 92);
+}
+
