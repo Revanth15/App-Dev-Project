@@ -1,22 +1,75 @@
-from unicodedata import category
-from flask import render_template, Blueprint, request, redirect, url_for
-from tit.admin.inventory.forms import Checkout
+from flask import render_template, session, Blueprint, request, redirect, url_for
+from flask_login import current_user
 import shelve
 import datetime
-from flask_login import current_user
+import urllib
+import json
+import hashlib
 
-from tit.main.transactions.routes import transactions
+from tit.admin.inventory.forms import Checkout
+from tit.main.transactions.routes import cart, transactions
 from tit.main.rewards.routes import rewards
 from tit.main.accounts.routes import accounts
 from tit.main.support.routes import support
-import tit.classes.payment as Payment
 from tit.main.utils import checkoutFunc
+from tit.utils import get_db, set_db, event
+
+from tit.classes.Traffic import Session
+import tit.classes.payment as Payment
+import tit.classes.order as Order
+
+
 
 main = Blueprint('main', __name__)
 main.register_blueprint(transactions)
 main.register_blueprint(rewards)
 main.register_blueprint(accounts)
 main.register_blueprint(support)
+
+
+@main.before_request
+def getSession():
+    if 'static' not in request.url:
+        time = datetime.datetime.now().replace(microsecond=0)
+        userIP = request.remote_addr
+        if 'user' not in session:
+            lines = (str(time)+userIP).encode('utf-8')
+            session['user'] = hashlib.md5(lines).hexdigest()
+            sessionID = session['user']
+        else:
+            sessionID = session['user']
+        
+        sessions_dict = get_db('traffic', 'Sessions')
+        if sessionID not in sessions_dict:
+            api = "https://www.iplocate.io/api/lookup/" + userIP
+            userCity = None
+            userContinent = None
+            userCountry = None
+            try:
+                resp = urllib.request.urlopen(api)
+                result = resp.read()
+                result = json.loads(result.decode("utf-8"))                                                                                                     
+                userCountry = result["country"]
+                userContinent = result["continent"]
+                userCity = result["city"]
+            except:
+                print("Could not find: ", userIP)
+            viewer = Session(userIP, sessionID, userCountry, userContinent, userCity)
+            sessions_dict[viewer.get_session()] =  viewer
+            set_db('traffic', 'Sessions', sessions_dict)
+        parseVisitorData(sessionID)
+
+def parseVisitorData(session_id):
+    data = [request.path, datetime.datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), request.method, event()]
+    sessions_dict = get_db('traffic', 'Sessions')
+    viewer = sessions_dict.get(session_id)
+    if viewer is None:
+        return 'Session ID does not exist'
+    viewer.update_views(data)
+    sessions_dict[session_id] = viewer
+    set_db('traffic', 'Sessions', sessions_dict)
+    return f'{session_id} Parsed'
+            
 
 @main.route('/', methods=['GET', 'POST'])
 def home():

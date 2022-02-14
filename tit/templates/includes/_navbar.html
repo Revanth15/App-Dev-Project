@@ -67,7 +67,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li>
-              <a class="dropdown-item" href="{{url_for('main.accounts.login')}}">Log In</a>
+              <a class="dropdown-item" href="{{url_for('login')}}">Log In</a>
             </li>
             <li>
               <a class="dropdown-item" href="{{url_for('main.accounts.sign_up')}}">Sign Up</a>
@@ -75,9 +75,11 @@
             <li>
               <a class="dropdown-item" href="{{url_for('main.myOrders')}}">My Orders</a>
             </li>
+            {% if current_user.is_authenticated %}
             <li>
-              <a class="dropdown-item" href="#">{{current_user.get_spools()}} Spools</a>
+              <a class="dropdown-item" href="#">{{current_user.get_spools() if current_user.get_role=='Customer' else '0'}} Spools</a>
             </li>
+            {% endif %}
             <li>
               <a class="dropdown-item" href="#">Logout</a>
             </li>

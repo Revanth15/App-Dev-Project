@@ -1,3 +1,6 @@
+REVANTH
+
+
 homepage with products (wishlist button, when hover over image, show description and wishlist button)
 cart
 - get data of item clicked when add to cart
@@ -17,3 +20,42 @@ can use fetch and still use my cart.js
 
 1:{12345678 {2},
     2:{}}
+
+Create Products page
+
+
+ZI EN
+Login for admin
+Create new admin
+Signup Validation
+Forget Password
+Change Password
+Edit Profile/Personal Information
+
+
+TRISTAN
+Create new Class for Feedback
+Create new database for Feedback
+Beautify Support
+
+
+JOLIN
+Link Rewards to Accounts
+Create Discover page
+Choose which discount codes to appear on Discover
+Proper Logic for Rewards when transaction occured
+
+
+PERRY
+IMPLEMENT TRACKING FOR TRANSACTIONS
+IMPLEMENT TRACKING FOR Feedback
+Choose which graphs to include in report
+Choose which data sets to include in xlsx/csv
+IMPLEMENT proper notifications for certain events
+IMPLEMENT web traffic tracking for special events
+
+
+MAIN
+Check if user is logged in; show different navbar
+Let user track transactions
+Proper imagery and typography

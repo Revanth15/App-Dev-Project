@@ -4,86 +4,38 @@
 <!-- {% set active_page = 'customers' -%} -->
 
 {% block content %}
-
-
-{% endblock %}
-<div class='admin-padding'>
-<h1 class="display-4"> {{ current_user.name }}'s Profile</h1>
 <div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Gender</th>
-        <th>Phone Number</th>
-<!--    <th>Username</th> -->
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for customer in customers_list %}
-      <tr> <!-- first_name, last_name, email, gender, phone_number, address, unit_number, postal_code, password --> 
-
-        <td>{{ customer.get_name() }}</td>
-        <td>{{ customer.get_email() }}</td>
-        <td>{{ customer.get_gender() }}</td>
-        <td>{{ customer.get_phone_number() }}</td>
-        <td><a href="{{url_for('main.accounts.update_profile', id=customer.get_customer_id())}}" class="btn btn-warning">Update</a></td>
-
-
-        <td>
-          <form action="{{url_for('main.accounts.delete_account', id=customer.get_customer_id())}}" method="POST">
-            <!--<input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your account?');">-->
-            <!-- Button to Open the Modal -->
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{customer.get_customer_id()}}">
-              Delete account
-            </button>
-        
-            <!-- The Modal -->
-            <div class="modal" id="myModal_{{customer.get_customer_id()}}">
-              <div class="modal-dialog">
-                <div class="modal-content">
-        
-                  <!-- Modal Header -->
-                  <div class="modal-header">
-                    <h4 class="modal-title">Delete Confirmation</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                  </div>
-        
-                  <!-- Modal body -->
-                  <div class="modal-body">
-                    Are you sure you want to delete your account? You will no longer have an account with us.}}?
-                  </div>
-        
-                  <!-- Modal footer -->
-                  <div class="modal-footer">
-                    <input type="submit" value="Delete" class="btn btn-danger">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  </div>
-        
-
-
-                  <br/>
-
-                 
-                  
-                </div>
-              </div>
-            </div>
-          </form>
-        </td>
-        
-        
-
-
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-</div>
-
+  <div class="card mx-auto my-5" style="max-width: 70%">
+    <div class="row g-0">
+      <div class="col-md-4 p-4 d-flex justify-content-center align-items-center">
+        <img src="/static/images/logo.png" class="img-fluid rounded-start" alt="">
+      </div>
+      <div class="col-md-8 d-flex justify-content-center align-items-center border-start border-info">
+        <div class="card-body">
+          <div class="row mb-5">
+            <h5 class="col-10 card-title mb-0 fs-3">{{current_user.get_name()}}</h5>
+            <a class='col-1 btn btn-outline-dark p-1 border-0' href=""><i class="bi bi-pencil-square"></i></a>
+          </div>
+          <div class="row">
+            <p class="col-5">Email:</p>
+            <p class="col-7">{{current_user.get_email()}}</p>
+          </div>
+          <div class="row">
+            <p class="col-5">Phone Number:</p>
+            <p class="col-7">{{current_user.get_phone_number()}}</p>
+          </div>
+          <div class="row">
+            <p class="col-5">Password:</p>
+            <a class="col-7" href="">Change Password</a>
+          </div>
+          <div class="row">
+            <p class="col-5">Spools:</p>
+            <p class="col-7">{% if current_user.get_role() == 'Customer' %}{{current_user.get_spools()}}{% else %}-{% endif %}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

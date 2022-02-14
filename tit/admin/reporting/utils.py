@@ -1,6 +1,3 @@
-import shelve
-from collections import Counter
-
 from PIL import Image
 import base64
 from io import BytesIO
@@ -11,59 +8,27 @@ from tit import app
 from fpdf import FPDF
 from pandas import DataFrame, ExcelWriter
 
-def get_db(database, key, get_x=None, params=None):
-    with shelve.open(f"tit/database/{database}.db", 'c') as db:
-        dict = {}
-        try:
-            dict = db[f'{key}']
-        except Exception as ex:
-            print(ex)
 
-    if get_x is None:
-        return dict
-    else:
-        datalist = []
-        for key in dict:
-            obj = dict[key]
-            func = getattr(obj, get_x)
-            if params is None:
-                data = func()
-            else:
-                data = func(str(params))
-            datalist.append(data)
-        datalist = Counter(datalist)
-        x = []
-        y = []
-        for xtick in datalist:
-            ytick = datalist[xtick]
-            if ytick== '':
-                ytick = 0
-            if xtick=='':
-                xtick = 'undefined'
-            x.append(xtick)
-            y.append(ytick)
-        jsondata = {'x': x, 'y': y}
-        return jsondata
-
-def set_db(database, key, value):
-    with shelve.open(f"tit/database/{database}.db", 'w') as db:
-        db[f'{key}'] = value
-
-
-def b64toimg(b64str):
-
-    b64str = b64str.replace('data:image/png;base64,', '')
-    im = Image.open(BytesIO(base64.b64decode(b64str)))
-    im.save('tit/tmp/image.png', 'PNG')
+def b64toimg(b64strs):
+    b64strs = b64strs.split(',')
+    index = 0
+    for string in b64strs:
+        if not string.startswith('data') and string != '':
+            imgdata = base64.b64decode(str(string))
+            im = Image.open(BytesIO(imgdata))    
+            im.save(f'tit/tmp/chart{index}.png', 'PNG')
+            index += 1
 
 def createPDF(output, imgs):
     WIDTH = 210
     HEIGHT = 297
 
+    b64toimg(imgs)
+
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_font('BebasNeue', '', 'BebasNeue-Regular.ttf', uni=True)
     pdf.add_page()
-    pdf.image("tit/tmp/Letterhead.png", 0, 0, WIDTH)
+    pdf.image(f"{app.config['STATIC_PATH']}/images/Letterhead.png", 0, 0, WIDTH)
     pdf.set_fill_color(255,255,255)
     pdf.rect(5, 50, 100, 50, 'D')
     pdf.set_draw_color(255,255,255)
@@ -78,8 +43,8 @@ def createPDF(output, imgs):
     pdf.set_font('BebasNeue', '', 32)
     pdf.cell(0, 0, "Report")
 
-    pdf.image("tit/tmp/image.png", 10, 50, WIDTH/2-20)
-    pdf.image("tit/tmp/image.png", WIDTH/2+10, 50, WIDTH/2-20)
+    pdf.image("tit/tmp/chart0.png", 10, 50, WIDTH/2-20)
+    pdf.image("tit/tmp/chart1.png", WIDTH/2+10, 50, WIDTH/2-20)
     #pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\test.pdf')
     pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\{output}')
     
