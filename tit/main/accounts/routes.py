@@ -87,12 +87,7 @@ def sign_up():
             users_dict[customer.get_customer_id()] = customer
             db['Customers'] = users_dict
             db['Count'] = count
-
-            # Test codes
-            # users_dict = db['Customers']
-            # customer = users_dict[customer.get_customer_id()]
-            # print(customer.get_name(), "was stored in users.db successfully with customer_id ==", customer.get_customer_id())
-            # print(db['Customers'])       
+     
         db.close()
 
         flash('You are now registered and can log in', 'success')
@@ -102,14 +97,12 @@ def sign_up():
 
 
 
-
 # Customer Retrieve Own Profile
 @accounts.route('/retrieveProfile')
 @login_required
 def retrieveProfile():
 
     return render_template('accounts/retrieveProfile.html')
-
 
 
 # Customer Updates profile

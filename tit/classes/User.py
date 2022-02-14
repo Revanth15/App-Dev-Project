@@ -14,7 +14,6 @@ class User(UserMixin):
         self.__password = password
         self.__role = role
 
-
     def get_id(self):
         return self.__user_id
 

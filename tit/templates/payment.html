@@ -3,7 +3,7 @@
 
 <!-- {% set active_page = 'inventory' %} -->
 {% block content %}
-{% from "includes/formhelper.html" import render_field %}
+{% from "includes/_formhelper.html" import render_field %}
 <link rel="stylesheet" href="static/styles/payment.css">
 <body>
 
@@ -54,11 +54,11 @@
                 {{ form.csrf_token }}
                 {{ render_field(form.exp_yy, class="form-check year-input" , style="list-style-type: none") }} 
             </div>
-            <div class="inputBox">
+            <div class="inputBox" type="password">
                 {{ render_field(form.cvv, class="form-control cvv-input" , maxlength="4") }}
             </div>
         </div>
-        <input type="submit" value="submit" class="submit-btn">
+        <input type="submit" value="Pay" class="submit-btn">
     </form>
 </div>    
 <script>

@@ -7,6 +7,7 @@ accounts = Blueprint('accounts', __name__, template_folder='templates', static_u
 
 @accounts.route('/retrieveAdminProfile')
 @login_required
+<<<<<<< HEAD
 def retrieveAdminProfile():
 
     return render_template('accounts/retrieveAdminProfile.html')
@@ -56,6 +57,15 @@ def updateAdminProfile(id):
 # Admin - Retrieve Customers
 @accounts.route('/retrieveCustomers')
 @login_required
+=======
+
+def retrieveProfile():
+
+    return render_template('accounts/retrieveAdminProfile.html')
+
+# Admin - Retrieve Customers
+@accounts.route('/retrieveCustomers')
+>>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
 def retrieveUsers():
     customers_list = []
     admins_list = []
@@ -65,11 +75,19 @@ def retrieveUsers():
     try:
         customers_dict = db['Customers']
     except:
+<<<<<<< HEAD
         print("Error in retrieving Customers from users.db.")
     try:
         admin_dict = db['Admins']
     except:
         print("Error in retrieving Admins from users.db.")
+=======
+        print("Error in retrieving Customers from customers.db.")
+    try:
+        admin_dict = db['Admins']
+    except:
+        print("Error in retrieving Admins from customers.db.")
+>>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
 
     db.close()
     for customer in customers_dict.values():
@@ -84,7 +102,10 @@ def retrieveUsers():
 
 # Admin Updates Customer profile
 @accounts.route('/updateCustomer/<int:id>/', methods=['GET', 'POST'])
+<<<<<<< HEAD
 @login_required
+=======
+>>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
 def update_user(id):
     update_customer_form = CustomerSignUpForm(request.form)
     if request.method == 'POST':
@@ -128,7 +149,10 @@ def update_user(id):
 
 # Admin deletes customer
 @accounts.route('/deleteCustomer/<int:id>', methods=['POST'])
+<<<<<<< HEAD
 @login_required
+=======
+>>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
 def delete_user(id):
     customers_dict = {}
     db = shelve.open('tit/database/users.db', 'w')

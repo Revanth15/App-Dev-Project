@@ -26,6 +26,10 @@ app.register_blueprint(main)
 def print_user():
     print(current_user.get_id())
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
 @login_manager.user_loader
 def load_user(user_id):
     user_list = []
@@ -35,6 +39,7 @@ def load_user(user_id):
     try:
         customers_dict = db['Customers']
     except:
+<<<<<<< HEAD
         print("Error in retrieving Customers from users.db.")
     try:
         admin_dict = db['Admins']
@@ -43,6 +48,15 @@ def load_user(user_id):
 
     db.close()
 
+=======
+        print("Error in retrieving Customers from customers.db.")
+    try:
+        admin_dict = db['Admins']
+    except:
+        print("Error in retrieving Admins from customers.db.")
+
+    db.close()
+>>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
     for customer in customers_dict.values():
         user_list.append(customer)
     for admin in admin_dict.values():
@@ -77,7 +91,11 @@ def login():
             except:
                 print("Error in retrieving Customers from users.db.")
             db.close()
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
         for user in users_dict.values():
             if 'admin@tit.com' in login_form.email.data:
                 if user.get_password() == login_form.password.data:
@@ -85,7 +103,11 @@ def login():
                     print("Admin login successful")
                     flash('You have been logged in', 'success')
                     return(redirect(url_for("admin.dashboard")))
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
             else:
                 if user.get_email() == login_form.email.data:
                     if user.get_password() == login_form.password.data:
@@ -99,7 +121,11 @@ def login():
                         return redirect(next_page) if next_page else redirect(url_for("main.home"))
 
         flash('Incorrect email or password.')
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
     return render_template('login.html', form=login_form)
 
 

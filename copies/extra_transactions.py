@@ -1,21 +1,3 @@
-from flask import render_template, request, redirect, url_for, session
-from tit.admin.inventory.forms import CreateProductForm, RestockForm, ImportForm, PaymentForm, Delivery
-from flask_recaptcha import ReCaptcha
-import datetime
-import os
-import shelve
-import tit.classes.product as Product
-import tit.classes.delivery as Delivery
-import tit.classes.import_file as import_file
-import tit.classes.payment as Payment
-import tit.classes.cart as Cart
-from tit.utils import display
-import uuid
-from tit import app 
-
-
-
-
 # @app.route('/delivery/<cust_id>/', method=['GET', 'POST'])
 # def delivery(cust_id):
 #     delivery_form = Delivery()
@@ -51,28 +33,3 @@ from tit import app
 #             delivery_form.email.data = delivery.get_email()
 #             delivery_form.phone_number.data = delivery.get_phone_number()
 #         return render_template('delivery.html', form=delivery_form)
-
-
-# @app.route('/cart', methods=['GET','POST'])
-# def cart(): 
-#     user_id = 1
-#     if request.method == 'POST':
-#         with shelve.open('cart.db','c') as cart_db:
-#             cart_dict = {}
-#             try:
-#                 cart_dict = cart_db['cart']
-#             except:
-#                 print("Error in retrieving Items from cart.db")
-#             cart_list = cart_dict.get(user_id)
-#             if cart_list is None:
-#                 cart_list = []
-#             sku = int(request.form['sku'])
-#             cart_list.append(sku)
-#             cart_dict[user_id] = cart_list
-#             cart_db['cart'] = cart_dict
-#             print(cart_dict)
-#     return render_template('cart.html', cart_list = cart_list)
-
-
-
-
