@@ -65,7 +65,7 @@ def dashboard():
 
 
     #*SignUp Count
-    accounts_dict = get_db('customers', 'Customers')
+    accounts_dict = get_db('users', 'Customers')
     signups_list = []
     for user in accounts_dict.values():
         signupdate = user.get_created('date', 'obj')
@@ -77,13 +77,12 @@ def dashboard():
     for user in signups_list:
         user_data = [user.get_id(), user.get_name(), user.get_email(), user.get_created()]
         data[1].append(user_data)
-    print(data)
     signup_data = ['New Sign Ups Today', len(data[1]), data]
     dashboard_list.append(signup_data)
 
 
     #* Support Count
-    feedback_dict = get_db('user', 'Users')
+    feedback_dict = get_db('feedback', 'Feedback')
     feedback_list = []
     for feedback in feedback_dict.values():
         feedbackdate = feedback.get_created('date', 'obj')
@@ -92,9 +91,9 @@ def dashboard():
 
 
     # Format data for Dashboard
-    data = [['User ID', 'Name', 'Time'], []]
+    data = [['ID', 'Name', 'Time'], []]
     for user in feedback_list:
-        user_data = [user.get_name(), user.get_id(), user.get_created()]
+        user_data = [user.get_id(), user.get_Name(), user.get_created()]
         data[1].append(user_data)
     feedback_data = ['Feedback Today', len(data[1]), data]
     dashboard_list.append(feedback_data)
@@ -120,11 +119,10 @@ def dashboard():
     #     data.append(sale_data)
     # sales_data = ['Feedback Today', len(data), data]
     # dashboard_list.append(sales_data)
-    data = []
-    data.append(db_count_occurence('traffic', 'Sessions', 'get_created', '%m-%d'))
-    data.append(db_get_qty('products', 'products', 'get_quantity'))
+    # data = []
+    # data.append(db_count_occurence('traffic', 'Sessions', 'get_created', '%m-%d'))
+    # data.append(db_get_qty('products', 'products', 'get_quantity'))
     # data.append(get_db('archive', 'Archives', 'get_created', '%m-%d'))
-    print(data)
     return render_template('dashboard.html', cards = dashboard_list, data=data)
 
 
@@ -166,7 +164,6 @@ def update_url_map():
         if index[rule].get('POST') is not None:
             rule_list.append(rule)
             form_data.append(index[rule].get('POST'))
-    print(form_data)
     form = createURLMapForm(rule_list, request.form)
 
 

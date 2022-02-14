@@ -40,8 +40,10 @@
         <div class="card-body">
           <div class="row mb-5">
             <h5 class="col-10 card-title mb-0 fs-3">{{current_user.get_name()}}</h5>
+            {% if current_user.get_role()=='Customer' %}
             <a class='col-1 btn btn-outline-dark p-1 border-0' href="{{url_for('main.accounts.update_profile', id=current_user.get_customer_id())}}"><i class="bi bi-pencil-square" title="Update Profile"></i></a>
             <a class='col-1 btn btn-outline-dark p-1 border-0' href="{{url_for('logout', id=current_user.get_customer_id())}}"><i class="bi bi-box-arrow-left" title="Logout"></i></a>
+            {% endif %}
           </div>
           <div class="row">
             <p class="col-5">Email:</p>
@@ -53,10 +55,12 @@
           </div>
           <div class="row">
             <p class="col-5">Password:</p>
-
+            {% if current_user.get_role()=='Customer' %}
             <a class="col-7" href="{{url_for('main.accounts.retrieve_password', id=current_user.get_customer_id())}}">Change Password</a>
+            {% endif%}
           </div>
           <div class="row">
+            {% if current_user.get_role()=='Customer' %}
             <form action="{{url_for('main.accounts.delete_account', id=current_user.get_customer_id())}}" style="margin-top: 10px;" method="POST">
               <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{current_user.get_customer_id()}}">
                 Delete Account
@@ -84,6 +88,8 @@
                 </div>
               </div>
             </form>
+            {% endif%}
+
           </div>
 
 

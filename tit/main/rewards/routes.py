@@ -1,19 +1,13 @@
 from flask import render_template, Blueprint
 import shelve
 
+from tit.utils import get_db
+
 rewards = Blueprint('rewards', __name__, template_folder='templates', static_url_path='static', url_prefix='/rewards')
 
 @rewards.route('/discover')
 def discover():
-    vouchers_dict = {}
-    db = shelve.open('tit/database/vouchers.db', 'r')
-
-    try:
-        vouchers_dict = db['Vouchers']
-    except:
-        print("Error in retrieving Vouchers from vouchers.db.")
-
-    db.close()
+    vouchers_dict = get_db('vouchers','Vouchers')
     vouchers_list = []
     for key in vouchers_dict:
         voucher = vouchers_dict.get(key)
@@ -23,15 +17,7 @@ def discover():
 
 @rewards.route('/discover/<int:id>')
 def customer_spools(id):
-    customer_dict = {}
-    db = shelve.open('tit/database/storage.db', 'r')
-
-    try:
-        customer_dict = db['Customers']
-    except:
-        print("Error in retrieving Customer from storage.db.")
-
-    db.close()
+    customer_dict = get_db('storage','Customers')
     customer = customer_dict.get(id)
     spools = customer.get_spools()
 

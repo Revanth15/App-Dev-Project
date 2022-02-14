@@ -118,33 +118,48 @@
         <td><a href="{{url_for('admin.accounts.update_user', id=user.get_id())}}" class="btn btn-warning">Update Admin</a></td>
         <td>
           <form action="{{url_for('admin.accounts.delete_user', id=user.get_id())}}" method="POST">
-      {% endfor %}
             <!-- Button to Open the Modal -->
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{current_user.get_id()}}">
               Delete user
             </button>
-
+            
             <!-- The Modal -->
             <div class="modal" id="myModal_{{current_user.get_id()}}">
               <div class="modal-dialog">
                 <div class="modal-content">
-
+                  
                   <!-- Modal Header -->
                   <div class="modal-header">
                     <h4 class="modal-title">Delete Confirmation</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                   </div>
-
+                  
                   <!-- Modal body -->
                   <div class="modal-body">
                     Are you sure you want to delete {{current_user.get_name()}}?
                   </div>
-
+                  
                   <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
 
+                </div>
+              </div>
+            </div>
+          </form>
+        </td>
+
+
+
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 <script>
   window.addEventListener('DOMContentLoaded', event => {
-
+                      
     const customersTable = document.getElementById('customers-table');
     if (customersTable) {
         new simpleDatatables.DataTable(customersTable);

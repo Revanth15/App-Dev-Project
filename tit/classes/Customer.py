@@ -1,6 +1,5 @@
-import tit.classes.User as User
-
-class Customer(User.User):
+from tit.classes.User import User
+class Customer(User):
     count_id = 0
 
     # Customer
@@ -12,7 +11,7 @@ class Customer(User.User):
         self.__customer_id = Customer.count_id
         self.__gender = gender
         self.__confirm_password = confirm_password
-        # self.__spools = spools
+        self.__spools = 0
 
     def get_customer_id(self):
         return self.__customer_id
@@ -23,8 +22,8 @@ class Customer(User.User):
     def get_confirm_password(self):
         return self.__confirm_password
     
-    # def get_spools(self):
-        # return self.__spools
+    def get_spools(self):
+        return self.__spools
 
     def set_customer_id(self, customer_id):
         self.__customer_id = customer_id
@@ -35,5 +34,5 @@ class Customer(User.User):
     def set_confirm_password(self, confirm_password):
         self.__confirm_password = confirm_password
     
-    # def set_spools(self, spools):
-    #     self.__spools = spools
+    def set_spools(self, spools):
+        self.__spools = spools

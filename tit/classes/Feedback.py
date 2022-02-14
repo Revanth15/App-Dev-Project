@@ -37,7 +37,8 @@ class feedback(logData.logData):
     def set_status(self, status):
         self.status = status
 
-
+    def set_id(self, id):
+        self.__id = id
     
 
 

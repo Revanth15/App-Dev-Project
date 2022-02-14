@@ -13,7 +13,8 @@ from tit.utils import get_db
 
 def db_count_occurence(database, dbkey, method, args=None):
     dict = get_db(database, dbkey)
-
+    if len(dict) == 0:
+        return {}
     datalist= []
     for key in dict:
         obj = dict[key]
@@ -39,7 +40,8 @@ def db_count_occurence(database, dbkey, method, args=None):
 
 def db_get_qty(database, dbkey, method, args=None):
     dict = get_db(database, dbkey)
-
+    if len(dict) == 0:
+        return {}
     x = []
     y = []
     for key in dict:

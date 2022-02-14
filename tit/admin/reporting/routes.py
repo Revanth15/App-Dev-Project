@@ -48,7 +48,6 @@ def reports():
     data.append(db_count_occurence('traffic', 'Sessions', 'get_created', '%m-%d'))
     data.append(db_get_qty('products', 'products', 'get_quantity'))
     # data.append(get_db('archive', 'Archives', 'get_created', '%m-%d'))
-    print(data)
     return render_template('reports/admin_reports.html', data=data, form=createReportForm, datetime=datetime.datetime.now(), tab=tab)
 
 @reporting.route('/logs')
@@ -136,18 +135,9 @@ def delete_archive(key):
 @reporting.route('/archives/update/<id>', methods=['POST']) 
 def update_archive(id):
     updateReportForm = UpdateReportForm(request.form)
+    archive_dict = get_db('archive', 'Archives')
 
     if request.method == 'POST' and updateReportForm.validate():
-        archive_dict = {}
-
-        db = shelve.open(app.config['ADMIN_PATH']+'archive.db', 'c')
-
-        try:
-            archive_dict = db['Archives']
-        except:
-            print("Error in retrieving Files from archive.db.")
-
-
         filenameList = []
         for key in archive_dict:
             report = archive_dict[key]
@@ -196,8 +186,7 @@ def update_archive(id):
                     session['create_fail'] = filename+ext
                 
                 archive_dict[report.get_filename()+get_ext(report.get_filetype())] = report
-                db['Archives'] = archive_dict
-                
+                set_db('archive', 'Archives', archive_dict)
                 break
 
         return redirect(url_for('admin.reporting.archives'))

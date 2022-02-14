@@ -5,6 +5,8 @@ import tit.classes.User as User
 import shelve
 from flask_login import current_user
 
+from tit.utils import get_db, set_db
+
 
 support = Blueprint('support', __name__, template_folder="templates", static_url_path="static", url_prefix="/support" )
 
@@ -116,27 +118,19 @@ def FAQ_OS():
 def create_user():
     create_user_form = CreateFeedbackForm(request.form)
     if request.method == 'POST' and create_user_form.validate():
-        users_dict = {}
-        db = shelve.open('tit/database/feedback.db', 'c')
-
-        try:
-           users_dict = db['Feedback']
-        except:
-            print("Error in retrieving Users from feedback.db.")
+        users_dict = get_db('feedback', 'Feedback')
 
         user = feedback(create_user_form.Name.data, create_user_form.email.data, create_user_form.type.data, create_user_form.feedback.data)
         if current_user.is_authenticated:
             user.set_id(current_user.get_id()) 
 
         users_dict[user.get_id()] = user
-        db['Feedback'] = users_dict
+        set_db('feedback', 'Feedback', users_dict)
 
         # Test codes
         
        
         print(user.get_Name(),  "was stored in feedback.db successfully")
-
-        db.close()
 
         return redirect(url_for('main.support.AfterSubmit'))
     return render_template('support/FeedbackPage.html', form=create_user_form)

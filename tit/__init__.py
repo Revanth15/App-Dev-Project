@@ -4,6 +4,7 @@ from flask_recaptcha import ReCaptcha
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from flask_bcrypt import Bcrypt
 from tit.main.accounts.Forms import LoginForm
+from tit.utils import get_db
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -22,27 +23,17 @@ from tit.main.routes import main
 app.register_blueprint(admin)
 app.register_blueprint(main)
 
-@app.before_request
-def print_user():
-    print(current_user.get_id())
-    print(current_user.get_role())
+# @app.before_request
+# def print_user():
+#     print(current_user.get_id())
+#     print(current_user.get_role())
 
 @login_manager.user_loader
 def load_user(user_id):
     user_list = []
-    customers_dict = {}
-    admin_dict = {}
-    db = shelve.open('tit/database/users.db', 'r')
-    try:
-        customers_dict = db['Customers']
-    except:
-        print("Error in retrieving Customers from users.db.")
-    try:
-        admin_dict = db['Admins']
-    except:
-        print("Error in retrieving Admins from users.db.")
+    customers_dict = get_db('users', 'Customers')
+    admin_dict = get_db('users', 'Admins')
 
-    db.close()
 
     for customer in customers_dict.values():
         user_list.append(customer)
@@ -61,23 +52,17 @@ def load_user(user_id):
 def login():
     login_form = LoginForm(request.form)  
     if request.method == 'POST':
-        users_dict = {}
-        db = shelve.open('tit/database/users.db', 'r')
-        print(login_form.email.data)
-
         if 'admin@tit.com' in login_form.email.data:
             try:
-                users_dict = db['Admins']
+                users_dict = get_db('users', 'Admins')
             except:
                 print("Error in retrieving Admins from users.db.")
-            db.close()     
 
         else:
             try:
-                users_dict = db['Customers']
+                users_dict = get_db('users', 'Customers')
             except:
                 print("Error in retrieving Customers from users.db.")
-            db.close()
         for user in users_dict.values():
             if 'admin@tit.com' in login_form.email.data:
                 if user.get_password() == login_form.password.data:

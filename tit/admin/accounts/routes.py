@@ -3,6 +3,8 @@ from tit.main.accounts.Forms import ChangePasswordForm, CustomerSignUpForm
 from flask import redirect, render_template, request, url_for, Blueprint
 from flask_login import login_required
 
+from tit.utils import get_db, set_db
+
 accounts = Blueprint('accounts', __name__, template_folder='templates', static_url_path='static', url_prefix='/accounts')
 
 @accounts.route('/retrieveAdminProfile')
@@ -16,10 +18,8 @@ def retrieveAdminProfile():
 @accounts.route('/updateAdminProfile/<int:id>/', methods=['GET', 'POST'])
 def updateAdminProfile(id):
     update_customer_form = CustomerSignUpForm(request.form)
+    customers_dict = get_db('users', 'Customers')
     if request.method == 'POST':
-        customers_dict = {}
-        db = shelve.open('tit/database/users.db', 'w')
-        customers_dict = db['Customers']
 
         customer = customers_dict.get(id)
         customer.set_name(update_customer_form.name.data)
@@ -27,27 +27,15 @@ def updateAdminProfile(id):
         customer.set_gender(update_customer_form.gender.data)
         customer.set_phone_number(update_customer_form.phone_number.data)
 
-        db['Customers'] = customers_dict
-        db.close()
+        set_db('users', 'Customers', customers_dict)
 
         return redirect(url_for('admin.accounts.retrieveAdminProfile'))
     else:
-        customers_dict = {}
-        db = shelve.open('tit/database/users.db', 'r')
-
-        try:
-           customers_dict = db['Customers']
-        except:
-           print("Error in retrieving customer profile from users.db.")
-
         customer = customers_dict.get(id)
         update_customer_form.name.data = customer.get_name()
         update_customer_form.email.data = customer.get_email()
         update_customer_form.gender.data = customer.get_gender()
         update_customer_form.phone_number.data = customer.get_phone_number()
-
-        db.close()
-
 # PROMPT: CUSTOMER PROFILE HAS BEEN UPDATED
         return render_template('accounts/updateAdminProfile.html', form=update_customer_form)
 
@@ -59,19 +47,9 @@ def updateAdminProfile(id):
 def retrieveUsers():
     customers_list = []
     admins_list = []
-    customers_dict = {}
-    admin_dict = {}
-    db = shelve.open('tit/database/users.db', 'r')
-    try:
-        customers_dict = db['Customers']
-    except:
-        print("Error in retrieving Customers from users.db.")
-    try:
-        admin_dict = db['Admins']
-    except:
-        print("Error in retrieving Admins from users.db.")
+    customers_dict = get_db('users', 'Customers')
+    admin_dict = get_db('users', 'Admins')
 
-    db.close()
     for customer in customers_dict.values():
         customers_list.append(customer)
     for admin in admin_dict.values():
@@ -87,11 +65,9 @@ def retrieveUsers():
 @login_required
 def update_user(id):
     update_customer_form = CustomerSignUpForm(request.form)
+    customers_dict = get_db('users', 'Customers')
+    admins_dict = get_db('users', 'Admins')
     if request.method == 'POST':
-        customers_dict = {}
-        db = shelve.open('tit/database/users.db', 'w')
-        customers_dict = db['Users']
-
         customer = customers_dict.get(id)
         customer.set_name(update_customer_form.name.data)
         customer.set_email(update_customer_form.email.data)
@@ -99,23 +75,14 @@ def update_user(id):
         customer.set_phone_number(update_customer_form.phone_number.data)
         customer.set_password(update_customer_form.password.data)
 
-        db['Customers'] = customers_dict
-        db.close()
+        set_db('users', 'Customers', customers_dict)
 
         return redirect(url_for('admin.accounts.retrieveUsers'))
     else:
-        customers_dict = {}
-        db = shelve.open('tit/database/users.db', 'r')
-
-        try:
-           customers_dict = db['Customers']
-        except:
-           print("Error in retrieving customer from users.db.")
-
-        customers_dict = db['Customers']
-        db.close()
-
-        customer = customers_dict.get(id)
+        if id in customers_dict:
+            customer = customers_dict.get(id)
+        elif id in admins_dict:
+            customer = admins_dict.get(id)
         update_customer_form.name.data = customer.get_name()
         update_customer_form.email.data = customer.get_email()
         update_customer_form.gender.data = customer.get_gender()
@@ -130,20 +97,20 @@ def update_user(id):
 @accounts.route('/deleteCustomer/<int:id>', methods=['POST'])
 @login_required
 def delete_user(id):
-    customers_dict = {}
-    db = shelve.open('tit/database/users.db', 'w')
-
-    try: 
-        customers_dict = db['Customers']
-   
-    except:
-        print("Error in retrieving Customers from users.db.")
-
-    # customers_dict = db['Customers']  
-
-    customers_dict.pop(id)
-    db['Customers'] = customers_dict
-    db.close()
+    customers_dict = get_db('users', 'Customers')
+    admins_dict = get_db('users', 'Admins')
+    print(customers_dict)
+    print(admins_dict)
+    if id in customers_dict:
+        customers_dict.pop(id)
+        set_db('users', 'Customers', customers_dict)
+        print('Customer Deleted!')
+    elif id in admins_dict:
+        admins_dict.pop(id)
+        set_db('users', 'Admins', admins_dict)
+        print('Admin Deleted!')
+    else:
+        print('ID not found. Could not delete.')
 
     return redirect(url_for('admin.accounts.retrieveUsers'))
 
@@ -153,15 +120,9 @@ def delete_user(id):
 @login_required
 def retrieveAdminPW():
     admins_list = []
-    admin_dict = {}
+    admin_dict = get_db('users', 'Admins')
     change_password_form = ChangePasswordForm(request.form)  
     if request.method == 'POST':
-        db = shelve.open('tit/database/users.db', 'r')
-        try:
-            admin_dict = db['Admins']
-        except:
-            print("Error in retrieving Admins from users.db.")
-        db.close()
         for admin in admin_dict.values():
             admins_list.append(admin)
             if admin.get_password() == change_password_form.password.data:
@@ -179,30 +140,17 @@ def retrieveAdminPW():
 @login_required
 def update_password(id):
     update_password_form = CustomerSignUpForm(request.form)
+    customers_dict = get_db('users', 'Customers')
     if request.method == 'POST':
-        customers_dict = {}
-        db = shelve.open('users.db', 'w')
-        customers_dict = db['Customers']
-
         customer = customers_dict.get(id)
         customer.set_password(update_password_form.password.data)
         customer.set_confirm_password(update_password_form.confirm_password.data)
-        db['Customers'] = customers_dict
-        db.close()
+
+        set_db('users', 'Customers', customers_dict)
+
 
         return redirect(url_for('admin.accounts.retrieveAdminPW'))
     else:
-        customers_dict = {}
-        db = shelve.open('users.db', 'r')
-
-        try:
-           customers_dict = db['Customers']
-        except:
-           print("Error in retrieving customer profile from users.db.")
-
-        customers_dict = db['Customers']
-        db.close()
-
         customer = customers_dict.get(id)
         update_password_form.password.data = customer.get_password()
         update_password_form.confirm_password.data = customer.get_confirm_password()

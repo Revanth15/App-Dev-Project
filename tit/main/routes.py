@@ -12,7 +12,7 @@ from tit.main.rewards.routes import rewards
 from tit.main.accounts.routes import accounts
 from tit.main.support.routes import support
 from tit.main.utils import checkoutFunc
-from tit.utils import get_db, set_db, event
+from tit.utils import dbkeys, get_db, set_db, event
 
 from tit.classes.Traffic import Session
 import tit.classes.payment as Payment
@@ -73,15 +73,8 @@ def parseVisitorData(session_id):
 
 @main.route('/')
 def home():
-    print(current_user.get_spools())
-    products_dict = {}
-    try:
-        products_db = shelve.open('tit/database/products.db', 'r')
-        products_dict = products_db['products']
-        products_db.close()
-    except:
-        print("Error in retrieving Product from products.db.")
-
+    products_dict = get_db('products', 'products')
+    print(products_dict)
     products_list = []
     for key in products_dict:
         product = products_dict.get(key)
@@ -92,13 +85,7 @@ def home():
 
 @main.route('/category/T-Shirts & Tops')
 def tops():
-    products_dict = {}
-    try:
-        products_db = shelve.open('tit/database/products.db', 'r')
-        products_dict = products_db['products']
-        products_db.close()
-    except:
-        print("Error in retrieving Product from products.db.")
+    products_dict = get_db('products', 'products')
 
     products_list = []
     category = 'T-Shirts & Tops'
@@ -110,13 +97,7 @@ def tops():
 
 @main.route('/category/Jeans & Joggers')
 def jeans():
-    products_dict = {}
-    try:
-        products_db = shelve.open('tit/database/products.db', 'r')
-        products_dict = products_db['products']
-        products_db.close()
-    except:
-        print("Error in retrieving Product from products.db.")
+    products_dict = get_db('products', 'products')
 
     products_list = []
     category = 'Jeans & Joggers'
@@ -128,13 +109,7 @@ def jeans():
 
 @main.route('/category/Shorts & Skirts')
 def shorts():
-    products_dict = {}
-    try:
-        products_db = shelve.open('tit/database/products.db', 'r')
-        products_dict = products_db['products']
-        products_db.close()
-    except:
-        print("Error in retrieving Product from products.db.")
+    products_dict = get_db('products', 'products')
 
     products_list = []
     category = 'Shorts & Skirts'
@@ -146,13 +121,7 @@ def shorts():
 
 @main.route('/category/Dresses')
 def dresses():
-    products_dict = {}
-    try:
-        products_db = shelve.open('tit/database/products.db', 'r')
-        products_dict = products_db['products']
-        products_db.close()
-    except:
-        print("Error in retrieving Product from products.db.")
+    products_dict = get_db('products', 'products')
 
     products_list = []
     category = 'Dresses'
@@ -165,13 +134,7 @@ def dresses():
 
 @main.route('/category/Hoodies')
 def hoodies():
-    products_dict = {}
-    try:
-        products_db = shelve.open('tit/database/products.db', 'r')
-        products_dict = products_db['products']
-        products_db.close()
-    except:
-        print("Error in retrieving Product from products.db.")
+    products_dict = get_db('products', 'products')
 
     products_list = []
     category = 'Hoodies'

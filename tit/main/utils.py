@@ -2,6 +2,7 @@ import shelve
 from flask_login import current_user
 
 import tit.classes.order as Order
+from tit.utils import get_db
 
 def checkoutFunc():
     cust_id = current_user.get_id()
@@ -45,12 +46,8 @@ def checkoutFunc():
                     cust_order.update({order_id : order})
                     orders_dict[cust_id] = cust_order
 
-                    rewards_db = shelve.open('tit/database/vouchers.db', 'w')
-                    try:
-                        vouchers_dict = rewards_db['Vouchers']
-                    except:
-                        print("Error in retrieving Vouchers from vouchers.db.")
-
+                    vouchers_dict = get_db('vouchers', 'Vouchers')
+                    
                     discount_code_applied = cart_dict[cust_id][2]
                     for key in vouchers_dict:
                         voucher = vouchers_dict.get(key)

@@ -4,6 +4,7 @@ import os
 from tit.admin.rewards.Forms import editVouchersForm, addVouchersForm
 import tit.classes.reward as reward
 from tit import app
+from tit.utils import get_db, set_db
 
 rewards = Blueprint('rewards', __name__, template_folder='templates', static_url_path='static', url_prefix='/rewards')
 
@@ -65,15 +66,7 @@ def addVouchers_admin():
 
 @rewards.route('/view', methods=['GET', 'POST'])
 def viewVouchers_admin():
-    vouchers_dict = {}
-
-    try:
-        db = shelve.open('tit/database/vouchers.db', 'r')
-        vouchers_dict = db['Vouchers']
-        db.close()
-    except:
-        print("Error in retrieving Vouchers from vouchers.db.")
-
+    vouchers_dict = get_db('vouchers', 'Vouchers')
     vouchers_list = []
     for key in vouchers_dict:
         voucher = vouchers_dict.get(key)
@@ -119,12 +112,7 @@ def editVouchers_admin(id):
 
     else:
         vouchers_dict = {}
-        db = shelve.open('tit/database/vouchers.db', 'r')
-
-        try:
-            vouchers_dict = db['Vouchers']
-        except:
-            print("Error in retrieving Voucher from vouchers.db.")
+        vouchers_dict = get_db('vouchers', 'Vouchers')
 
         voucher = vouchers_dict.get(id)
         editVouchers_admin_form.vname.data = voucher.get_name()
@@ -136,8 +124,6 @@ def editVouchers_admin(id):
         editVouchers_admin_form.vquantity.data = voucher.get_quantity()
         editVouchers_admin_form.file.data = voucher.get_filename()
 
-        db.close()
-
         return render_template('rewards/editVouchers_admin.html', form=editVouchers_admin_form , filename=voucher.get_filename())
 
 
@@ -146,13 +132,7 @@ def editVouchers_admin(id):
 
 @rewards.route('/delete/<int:id>', methods=['POST']) 
 def delete_voucher(id):
-    vouchers_dict = {}
-    db = shelve.open('tit/database/vouchers.db', 'w')
-
-    try:
-        vouchers_dict = db['Vouchers']
-    except:
-        print("Error in retrieving Voucher from vouchers.db.")
+    vouchers_dict = get_db('vouchers', 'Vouchers')
 
     voucher = vouchers_dict.get(id)
 
@@ -160,9 +140,7 @@ def delete_voucher(id):
     os.remove(app.config['STATIC_PATH']+"reward_uploads/" + voucher.get_filename())
 
 
-    db['Vouchers'] = vouchers_dict
-
-    db.close()
+    set_db('vouchers', 'Vouchers', vouchers_dict)
 
     session['voucher_deleted'] = voucher.get_name() + ', ' + voucher.get_discount_code()
 
