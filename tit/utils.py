@@ -69,7 +69,6 @@ def event():
     index = file.read()
     index = json.loads(index)
     file.close()
-    print(index)
     
     # path = request.path
     # method = request.method

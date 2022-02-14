@@ -73,6 +73,7 @@ def parseVisitorData(session_id):
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
+    print(current_user.get_spools())
     products_dict = {}
     try:
         products_db = shelve.open('tit/database/products.db', 'r')
@@ -234,24 +235,6 @@ def checkout():
             checkout_form.phone_number.data = customer.get_phone_number()
         return render_template('checkout.html', form=checkout_form)
 
-
-@main.route('/applycode', methods=['POST'])
-def apply():
-    user_id = current_user.get_id()
-    with shelve.open('tit/database/cart.db', 'c') as cart_db:
-        cart_dict = {}
-        try:
-            cart_dict = cart_db['cart']
-        except:
-            print("Error in retrieving Items from cart.db")
-        print(cart_dict)
-        print(user_id)
-        try:
-            cart_dict[user_id][2] = request.form['discountcode']
-        except KeyError:
-            cart_dict[user_id][2] = None
-        cart_db['cart'] = cart_dict
-    return redirect(url_for('main.checkout'))
 
 @main.route('/myOrders')
 def myOrders():

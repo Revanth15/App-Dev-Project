@@ -22,9 +22,9 @@ from tit.main.routes import main
 app.register_blueprint(admin)
 app.register_blueprint(main)
 
-@app.before_request
-def print_user():
-    print(current_user.get_id())
+# @app.before_request
+# def print_user():
+#     print(current_user.get_id())
 
 
 @login_manager.user_loader

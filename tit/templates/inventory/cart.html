@@ -5,7 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="../static/styles/cart.css">
 
-
+{{discount}}
 <div class="row">
   <div class="container content-section col-12 col-md-9">
     <div class="card cart-card">
@@ -116,10 +116,7 @@
             </div>
           </div>
         </form>
-        <form action="{{url_for('main.apply')}}" method="POST">
-          <input type="hidden" value="" id="discountcode" name="discountcode">
-          <button class="btn btn-purchase checkout" id="checkout" type="submit">Checkout</button>
-        </form>
+        <button class="btn btn-purchase checkout" id="checkout" type="submit" onclick="location.href = '/checkout'">Checkout</button>
       </div>
       
     </div>

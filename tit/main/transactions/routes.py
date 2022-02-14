@@ -98,7 +98,7 @@ def update_cart():
     return '1'
 
 
-@transactions.route('/update_total' ,methods=['GET'])
+@transactions.route('/update_total' ,methods=['GET', 'POST'])
 def update_total():
     user_id = current_user.get_id()
     with shelve.open('tit/database/cart.db','c') as cart_db: 
@@ -108,7 +108,7 @@ def update_total():
         except:
             print("Error in retrieving Items from cart.db")
         subtotal = int(request.args.get('subtotal'))
-        cart_dict[user_id][1] = (subtotal)
+        cart_dict[user_id][1] = subtotal
         cart_db['cart'] = cart_dict
     return redirect(url_for('main.checkout'))
 
@@ -118,42 +118,55 @@ def discount():
     user_id = current_user.get_id()
     discount_code_applied = request.args.get('discount_code')
     with shelve.open('tit/database/customers.db', 'w') as customer_db:
-        customers_dict = {}
-        try:
-            customers_dict = customer_db['Customers']
-        except:
-            print("Error in retrieving Customer from customers.db")
+        with shelve.open('tit/database/cart.db', 'c') as cart_db:
+            cart_dict = {}
+            try:
+                cart_dict = cart_db['cart']
+            except:
+                print("Error in retrieving Items from cart.db")
+            print(cart_dict)
+            print(user_id)
+            try:
+                cart_dict[user_id][2] = request.form['discountcode']
+            except KeyError:
+                cart_dict[user_id][2] = None
+            cart_db['cart'] = cart_dict
+            customers_dict = {}
+            try:
+                customers_dict = customer_db['Customers']
+            except:
+                print("Error in retrieving Customer from customers.db")
 
-        customer = customers_dict.get(user_id)
-        spools = customer.get_spools()
+            customer = customers_dict.get(user_id)
+            spools = customer.get_spools()
 
-        db = shelve.open('tit/database/vouchers.db', 'w')
-        try:
-            vouchers_dict = db['Vouchers']
-        except:
-            print("Error in retrieving Vouchers from vouchers.db.")
+            db = shelve.open('tit/database/vouchers.db', 'w')
+            try:
+                vouchers_dict = db['Vouchers']
+            except:
+                print("Error in retrieving Vouchers from vouchers.db.")
 
-        
-        for key in vouchers_dict:
-            voucher = vouchers_dict.get(key)
-            if discount_code_applied == voucher.get_discount_code():
-                discount = voucher.get_discount_amount()
-                if voucher.get_quantity() > 0:
-                    spools_needed = int(voucher.get_spools())
-                    if spools >= spools_needed:
-                        spools_left = spools - spools_needed
-                        customer.set_spools(spools_left)
+            
+            for key in vouchers_dict:
+                voucher = vouchers_dict.get(key)
+                if discount_code_applied == voucher.get_discount_code():
+                    discount = voucher.get_discount_amount()
+                    if voucher.get_quantity() > 0:
+                        spools_needed = int(voucher.get_spools())
+                        if spools >= spools_needed:
+                            spools_left = spools - spools_needed
+                            customer.set_spools(spools_left)
+                        else:
+                            print("insufficient spools")
                     else:
-                        print("insufficient spools")
+                        print("Oh noo,This voucher has been used it")
                 else:
-                    print("Oh noo,This voucher has been used it")
-            else:
-                print("There is no such voucher code")
-
-        customer_db['Customers'] = customers_dict
-        db['Vouchers'] = vouchers_dict 
-        db.close()
-    return render_template('inventory/cart.html', discount = discount)
+                    print("There is no such voucher code")
+            customer_db['Customers'] = customers_dict
+            db['Vouchers'] = vouchers_dict 
+            cart_db['cart'] = cart_dict
+            db.close()
+    return render_template('inventory/cart.html')
 
 
 # def cart(): 
