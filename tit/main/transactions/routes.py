@@ -3,6 +3,7 @@ from flask import render_template, request, redirect, url_for, Blueprint
 import shelve
 from tit import app 
 from flask_login import current_user
+from tit.utils import get_db, set_db
 
 transactions = Blueprint('transactions', __name__, template_folder='templates', static_url_path='static', url_prefix='/transactions')
 
@@ -10,44 +11,29 @@ transactions = Blueprint('transactions', __name__, template_folder='templates', 
 def cart(): 
     user_id = current_user.get_customer_id()
     if request.method == 'POST':     
-        with shelve.open('tit/database/cart.db','c') as cart_db:
-            cart_dict = {}
-            try:
-                cart_dict = cart_db['cart']
-            except:
-                print("Error in retrieving Items from cart.db")
-            sku = str(request.form['sku'])
-            if cart_dict.get(user_id) is None:
-                cart_dict[user_id] = [{},0,0]
-            
-            if sku in cart_dict[user_id][0]:
-                cart_dict[user_id][0][sku] += 1
-            else:
-                cart_dict[user_id][0].update({sku: 1})
+        cart_dict = get_db('cart', 'cart')
+        sku = str(request.form['sku'])
+        if cart_dict.get(user_id) is None:
+            cart_dict[user_id] = [{},0,0]
+        
+        if sku in cart_dict[user_id][0]:
+            cart_dict[user_id][0][sku] += 1
+        else:
+            cart_dict[user_id][0].update({sku: 1})
 
-            cart_db['cart'] = cart_dict
-    with shelve.open('tit/database/cart.db','c') as cart_db: 
-        with shelve.open('tit/database/products.db','r') as db:
-            cart_dict = {}
-            product_dict = {}
-            try:
-                cart_dict = cart_db['cart']
-            except:
-                print("Error in retrieving Items from cart.db")
-            try:
-                product_dict = db['products']
-            except:
-                print("Error in retrieving Products from products.db")
-            cart = cart_dict.get(user_id)
-            if cart is None:
-                user_cart = {}
-            else:
-                user_cart = cart[0]
-            cart_list = []
-            for sku in user_cart:
-                if str(sku) in product_dict:
-                    product = product_dict.get(str(sku))
-                    cart_list.append([product,user_cart[sku]])
+        set_db('cart', 'cart', cart_dict)
+    cart_dict = get_db('cart', 'cart')
+    product_dict = get_db('products', 'products')
+    cart = cart_dict.get(user_id)
+    if cart is None:
+        user_cart = {}
+    else:
+        user_cart = cart[0]
+    cart_list = []
+    for sku in user_cart:
+        if str(sku) in product_dict:
+            product = product_dict.get(str(sku))
+            cart_list.append([product,user_cart[sku]])
 
     return render_template('inventory/cart.html', cart_list = cart_list)
 
@@ -55,61 +41,45 @@ def cart():
 @transactions.route('/remove_item/<sku>', methods=['POST'])
 def remove_item(sku):
     user_id = current_user.get_customer_id()
-    cart_dict = {}
-    cart_db = shelve.open('tit/database/cart.db', 'w')
-    cart_dict = cart_db['cart']
+    cart_dict = get_db('cart', 'cart')
     cart_dict[user_id][0].pop(sku)
 
-    cart_db['cart'] = cart_dict
-    cart_db.close() 
+    set_db('cart', 'cart', cart_dict)
 
     return redirect(url_for('main.transactions.cart'))
 
 @transactions.route('/delete_cart', methods=['POST'])
 def delete_cart():
     user_id = current_user.get_customer_id()
-    cart_dict = {}
-    cart_db = shelve.open('tit/database/cart.db', 'w')
-    cart_dict = cart_db['cart']
+    cart_dict = get_db('cart', 'cart')
     cart_dict.pop(int(user_id))
 
-    cart_db['cart'] = cart_dict
-    cart_db.close() 
+    set_db('cart', 'cart', cart_dict)
 
     return redirect(url_for('main.transactions.cart'))
 
 @transactions.route('/update_cart' ,methods=['GET'])
 def update_cart():
     user_id = current_user.get_customer_id()
-    with shelve.open('tit/database/cart.db','c') as cart_db: 
-        cart_dict = {}
-        try:
-            cart_dict = cart_db['cart']
-        except:
-            print("Error in retrieving Items from cart.db")
-        sku = str(request.args.get('sku'))
-        quantity = int(request.args.get('quantity'))
-        # subtotal = int(request.args.get('subtotal'))
-        # print(subtotal)
-        if int(quantity) <= 0:
-            quantity = 1
-        cart_dict[user_id][0].update({sku: quantity})
-        cart_db['cart'] = cart_dict
+    cart_dict = get_db('cart', 'cart')
+    sku = str(request.args.get('sku'))
+    quantity = int(request.args.get('quantity'))
+    # subtotal = int(request.args.get('subtotal'))
+    # print(subtotal)
+    if int(quantity) <= 0:
+        quantity = 1
+    cart_dict[user_id][0].update({sku: quantity})
+    set_db('cart', 'cart', cart_dict)
     return '1'
 
 
 @transactions.route('/update_total' ,methods=['GET', 'POST'])
 def update_total():
     user_id = current_user.get_customer_id()
-    with shelve.open('tit/database/cart.db','c') as cart_db: 
-        cart_dict = {}
-        try:
-            cart_dict = cart_db['cart']
-        except:
-            print("Error in retrieving Items from cart.db")
-        subtotal = int(request.args.get('subtotal'))
-        cart_dict[user_id][1] = subtotal
-        cart_db['cart'] = cart_dict
+    cart_dict = get_db('cart', 'cart')
+    subtotal = int(request.args.get('subtotal'))
+    cart_dict[user_id][1] = subtotal
+    set_db('cart', 'cart', cart_dict)
     return redirect(url_for('main.checkout'))
 
 
@@ -117,57 +87,39 @@ def update_total():
 def discount():
     user_id = current_user.get_customer_id()
     discount_code_applied = request.args.get('discount_code')
-    with shelve.open('tit/database/users.db', 'w') as customer_db:
-        with shelve.open('tit/database/cart.db', 'c') as cart_db:
-            cart_dict = {}
-            try:
-                cart_dict = cart_db['cart']
-            except:
-                print("Error in retrieving Items from cart.db")
-            print(cart_dict)
-            print(user_id)
-            try:
-                cart_dict[user_id][2] = discount_code_applied
-            except KeyError:
-                cart_dict[user_id][2] = None
-            cart_db['cart'] = cart_dict
-            customers_dict = {}
-            try:
-                customers_dict = customer_db['Customers']
-            except:
-                print("Error in retrieving Customer from customers.db")
-
-            print(customers_dict)
-            customer = customers_dict.get(user_id)
-            spools = customer.get_spools()
-            print(spools)
-            db = shelve.open('tit/database/vouchers.db', 'w')
-            try:
-                vouchers_dict = db['Vouchers']
-            except:
-                print("Error in retrieving Vouchers from vouchers.db.")
-
-            for key in vouchers_dict:
-                voucher = vouchers_dict.get(key)
-                if discount_code_applied == voucher.get_discount_code():
-                    discount = voucher.get_discount_amount()
-                    if voucher.get_quantity() > 0:
-                        spools_needed = int(voucher.get_spools())
-                        if spools >= spools_needed:
-                            spools_left = spools - spools_needed
-                            customer.set_spools(spools_left)
-                        else:
-                            print("insufficient spools")
-                    else:
-                        print("Oh noo,This voucher has been used it")
+    cart_dict = get_db('cart', 'cart')
+    vouchers_dict = get_db('vouchers', 'Vouchers')
+    customers_dict = get_db('users', 'Customers')
+    print(cart_dict)
+    print(user_id)
+    try:
+        cart_dict[user_id][2] = discount_code_applied
+    except KeyError:
+        cart_dict[user_id][2] = None
+    print(customers_dict)
+    customer = customers_dict.get(user_id)
+    spools = customer.get_spools()
+    print(spools)
+    for key in vouchers_dict:
+        voucher = vouchers_dict.get(key)
+        if discount_code_applied == voucher.get_discount_code():
+            discount = voucher.get_discount_amount()
+            if voucher.get_quantity() > 0:
+                spools_needed = int(voucher.get_spools())
+                if spools >= spools_needed:
+                    spools_left = spools - spools_needed
+                    customer.set_spools(spools_left)
                 else:
-                    print("There is no such voucher code")
-            discount = discount_code_applied
-            print(cart_dict)
-            customer_db['Customers'] = customers_dict
-            db['Vouchers'] = vouchers_dict 
-            cart_db['cart'] = cart_dict
-            db.close()
+                    print("insufficient spools")
+            else:
+                print("Oh noo,This voucher has been used it")
+        else:
+            print("There is no such voucher code")
+    discount = discount_code_applied
+    print(cart_dict)
+    set_db('cart', 'cart', cart_dict)
+    set_db('vouchers', 'Vouchers', vouchers_dict)
+    set_db('users', 'Customers', customers_dict)
     return render_template('inventory/cart.html', discount = discount)
 
 

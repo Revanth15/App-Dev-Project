@@ -73,13 +73,7 @@ def parseVisitorData(session_id):
 
 @main.route('/')
 def home():
-    products_dict = {}
-    try:
-        products_db = shelve.open('tit/database/products.db', 'r')
-        products_dict = products_db['products']
-        products_db.close()
-    except:
-        print("Error in retrieving Product from products.db.")
+    products_dict = get_db('products', 'products')
 
     products_list = []
     i = 1
@@ -91,7 +85,6 @@ def home():
                 i += 1
         else:
             break
-        
 
     return render_template('homepage.html',products_list=products_list)
 
@@ -161,67 +154,51 @@ def checkout():
     user_id = current_user.get_customer_id()
     checkout_form = Checkout()
     if request.method == 'POST' and checkout_form.validate_on_submit():
-        with shelve.open('tit/database/payment.db', 'c') as payment_db:
-            payment_dict = {}
+        payment_dict = get_db('payment','payment')
 
-            try:
-                payment_dict = payment_db['payment']
-            except:
-                print("Error in retrieving Info from payment.db")
+        payment = Payment.Payment(
+            card_number = checkout_form.card_number.data,
+            card_holder = checkout_form.card_holder.data,
+            exp_mm = checkout_form.exp_mm.data,
+            exp_yy = checkout_form.exp_yy.data,
+            cvv = checkout_form.cvv.data)
 
-            payment = Payment.Payment(
-                card_number = checkout_form.card_number.data,
-                card_holder = checkout_form.card_holder.data,
-                exp_mm = checkout_form.exp_mm.data,
-                exp_yy = checkout_form.exp_yy.data,
-                cvv = checkout_form.cvv.data)
+        current_time = datetime.datetime.now()
+        year = str(current_time.year)
+        month = str(current_time.month)
 
-            current_time = datetime.datetime.now()
-            year = str(current_time.year)
-            month = str(current_time.month)
+        exp_mm = payment.get_exp_mm()
+        exp_yy = payment.get_exp_yy()
 
-            exp_mm = payment.get_exp_mm()
-            exp_yy = payment.get_exp_yy()
+        if year < exp_yy :
+            if month <= exp_mm:
+                checkoutFunc()
 
-            if year < exp_yy :
-                if month <= exp_mm:
-                    checkoutFunc()
+        elif year == exp_yy :
+            if month > exp_mm:
+                checkoutFunc()
+        else:
+            print("card is invalidddddd")
 
-            elif year == exp_yy :
-                if month > exp_mm:
-                    checkoutFunc()
-            else:
-                print("card is invalidddddd")
-
-            payment_dict[payment.get_card_number()] = payment
-            payment_db['payment'] = payment_dict
-            return redirect(url_for('main.home'))
+        payment_dict[payment.get_card_number()] = payment
+        set_db('payment','payment', payment_dict)
+        return redirect(url_for('main.home'))
     else:
-        with shelve.open('tit/database/users.db', 'r') as customer_db:
-            customer_dict = {}
-            try: 
-                customer_dict = customer_db['Customers']
-            except:
-                print("Error in retrieving Customers from customers.db.")
+        customers_dict = get_db('users', 'Customers')
 
-            customer = customer_dict.get(user_id)
-            checkout_form.name.data = customer.get_name()
-            checkout_form.email.data = customer.get_email()
-            checkout_form.phone_number.data = customer.get_phone_number()
+        customer = customers_dict.get(user_id)
+        checkout_form.name.data = customer.get_name()
+        checkout_form.email.data = customer.get_email()
+        checkout_form.phone_number.data = customer.get_phone_number()
         return render_template('checkout.html', form=checkout_form)
 
 
 @main.route('/myOrders')
 def myOrders():
     user_id = current_user.get_customer_id()
-    with shelve.open('tit/database/orders.db', 'w') as orders_db:
-        orders_dict = {}
-        try:
-            orders_dict = orders_db['orders']
-        except:
-            print("Error in retrieving orders from orders.db")
 
-        orders_list = orders_dict[user_id]
-        print(orders_dict)
+    orders_dict = get_db('orders', 'orders')
+    orders_list = orders_dict[user_id]
+    print(orders_dict)
     return render_template('myorder.html', orders_list=orders_list)
 
