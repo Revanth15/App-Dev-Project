@@ -1,30 +1,3 @@
-// Simple-DataTables
-// https://github.com/fiduswriter/Simple-DataTables/wiki
-window.addEventListener('DOMContentLoaded', event => {
-
-    const inventoryTable = document.getElementById('inventory-table');
-    if (inventoryTable) {
-        new simpleDatatables.DataTable(inventoryTable);
-    }
-
-    const salesTable = document.getElementById('sales-table');
-    if (salesTable) {
-        new simpleDatatables.DataTable(salesTable);
-    }
-
-    const trafficTable = document.getElementById('traffic-table');
-    if (trafficTable) {
-        new simpleDatatables.DataTable(trafficTable);
-    }
-
-    const sessionTable = document.getElementById('session-table');
-    if (sessionTable) {
-        new simpleDatatables.DataTable(sessionTable);
-    }
-
-});
-
-
 var config = {
     aspect_ratio: 1,
     plugins: {
@@ -51,39 +24,7 @@ var config = {
         }
     }
 }
-config.animation = false;
-var configIMG = {
-    aspect_ratio: 1,
-    plugins: {
-        title: {
-            display: true,
-            align: 'start',
-            text: 'Number of times restocked',
-            font: {
-                family: "'Roboto', sans-serif",
-                size: 24,
-            },
-            color: [
-                'rgba(0, 0, 0, 1)'
-            ],
-            padding: {
-                top: 20
-            }
-        }
-    },
-    scales: {
-        yAxis: {
-            min: 0,
-            suggestedMax: 10
-        }
-    },
-    animation: {
-        onComplete: doneOnce
-    }
-}
 
-
-//Chart.js
 const restockctx = document.getElementById('restockChart').getContext('2d');
 const restockChart = new Chart(restockctx, {
     type: 'bar',
@@ -111,7 +52,7 @@ const restockChart = new Chart(restockctx, {
             borderWidth: 1
         }]
     },
-    options: configIMG
+    options: config
 });
 
 config.plugins.title.text = 'Number of times out of stock'

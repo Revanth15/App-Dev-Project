@@ -1,4 +1,4 @@
-from wtforms import StringField, SelectField, IntegerField, TextAreaField, FileField, validators, PasswordField
+from wtforms import StringField, SelectField, IntegerField, TextAreaField, FileField, validators, PasswordField, Field
 import wtforms
 from wtforms.fields import EmailField, DateField
 from wtforms.widgets.core import NumberInput
@@ -6,49 +6,49 @@ from flask_wtf import FlaskForm
 from wtforms.validators import ValidationError
 import datetime
 
-# def validate_card(form, field):
-#     current_time = datetime.datetime.now()
-#     year = str(current_time.year)
-#     month = str(current_time.month)
+def validate_card(form, field):
+    current_time = datetime.datetime.now()
+    year = str(current_time.year)
+    month = str(current_time.month)
 
-#     exp_mm = field.exp_mm.data
-#     exp_yy = field.exp_yy.data
+    exp_mm = field.exp_mm.data
+    exp_yy = field.exp_yy.data
     
-#     if year <= exp_yy and month < exp_mm:
-#         card_number = field.card_number.data
-#         temp = str(card_number)
+    if year <= exp_yy and month < exp_mm:
+        card_number = field.card_number.data
+        temp = str(card_number)
 
-#         sum_1 = 0
-#         sum_2 = 0
+        sum_1 = 0
+        sum_2 = 0
 
-#         index = len(temp) - 1
+        index = len(temp) - 1
 
-#         while index >= 0:
-#             sum_1 += int(temp[index])
-#             index -= 2
+        while index >= 0:
+            sum_1 += int(temp[index])
+            index -= 2
 
-#         index = len(temp) - 2
-#         while index >= 0:
-#             number = int(temp[index]) * 2
-#             if number >= 10:
-#                 number = str(number)
-#                 sum_2 += int(number[0]) + int(number[1])
-#             else:
-#                 sum_2 += number
-#             index -= 2
+        index = len(temp) - 2
+        while index >= 0:
+            number = int(temp[index]) * 2
+            if number >= 10:
+                number = str(number)
+                sum_2 += int(number[0]) + int(number[1])
+            else:
+                sum_2 += number
+            index -= 2
 
-#         sum_of_total = str(sum_2 + sum_1)
-#         validation = int(sum_of_total[len(sum_of_total) - 1])
+        sum_of_total = str(sum_2 + sum_1)
+        validation = int(sum_of_total[len(sum_of_total) - 1])
 
-#         if validation == 0:
-#             print("card is valid")
-#         else:
-#             raise ValidationError('Card is Invalid')
-#     else:
-#         raise ValidationError('Card is Invalid!')
+        if validation == 0:
+            print("card is valid")
+        else:
+            raise ValidationError('Card is Invalid')
+    else:
+        raise ValidationError('Card is Invalid!')
 
 def validatecvv(form, field):
-    if len(field.cvv.data) > 4 or len(field.cvv.data) < 3:
+    if len(field.data) > 4 or len(field.data) < 3:
         raise ValidationError('Enter the 3 or 4 digit number that is found at the back of the credit/debit card')
 
 
@@ -82,9 +82,5 @@ class PaymentForm(FlaskForm):
     card_number = StringField('Card Number', [validators.length(min=13, max=16), validators.data_required()])
     card_holder = StringField('Card Holder Name', [validators.data_required()])
     exp_mm = SelectField('Expiration MM', choices = [('1', '1'),('2', '2'),('3', '3'),('4', '4'),('5', '5'),('6', '6'),('7', '7'),('8', '8'),('9', '9'),('10', '10'),('11', '11'),('12', '12')], coerce=str)
-    exp_yy = SelectField('Expiration YY', choices = [('2022','2022'),('2023','2023'),('2024','2024'),('2025','2025'),('2026','2026'),('2027','2027'),('2028','2028'),('2029','2029'),('2030','2030'),('2031','2031'),('2032','2032')], coerce=str)
-    cvv = PasswordField('CVV',  [validators.data_required()])
-    
-def validatecvv(form, field):
-    if len(field.cvv.data) > 4 or len(field.cvv.data) < 3:
-        raise ValidationError('Enter the 3 or 4 digit number that is found at the back of the credit/debit card')
+    exp_yy = SelectField('Expiration YY', choices = [('2021','2021'),('2022','2022'),('2023','2023'),('2024','2024'),('2025','2025'),('2026','2026'),('2027','2027'),('2028','2028'),('2029','2029'),('2030','2030'),('2031','2031'),('2032','2032')], coerce=str)
+    cvv = PasswordField('CVV',  [validators.data_required(), validatecvv])

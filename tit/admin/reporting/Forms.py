@@ -1,13 +1,19 @@
-from wtforms import Form, StringField, SelectField, validators, FieldList, FormField
+from wtforms import Form, StringField, SelectField, validators, FieldList, FormField, BooleanField, SelectMultipleField, widgets
 from wtforms.fields.simple import HiddenField
+from flask_wtf import FlaskForm
 
 from tit.utils import event
 
-class CreateReportForm(Form):
-    filename = StringField('Filename', [validators.Length(min=0, max=64)], default='')
-    filetype = SelectField('Filetype', [validators.DataRequired()], choices=[(1, 'Report(.pdf)'), (2, '.xlsx'), (3, '.csv')])
-    tags = StringField('Tags', [validators.Length(min=0, max=100)], default='')
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
+class CreateReportForm(FlaskForm):
+    filename = StringField('Filename', [validators.Length(min=0, max=64, message='filename')], default='')
+    filetype = SelectField('Filetype', [validators.DataRequired(message='filetype')], choices=[(1, 'Report(.pdf)'), (2, '.xlsx'), (3, '.csv')])
+    tags = StringField('Tags', [validators.Length(min=0, max=100, message='tags')], default='')
     images = HiddenField('images', default='')
+    charts = MultiCheckboxField('Charts',[validators.Optional()], choices=[(0,'1'), (1,'2'), (2,'3'), (3,'4'), (4,'5'), (5,'6'),(6,'7')], coerce=int)
+    
 
 class UpdateReportForm(Form):
     filename = StringField('Filename', [validators.Length(min=0, max=64)], default='')

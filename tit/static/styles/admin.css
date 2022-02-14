@@ -6,6 +6,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    scrollbar-width: none;
 }
 
 :root{
@@ -14,7 +15,7 @@
     --primary-color: #695CFE;
     --primary-color-light: #F6F5FF;
     --toggle-color: #DDD;
-    --text-color: #707070;
+    --text-color: #000000;
 
     --tran-03: all 0.2s ease;
     --tran-03: all 0.3s ease;
@@ -26,6 +27,7 @@ body{
     min-height: 100vh;
     background-color: var(--body-color);
     transition: var(--tran-05);
+    
 }
 
 ::selection{
@@ -36,10 +38,10 @@ body{
 body.dark{
     --body-color: #18191a;
     --sidebar-color: #242526;
-    --primary-color: #3a3b3c;
-    --primary-color-light: #3a3b3c;
+    --primary-color: #0044d6;
+    --primary-color-light: #00b6ce;
     --toggle-color: #fff;
-    --text-color: #ccc;
+    --text-color: rgb(255, 255, 255);
     --odd-row-color: #595b5c;
 }
 
@@ -95,6 +97,7 @@ body.dark{
     opacity: 1;
 }
 .sidebars.close .text{
+    z-index: 0;
     opacity: 0;
 }
 
@@ -271,14 +274,14 @@ body.dark .switch::before{
     top: 0px;
     padding: 0px 30px;
     left: 250px;
-    height: 50px;
+    height: 70px;
     width: calc(100% - 250px);
     background-color: var(--sidebar-color);
     transition: var(--tran-05);
 }
 .home{
     position: absolute;
-    top: 50px;
+    top: 70px;
     padding-left: 30px;
     left: 250px;
     height: 100vh;
@@ -329,7 +332,7 @@ body.dark .switch::before{
 }
 .sidebars.close ~ .home.shadow-sm{
     left: 78px;
-    height: 50px;
+    height: 70px;
     width: calc(100% - 78px);
 }
 
@@ -391,14 +394,21 @@ body.dark .home .text{
     color: var(--sidebar-color);
 }
 
-#back-link {
-    z-index: 5000;
-  }
+#back-link, .breadcrumb {
+    z-index: 101;
+    border: 0;
+}
+
+#back-link i {
+    color: #0d6efd !important;
+}
 
 #notificationdropdown + ul {
     width: 250px;
     max-height: 400px;
     border-radius: .25rem 0 0 .25rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) #F5F5F5;
 }
 
 #notificationdropdown + ul::-webkit-scrollbar-track

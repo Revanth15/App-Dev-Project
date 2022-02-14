@@ -2,8 +2,8 @@ from flask import render_template, request, redirect, url_for, session, send_fil
 
 from tit.classes.Archive import Archive
 from tit.admin.reporting.Forms import CreateReportForm, UpdateReportForm
-from tit.admin.reporting.utils import createExcel, createPDF, get_ext, createCSV
-from tit.utils import get_db, set_db
+from tit.admin.reporting.utils import createExcel, createPDF, db_count_occurence, db_get_qty, get_ext, createCSV
+from tit.utils import dbkeys, get_db, set_db
 from tit import app
 
 import shelve
@@ -13,19 +13,14 @@ import os
 
 reporting = Blueprint('reporting', __name__,template_folder='templates', static_url_path='static', url_prefix='/reports')
 
-@reporting.route('/data')
-def data_reports():
-    jsondata = get_db('archive', 'Archives', 'get_created', '%m-%d')
-    return json.dumps(jsondata)
-
 @reporting.route('/', methods=['GET', 'POST'])
 def reports():
     tab = request.args.get('tab')
     if tab is None:
         tab = 'inventory'
 
-    createReportForm = CreateReportForm(request.form)
-    if request.method == 'POST' and createReportForm.validate():
+    createReportForm = CreateReportForm()
+    if createReportForm.validate_on_submit():
         archive_dict = get_db('archive', 'Archives')
 
         archive = Archive(createReportForm.filetype.data, createReportForm.tags.data)
@@ -39,7 +34,7 @@ def reports():
 
         if createReportForm.filetype.data == '1':
             jsdata = request.form['images']
-            createPDF(f"{archive.get_filename()}.pdf", jsdata)
+            createPDF(f"{archive.get_filename()}.pdf", jsdata, createReportForm.charts.data)
         elif createReportForm.filetype.data == '2':
             createExcel(f"{archive.get_filename()}.xlsx",archive_dict)
         elif createReportForm.filetype.data == '3':
@@ -49,8 +44,12 @@ def reports():
 
         return redirect(url_for('admin.reporting.archives', filetype=get_ext(archive.get_filetype())))
 
-    inventorydata = get_db('archive', 'Archives', 'get_created', '%m-%d')
-    return render_template('reports/admin_reports.html', inventory=inventorydata, form=createReportForm, datetime=datetime.datetime.now(), tab=tab)
+    data = []
+    data.append(db_count_occurence('traffic', 'Sessions', 'get_created', '%m-%d'))
+    data.append(db_get_qty('products', 'products', 'get_quantity'))
+    # data.append(get_db('archive', 'Archives', 'get_created', '%m-%d'))
+    print(data)
+    return render_template('reports/admin_reports.html', data=data, form=createReportForm, datetime=datetime.datetime.now(), tab=tab)
 
 @reporting.route('/logs')
 def logs():
@@ -72,7 +71,7 @@ def logs():
 
     return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(), deliveries= deliveries, traffic = traffic, tab=tab)
 
-@reporting.route('/session/<id>')
+@reporting.route('/logs/session/<id>')
 def get_session(id):
     sessions_dict = get_db('traffic', 'Sessions')
     viewer = sessions_dict[id]

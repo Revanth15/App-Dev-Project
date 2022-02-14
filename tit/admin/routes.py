@@ -3,11 +3,10 @@ from flask import Blueprint, render_template, redirect, session, url_for, g, req
 
 import json
 
-import werkzeug
-
 from tit import app
 from tit.admin.inventory.routes import inventory
 from tit.admin.reporting.routes import reporting
+from tit.admin.reporting.utils import db_count_occurence, db_get_qty
 from tit.admin.rewards.routes import rewards
 from tit.admin.accounts.routes import accounts
 from tit.admin.support.routes import support
@@ -42,22 +41,20 @@ def dashboard():
     #* Traffic Count
     sessions_dict = get_db('traffic', 'Sessions')
     user_list = []
-    for user in sessions_dict.values():
-        view_date = datetime.datetime.strptime(user.get_created(), '%Y-%m-%d %H:%M:%S').date()
-        if view_date == datetime.datetime.now().date():
-            user_list.append(user)
+    for session in sessions_dict.values():
+        if type(session.get_views()[-1][1]) == str:
+            view_date = datetime.datetime.strptime(session.get_views()[-1][1], '%Y-%m-%d, %H:%M:%S').date()
+        else:
+            view_date = session.get_views()[-1][1].date()
+        if view_date == datetime.date.today():
+            user_list.append(session)
 
     # Format data for Dashboard
-    data = []
+    data = [['Session ID', 'IP Address', 'Time', 'Last View'], []]
     for user in user_list:
-        user_data = {
-        'Session ID': user.get_session(),
-        'IP Address': user.get_ip(),
-        'Time': user.get_created(),
-        'Last View': user.get_views()[-1][0]
-        }
-        data.append(user_data)
-    visitor_card = ['Visitors Today', len(data), data]
+        user_data = [user.get_session(), user.get_ip(), user.get_created(), user.get_views()[-1][0]]
+        data[1].append(user_data)
+    visitor_card = ['Visitors Today', len(data[1]), data]
     dashboard_list.append(visitor_card)
 
 
@@ -70,17 +67,12 @@ def dashboard():
             signups_list.append(user)
 
     # Format data for Dashboard
-    data = []
+    data = [['User ID', 'Name', 'Email', 'Time'], []]
     for user in signups_list:
-        user_data = {
-        'User ID': user.get_id(),
-        'Name': user.get_name(),
-        'Email': user.get_email(),
-        'Time': user.get_created()
-        }
-        data.append(user_data)
+        user_data = [user.get_id(), user.get_name(), user.get_email(), user.get_created()]
+        data[1].append(user_data)
     print(data)
-    signup_data = ['New Sign Ups Today', len(data), data]
+    signup_data = ['New Sign Ups Today', len(data[1]), data]
     dashboard_list.append(signup_data)
 
 
@@ -94,15 +86,11 @@ def dashboard():
 
 
     # Format data for Dashboard
-    data = []
+    data = [['User ID', 'Name', 'Time'], []]
     for user in feedback_list:
-        user_data = {
-        'User ID': user.get_id(),
-        'Name': user.get_name(),
-        'Time': user.get_created()
-        }
-        data.append(user_data)
-    feedback_data = ['Feedback Today', len(data), data]
+        user_data = [user.get_name(), user.get_id(), user.get_created()]
+        data[1].append(user_data)
+    feedback_data = ['Feedback Today', len(data[1]), data]
     dashboard_list.append(feedback_data)
 
 
@@ -126,8 +114,12 @@ def dashboard():
     #     data.append(sale_data)
     # sales_data = ['Feedback Today', len(data), data]
     # dashboard_list.append(sales_data)
-
-    return render_template('dashboard.html', cards = dashboard_list)
+    data = []
+    data.append(db_count_occurence('traffic', 'Sessions', 'get_created', '%m-%d'))
+    data.append(db_get_qty('products', 'products', 'get_quantity'))
+    # data.append(get_db('archive', 'Archives', 'get_created', '%m-%d'))
+    print(data)
+    return render_template('dashboard.html', cards = dashboard_list, data=data)
 
 
 

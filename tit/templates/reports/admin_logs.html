@@ -1,6 +1,23 @@
 {% extends "includes/_report.html" %}
 {% block title %} Admin - Logs {% endblock %}
 {% set back = ['reports', tab] %}
+{% set breadcrumb = [['reporting.reports', 'reports', tab], ['reporting.logs', 'Logs']] %}
+
+{% block create %}
+<ul class="navbar-nav">
+    <li class="nav-item dropdown">
+    <a class="nav-link px-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Charts
+    </a>
+    <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+        <li><a class="dropdown-item" href="{{url_for('admin.reporting.reports', tab='inventory')}}">Inventory</a></li>
+        <li><a class="dropdown-item" href="{{url_for('admin.reporting.reports', tab='sales')}}">Sales</a></li>
+        <li><a class="dropdown-item" href="{{url_for('admin.reporting.reports', tab='traffic')}}">Traffic</a></li>
+    </ul>
+    </li>
+</ul>
+{% endblock %}
+
 {% block inventory %}
 <table id="inventory-table" class="table table-hover">
     <thead>

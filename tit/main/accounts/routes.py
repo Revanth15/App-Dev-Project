@@ -5,7 +5,7 @@ import tit.classes.Customer as Customer
 from tit.main.accounts.Forms import CustomerSignUpForm, LoginForm, ChangePasswordForm
 import datetime
 
-from flask_login import login_required, login_user, logout_user
+from flask_login import current_user, login_required, login_user, logout_user
 
 accounts = Blueprint('accounts', __name__, template_folder='templates', static_url_path='static', url_prefix='/user')
 
@@ -33,9 +33,9 @@ def sign_up():
                         customer_signup_form.confirm_password.data)
         
         if len(customers_dict) > 0:
-            customer.set_customer_id(list(customers_dict)[-1]+1)
+            customer.set_user_id(list(customers_dict)[-1]+1)
 
-        customers_dict[customer.get_customer_id()] = customer
+        customers_dict[customer.get_user_id()] = customer
         db['Customers'] = customers_dict
 
         # Test codes
@@ -65,6 +65,9 @@ def login():
             print("Error in retrieving customer profile from customers.db.")
         db.close()
         for customer in customers_dict.values():
+            print(customer.get_id())
+
+        for customer in customers_dict.values():
             if login_form.email.data == 'admin@tit.com':
                 if customer.get_password() == login_form.password.data:
                     print("Admin login successful")
@@ -77,6 +80,7 @@ def login():
                         login_user(customer, remember=login_form.remember.data)
                         print('Customer login successful')
                         flash('Login Successful')
+                        print(current_user.get_id())
 
                         # add a next page route
                         next_page = request.args.get('next')
@@ -92,7 +96,7 @@ def login():
 @accounts.route("/logout")
 @login_required
 def logout():
-    logout_user
+    logout_user()
     return redirect(url_for('main.accounts.login'))
 
 

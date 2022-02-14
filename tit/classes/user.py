@@ -47,4 +47,3 @@ class User(logData, UserMixin):
  
     def set_password(self, password):
         self.__password = password
-    

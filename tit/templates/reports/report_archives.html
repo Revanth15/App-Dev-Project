@@ -1,7 +1,7 @@
 {% extends 'baseAdmin.html' %}
 {% block title %} Report {% endblock %}
 {% set active_page = "reports" %}
-
+{% set breadcrumb = [['reporting.reports', 'reports'], ['reporting.archives', 'archives']] %}
 {% from "includes/formhelper.html" import render_field %}
 {% block content %}
     <div class="admin-padding">
@@ -52,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for filename, filetype, tags, date, time, id in archives %}
+                        {% for filename, filetype, tags, date, time, id in archives|reverse %}
                         {% set ext = filetype|replace('1', '.pdf')|replace('2', '.xlsx')|replace('3', '.csv') %}
                         {% set file = [filename+ext, tags] %}
                         <tr>

@@ -10,7 +10,7 @@ class logData:
     def get_created(self, period='datetime', flag=''):
         if flag == 'obj':
             if period == 'time':
-                return self.__datetimeCreated.strftime("%H:%M:%S")
+                return self.__datetimeCreated.time()
 
             elif period == 'date':
                 return self.__datetimeCreated.date()

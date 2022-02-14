@@ -1,10 +1,8 @@
-from multiprocessing.sharedctypes import Value
 from flask import render_template, request, redirect, url_for, session, Blueprint, flash
 import shelve
 import os
 from tit.admin.rewards.Forms import editVouchersForm, addVouchersForm
 import tit.classes.reward as reward
-from werkzeug.utils import secure_filename
 from tit import app
 
 rewards = Blueprint('rewards', __name__, template_folder='templates', static_url_path='static', url_prefix='/rewards')

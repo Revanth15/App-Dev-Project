@@ -5,6 +5,8 @@ import urllib
 import json
 import hashlib
 
+from flask_login import current_user
+
 from tit.classes.Traffic import Session
 from tit.utils import get_db, set_db, event
 
@@ -13,6 +15,7 @@ from tit.main.rewards.routes import rewards
 from tit.main.accounts.routes import accounts
 from tit.main.support.routes import support
 import tit.classes.payment as Payment
+from tit.admin.inventory.forms import PaymentForm
 
 
 
@@ -25,6 +28,7 @@ main.register_blueprint(support)
 
 @main.before_request
 def getSession():
+    print(current_user)
     if 'static' not in request.url:
         time = datetime.datetime.now().replace(microsecond=0)
         userIP = request.remote_addr
@@ -56,7 +60,7 @@ def getSession():
         parseVisitorData(sessionID)
 
 def parseVisitorData(session_id):
-    data = [request.path, datetime.datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), event()]
+    data = [request.path, datetime.datetime.now(), event()]
     sessions_dict = get_db('traffic', 'Sessions')
     viewer = sessions_dict.get(session_id)
     if viewer is None:

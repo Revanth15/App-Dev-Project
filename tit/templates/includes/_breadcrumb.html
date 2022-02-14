@@ -1,9 +1,23 @@
 <div class="container-fluid home shadow-sm d-flex align-items-center">
   <nav class="nav navbar-light d-flex align-items-center flex-fill">
     {% if back is defined %}
-    <a id='back-link' class="fs-1" href="{{url_for('admin.reporting.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-circle"></i></a>
+    <a id='back-link' class="fs-2 ms-3" href="{{url_for('admin.reporting.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-short"></i></a>
+    {% else %}
+    <a id='back-link' class="btn p-0 fs-2 ms-3 disabled" role='button' aria-disabled="true"><i class="bi bi-arrow-left-short"></i></a>
     {% endif %}
-    suck my tehteh
+    <ol class="ms-4 breadcrumb m-0 fs-5">
+      {% for link in breadcrumb %}
+      <li class="my-auto breadcrumb-item {% if loop.last %}active{% endif %}" aria-current="page">
+        {% if loop.last %}
+        {{link[1]|capitalize}}
+        {% elif link[2] %}
+        <a href="{{url_for('admin.'+link[0], tab=link[2])}}">{{link[1]|capitalize}}</a>
+        {% else %}
+        <a href="{{url_for('admin.'+link[0])}}">{{link[1]|capitalize}}</a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ol>
     <div class="dropdown ms-auto">
       <button class="btn btn-white" type="button" id="notificationdropdown" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="fs-5 position-relative bi bi-bell">
