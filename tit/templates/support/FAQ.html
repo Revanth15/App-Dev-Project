@@ -1,13 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="d-flex flex-column min-vh-100">
-<div class="header">
-<h2 class ="greeting">Hello!<br> How can we help?</h2>
-<!--Search bar code-->
+<style>
+  *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+  
+  }
+  
+  body{ 
+      background: rgb(219, 226, 226);
+  }
+  
+  .row {
+      background: blue;
+      border-radius: 30px;
+      box-shadow: 12px 12px 22px grey;
+  }
+  
+  
+  
 
-<!--Search bar code-->
-<hr>
-</div>
+
+  
+  </style>
+  
+  
+  <section>
+      <div class="container" style="padding-top: 50px;">
+          <div class="row no-gutters">
+            <div class="d-flex flex-column min-vh-20">
+
+              <div class = "header">
+                <hr>
+                
+              <h2 class = "greeting">Hello!<br> How can we help?</h2>
+              <!--Search bar code-->
+              
+              
+              <!--Search bar code-->
+              <hr>
+              </div>
+              
+               
+                
+              
+              </div>
+          </div>
+    </div>
+  </section>
 <div>
 
 
@@ -32,7 +73,7 @@
      
     
     [class="header"]{
-      background-color: blue;
+      
       height: 200px;
       border-top: black;
       border-color: black;
@@ -82,7 +123,7 @@
 <div class="mt auto">
 <hr>
 
-<p class ="footer">Customer Support Page| <a href="/ContactInfo">Contact Information</a>|<a href= "/ContactUs"><i class="bi bi-reply"></i>Back to Customer Support</a></p>
+<p class ="footer">Customer Support Page|  <a href="{{url_for('main.support.Contact_Info')}}">Contact Information</a> |<a   href= "{{url_for('main.support.Contact_Us')}}"><i class="bi bi-reply" ></i>Back to Customer Support</a></p>
 
 </div>
 {% endblock %}

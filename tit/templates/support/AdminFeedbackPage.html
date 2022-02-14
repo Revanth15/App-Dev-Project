@@ -17,33 +17,32 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>User ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
+          <th>Name</th>
           <th>Email</th>
+          <th>Type</th>
           <th>Feedback</th>
-          <th></th>
-          <th></th>
+          <th>Status</th>
+          
         </tr>
       </thead>
       <tbody>
-            {% for user in users_list %}
+            {% for feedback in users_list %}
         <tr>
-          <td>{{ user.get_user_id() }}</td>
-          <td>{{ user.get_first_name() }}</td>
-          <td>{{ user.get_last_name() }}</td>
-          <td>{{ user.get_email() }}</td>
-          <td>{{ user.get_feedback() }}</td>
-           <td><a href="{{url_for('admin.support.update_user', id=user.get_user_id())}}" class="btn btn-warning">Update</a></td>
+          <td>{{ feedback.get_Name() }}</td>
+          <td>{{ feedback.get_email() }}</td>
+          <td>{{ feedback.get_type() }}</td>
+          <td>{{ feedback.get_feedback() }}</td>
+          <td>{{ feedback.get_status() }}</td>
+           <td><a href="{{url_for('admin.support.update_user', id=feedback.get_id())}}" class="btn btn-warning">Update</a></td>
           <td>
-             <form action="{{url_for('admin.support.delete_user', id=user.get_user_id())}}" method="POST">
+             <form action="{{url_for('admin.support.delete_user', id=feedback.get_id())}}" method="POST">
                <!--<input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {#user.get_first_name()#} {#user.get_last_name()#}?');">-->
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal_{{user.get_user_id()}}">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal_{{feedback.get_id()}}">
         Delete
       </button>
   
       <!-- The Modal-->
-      <div class="modal" id="myModal_{{user.get_user_id()}}">">
+      <div class="modal" id="myModal_{{feedback.get_id()}}">">
         <div class="modal-dialog">
           <div class="modal-content">
   
@@ -56,7 +55,8 @@
             <!---- Modal body -->
   
              <div class="modal-body">
-              Are you sure you want to delete {{user.get_first_name()}} {{user.get_last_name()}}?
+              Are you sure you want to delete feedback of id {{feedback.get_id()}}?
+    
             </div>
   
   

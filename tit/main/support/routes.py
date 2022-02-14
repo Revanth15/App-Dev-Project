@@ -1,9 +1,22 @@
 from flask import render_template, request, redirect, url_for, Blueprint
+from tit.classes.Feedback import feedback
 from tit.main.support.Forms import CreateFeedbackForm
 import tit.classes.User as User
 import shelve
+from flask_login import current_user
+
 
 support = Blueprint('support', __name__, template_folder="templates", static_url_path="static", url_prefix="/support" )
+
+
+@support.route('/ContactUs')
+def Contact_Us():
+    return render_template('support/ContactUs.html')
+
+
+@support.route('/ContactInfo')
+def Contact_Info():
+    return render_template('support/ContactInfo.html')
 
 
 @support.route('/FAQ_GS')
@@ -104,21 +117,24 @@ def create_user():
     create_user_form = CreateFeedbackForm(request.form)
     if request.method == 'POST' and create_user_form.validate():
         users_dict = {}
-        db = shelve.open('user.db', 'c')
+        db = shelve.open('tit/database/feedback.db', 'c')
 
         try:
-            users_dict = db['Users']
+           users_dict = db['Feedback']
         except:
-            print("Error in retrieving Users from user.db.")
+            print("Error in retrieving Users from feedback.db.")
 
-        user = User.User(create_user_form.first_name.data, create_user_form.last_name.data, create_user_form.email.data, create_user_form.feedback.data)
-        users_dict[user.get_user_id()] = user
-        db['Users'] = users_dict
+        user = feedback(create_user_form.Name.data, create_user_form.email.data, create_user_form.type.data, create_user_form.feedback.data)
+        if current_user.is_authenticated:
+            user.set_id(current_user.get_id()) 
+
+        users_dict[user.get_id()] = user
+        db['Feedback'] = users_dict
 
         # Test codes
-        users_dict = db['Users']
-        user = users_dict[user.get_user_id()]
-        print(user.get_first_name(), user.get_last_name(), "was stored in user.db successfully with user_id ==", user.get_user_id())
+        
+       
+        print(user.get_Name(),  "was stored in feedback.db successfully")
 
         db.close()
 

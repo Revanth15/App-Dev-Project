@@ -6,13 +6,13 @@ support = Blueprint('support', __name__, template_folder="templates", static_url
 
 
 @support.route('/AdminFeedbackPage')
-def retrieve_users():
+def AdminFeedbackPage():
     users_dict = {}
-    db = shelve.open('tit/database/user.db', 'r')
+    db = shelve.open('tit/database/feedback.db', 'r')
     try:
-        users_dict = db['Users']
+        users_dict = db['Feedback']
     except:
-        print("Error in retrieving users from user.db.")
+        print("Error in retrieving users from feedback.db.")
 
     db.close()
     users_list = []
@@ -23,49 +23,52 @@ def retrieve_users():
     return render_template('support/AdminFeedbackPage.html', count=len(users_list), users_list=users_list)
 
 
-@support.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
+@support.route('/updateUser/<id>/', methods=['GET', 'POST'])
 def update_user(id):
 
     update_user_form = CreateFeedbackForm(request.form)
 
     if request.method == 'POST' and update_user_form.validate():
         users_dict = {}
-        db = shelve.open('user.db', 'w')
-        users_dict = db['Users']
+        db = shelve.open('tit/database/feedback.db', 'w')
+        users_dict = db['Feedback']
 
         user = users_dict.get(id)
-        user.set_first_name(update_user_form.first_name.data)
-        user.set_last_name(update_user_form.last_name.data)
+        user.set_Name(update_user_form.Name.data)
         user.set_email(update_user_form.email.data)
+        user.set_type(update_user_form.type.data)
         user.set_feedback(update_user_form.feedback.data)
+        user.set_status(update_user_form.status.data)
 
-        db['Users'] = users_dict
+        db['Feedback'] = users_dict
         db.close()
 
 
-        return redirect(url_for('admin.support.retrieve_users'))
+        return redirect(url_for('admin.support.AdminFeedbackPage'))
     else:
         users_dict = {}
-        db = shelve.open('user.db', 'r')
-        users_dict = db['Users']
+        db = shelve.open('tit/database/feedback.db', 'r')
+        users_dict = db['Feedback']
         db.close()
 
         user = users_dict.get(id)
-        update_user_form.first_name.data = user.get_first_name()
-        update_user_form.last_name.data = user.get_last_name()
+        update_user_form.Name.data = user.get_Name()
         update_user_form.email.data = user.get_email()
+        update_user_form.type.data = user.get_type()
         update_user_form.feedback.data = user.get_feedback()
+        update_user_form.status.data = user.get_status()
+
         return render_template('support/updateUser.html', form=update_user_form)
 
-@support.route('/deleteUser/<int:id>', methods=['POST'])
+@support.route('/deleteUser/<id>', methods=['POST'])
 def delete_user(id):
     users_dict = {}
-    db = shelve.open('user.db', 'w')
-    users_dict = db['Users']
+    db = shelve.open('tit/database/feedback.db', 'w')
+    users_dict = db['Feedback']
 
     users_dict.pop(id)
 
-    db['Users'] = users_dict
+    db['Feedback'] = users_dict
     db.close()
 
-    return redirect(url_for('admin.support.retrieve_users'))
+    return redirect(url_for('admin.support.AdminFeedbackPage'))
