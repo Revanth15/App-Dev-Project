@@ -35,7 +35,7 @@ def sign_up():
     user_signup_form = CustomerSignUpForm(request.form)
     if request.method == 'POST':
         db = shelve.open('tit/database/users.db', 'c')
-        count = 0
+        count = get_db('users', 'Count', 0)
         try:
             count = db['Count']
         except:
