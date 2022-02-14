@@ -32,7 +32,6 @@ def authorize():
         abort(404)
 
 
-
 @admin.route('/')
 def adminRedirect():
     return redirect('/admin/dashboard')

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %} Enter OTP {% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+
+<style>
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+}
+
+body{ 
+    background: rgb(219, 226, 226);
+}
+
+
+.btn:hover{
+    background: white;
+    border: 1px solid;
+    color: rgb(99, 189, 184);
+
+}
+
+
+</style>
+
+
+<section class="Form my-4 mx-5">
+    <div class="container width-20">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-9 px-5 pt-5">
+                <h1 class="font-weight-bold py-3">Enter OTP</h1>
+                <form method="POST" action="/validateOTP">
+                    <div>
+                        <label type="text"></label>
+                    </div>
+
+
+
+                    <div class="form-row">
+                        <div class="col-lg-7">
+                            {{ render_field(form.phone_number, class="form-control my-3 p-2" ) }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-7">
+                            <button type="submit" type="submit" class="btn btn-primary mt-3 mb-5">Login</button>
+                        </div>
+                    </div>
+
+                  </form>
+                 
+            
+            </div>
+
+             {% for customer in customers_list %}
+
+                  <a href="{{url_for('main.accounts.retrieve_profile', id=current_user.get_customer_id())}}" class="btn btn-warning">Back to Profile</a>
+                  {% endfor %}
+
+
+        </div>
+  </div>
+        
+        
+                      
+{% endblock %}

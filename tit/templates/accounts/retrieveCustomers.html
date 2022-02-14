@@ -1,5 +1,5 @@
 {% extends "baseAdmin.html" %}
-{% block title %}Admin - Retrieve users{% endblock %}
+{% block title %}Admin - Retrieve Users{% endblock %}
 
 {% set active_page = 'users' -%}
 {% block content %}
@@ -35,7 +35,7 @@
       </tr>
     </thead>
     <tbody>
-    {% for user in cust_list %}
+      {% for user in cust_list %}
       <tr>
       
 
@@ -46,7 +46,7 @@
         <td>{{ user.get_gender() }}</td>
         <td>{{ user.get_phone_number() }}</td>
         <td>{{ user.get_password() }}</td>
-        <td><a href="{{url_for('admin.accounts.update_user', id=user.get_id())}}" class="btn btn-warning">Update Customer</a></td>
+        <td><a href="{{url_for('admin.accounts.update_user', id=user.get_id())}}" class="btn btn-warning">Update User</a></td>
         <td>
           <form action="{{url_for('admin.accounts.delete_user', id=user.get_id())}}" method="POST">
             <!--<input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{user.get_name()}}?');">-->
@@ -70,19 +70,19 @@
                   <div class="modal-body">
                     Are you sure you want to delete {{user.get_name()}}?
                   </div>
-        
+
                   <!-- Modal footer -->
                   <div class="modal-footer">
                     <input type="submit" value="Delete" class="btn btn-danger">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                   </div>
-        
+
                 </div>
               </div>
             </div>
           </form>
         </td>
-        
+
 
 
       </tr>
@@ -104,7 +104,7 @@
     <tbody>
     {% for user in admins_list %}
       <tr>
-      
+
 
         <td>{{ user.get_id() }}</td>
         <td>{{ user.get_admin_id() }}</td>
@@ -116,47 +116,30 @@
         <td><a href="{{url_for('admin.accounts.update_user', id=user.get_id())}}" class="btn btn-warning">Update Admin</a></td>
         <td>
           <form action="{{url_for('admin.accounts.delete_user', id=user.get_id())}}" method="POST">
-            <!--<input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{user.get_name()}}?');">-->
+      {% endfor %}
             <!-- Button to Open the Modal -->
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{user.get_id()}}">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{current_user.get_id()}}">
               Delete user
             </button>
-        
+
             <!-- The Modal -->
-            <div class="modal" id="myModal_{{user.get_id()}}">
+            <div class="modal" id="myModal_{{current_user.get_id()}}">
               <div class="modal-dialog">
                 <div class="modal-content">
-        
+
                   <!-- Modal Header -->
                   <div class="modal-header">
                     <h4 class="modal-title">Delete Confirmation</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                   </div>
-        
+
                   <!-- Modal body -->
                   <div class="modal-body">
-                    Are you sure you want to delete {{user.get_name()}}?
+                    Are you sure you want to delete {{current_user.get_name()}}?
                   </div>
-        
+
                   <!-- Modal footer -->
-                  <div class="modal-footer">
-                    <input type="submit" value="Delete" class="btn btn-danger">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  </div>
-        
-                </div>
-              </div>
-            </div>
-          </form>
-        </td>
-        
 
-
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-</div>
 <script>
   window.addEventListener('DOMContentLoaded', event => {
 
@@ -173,6 +156,6 @@
 
   });
 </script>
-{% endblock %}
 
+{% endblock %}
 

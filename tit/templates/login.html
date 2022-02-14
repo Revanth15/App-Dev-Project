@@ -89,9 +89,10 @@ img{
                             <button type="submit" type="submit" class="btn btn-primary mt-3 mb-5">Login</button>
                         </div>
                     </div>
-                    <a href="#"><strong>Forgot password</strong></a>
-                    <p>Don't have an account? <a href="/signUp" target="blank"><strong>Register here</strong></a></p>
-                  </form>
+                    <p><a href="{{url_for('main.accounts.getOTP')}}" target="blank"><strong>Forgot your password?</strong></a></p>
+                    <p>Don't have an account?<a href="{{url_for('main.accounts.sign_up')}}" target="blank"><strong>Register here now!</strong></a></p>
+          
+                </form>
               
             
             </div>
@@ -102,3 +103,7 @@ img{
         
                       
 {% endblock %}
+
+
+
+

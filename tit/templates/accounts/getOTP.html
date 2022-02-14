@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %} Forgot Password {% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+
+<style>
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+}
+
+body{ 
+    background: rgb(219, 226, 226);
+}
+
+.btn:hover{
+    background: white;
+    border: 1px solid;
+    color: rgb(99, 189, 184);
+
+}
+
+</style>
+
+
+<div class="card mx-auto my-5" style="max-width: 70%">
+    <div class="row g-0">
+      <div class="col-md-8 d-flex justify-content-center align-items-center border-start border-info">
+        <div class="card-body">
+          <div class="row mb-5">
+            <h5 class="col-10 card-title mb-0 fs-3">Forgot Password</h5>
+          </div>
+                <form method="POST" action="/getOTP">
+                    
+                    <div class="form-row">
+                        <div class="col-7">
+                            {{ render_field(form.phone_number, class="form-control my-3 p-2" ) }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-7">
+                            <button type="submit" type="submit" class="btn btn-primary mt-3 mb-5">Get OTP</button>
+                        </div>
+                    </div>
+
+                  </form>
+                 
+            
+            </div>
+        </div>
+  </div>
+        
+        
+                      
+{% endblock %}

@@ -27,7 +27,6 @@ def print_user():
     print(current_user.get_id())
     print(current_user.get_role())
 
-
 @login_manager.user_loader
 def load_user(user_id):
     user_list = []
@@ -37,13 +36,14 @@ def load_user(user_id):
     try:
         customers_dict = db['Customers']
     except:
-        print("Error in retrieving Customers from customers.db.")
+        print("Error in retrieving Customers from users.db.")
     try:
         admin_dict = db['Admins']
     except:
-        print("Error in retrieving Admins from customers.db.")
+        print("Error in retrieving Admins from users.db.")
 
     db.close()
+
     for customer in customers_dict.values():
         user_list.append(customer)
     for admin in admin_dict.values():
@@ -78,7 +78,6 @@ def login():
             except:
                 print("Error in retrieving Customers from users.db.")
             db.close()
-        
         for user in users_dict.values():
             if 'admin@tit.com' in login_form.email.data:
                 if user.get_password() == login_form.password.data:
@@ -86,7 +85,6 @@ def login():
                     print("Admin login successful")
                     flash('You have been logged in', 'success')
                     return(redirect(url_for("admin.dashboard")))
-        
             else:
                 if user.get_email() == login_form.email.data:
                     if user.get_password() == login_form.password.data:
@@ -100,7 +98,6 @@ def login():
                         return redirect(next_page) if next_page else redirect(url_for("main.home"))
 
         flash('Incorrect email or password.')
-            
     return render_template('login.html', form=login_form)
 
 

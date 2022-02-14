@@ -82,9 +82,12 @@
             <li>
               <a class="dropdown-item" href="#">{{current_user.get_spools() if current_user.get_role=='Customer' else '0'}} Spools</a>
             </li>
+            <li>
+              <a class="dropdown-item" href="{{url_for('main.accounts.retrieveProfile')}}">My Profile</a>
+            </li>
             {% endif %}
             <li>
-              <a class="dropdown-item" href="#">Logout</a>
+              <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
             </li>
           </ul>
         </li>

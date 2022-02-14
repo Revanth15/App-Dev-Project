@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% block title %} Update User Profile {% endblock %}
+{% extends "baseAdmin.html" %}
+{% block title %} Change Admin Password {% endblock %}
 
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
@@ -39,9 +39,9 @@ body{
         <div class="col-md-8 d-flex justify-content-center align-items-center border-start border-info">
             <div class="card-body">
                 <div class="row mb-5">
-                    <h5 class="col-10 card-title mb-0 fs-3">Edit Profile</h5>
+                    <h5 class="col-10 card-title mb-0 fs-3">Update Admin Profile</h5>
                     
-                    <a class='col-1 btn btn-outline-dark p-1 border-0' href="{{url_for('main.accounts.retrieveProfile')}}"><i class="bi bi-arrow-left-square" title="Back to Profile"></i></a>
+                    <a class='col-1 btn btn-outline-dark p-1 border-0' href=""><i class="bi bi-arrow-left-square" title="Back to profile"></i></a>
                 </div>
                 <div class="row">
                 <form method="POST" action="">
@@ -82,3 +82,4 @@ body{
         
                       
 {% endblock %}
+

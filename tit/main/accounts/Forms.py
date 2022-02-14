@@ -1,6 +1,10 @@
+from flask import flash
+from flask_login import current_user
 from wtforms import StringField, BooleanField, SelectField, validators, PasswordField, IntegerField, TextAreaField, RadioField, EmailField, TelField, Form
 from wtforms.validators import Email
 from flask_wtf import FlaskForm
+
+from tit.classes.Customer import Customer
 # from wtforms.fields.html5 import EmailField, DateField
 
 
@@ -15,12 +19,6 @@ class CustomerSignUpForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', [validators.DataRequired(),validators.EqualTo('password', message='Passwords do not match')])
 
 
-    # def validate_email(self, email):
-    #     customer = Customer.query.filter_by(email=email.data).first()
-    #     if customer:
-    #         raise ValidationErr('That email is taken. Please choose a different one.')
-
-
 class LoginForm(FlaskForm):
     
     email = StringField('Email', [validators.DataRequired(), Email()])
@@ -30,9 +28,11 @@ class LoginForm(FlaskForm):
 class ChangePasswordForm(FlaskForm):
     password = PasswordField('Password', [validators.DataRequired()])
     new_password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm_new_password', message='Passwords do not match')])
-    confirm_new_password = PasswordField('Confirm New Password', [validators.DataRequired(),validators.EqualTo('new_password', message='Passwords do not match')])
+    confirm_password = PasswordField('Confirm New Password', [validators.DataRequired(),validators.EqualTo('new_password', message='Passwords do not match')])
     remember = BooleanField('Remember Me')
 
+class getOTPForm(FlaskForm):
+    phone_number = StringField('Phone Number', [validators.Length(min=8, max=8), validators.DataRequired()])
 
 
 
