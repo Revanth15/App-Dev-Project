@@ -2,7 +2,7 @@ import shelve
 from flask_login import current_user
 
 import tit.classes.order as Order
-from tit.utils import get_db
+from tit.utils import get_db, set_db
 
 def checkoutFunc():
     cust_id = current_user.get_id()
@@ -76,6 +76,6 @@ def checkoutFunc():
                     cart_dict.pop(int(cust_id))
                     cart_db['cart'] = cart_dict
                     orders_db['orders'] = orders_dict
-                    rewards_db['Vouchers'] = vouchers_dict
+                    set_db('vouchers', 'Vouchers', vouchers_dict)
                     products_db['products'] = products_dict
                     customer_db['Customers'] = customers_dict
