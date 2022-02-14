@@ -139,28 +139,30 @@
 {% endblock -%}
 
 {% block chartjs %}
-    <script type="text/javascript">
-        let run = false
-        function done() {
-            const imgarray = []
-            document.querySelectorAll('canvas').forEach(element => {
-                image = element.toDataURL()       
-                imgarray.push(image)
-                
-            });
-            document.getElementById('images').value = imgarray
-            console.log(imgarray)
-            hidetabs()
-            run = true
-        }
-        function doneOnce() {
-            if (!run) done();
-        }
-        data = []
-        {% for data in data %}
-            data.push({{data|tojson}})
-        {% endfor %}
+<script src="/static/scripts/loader.js"></script>
+<script type="text/javascript">
+    let run = false
+    function done() {
+        const imgarray = []
+        document.querySelectorAll('canvas').forEach(element => {
+            image = element.toDataURL()       
+            imgarray.push(image)
+            
+        });
+        document.getElementById('images').value = imgarray
+        console.log(imgarray)
+        hidetabs()
+        run = true
+    }
+    function doneOnce() {
+        if (!run) done();
+    }
+    data = []
+    {% for data in data %}
+        data.push({{data|tojson}})
+    {% endfor %}
+    console.log(data[0])
 
 
-    </script>
+</script>
 {% endblock %}

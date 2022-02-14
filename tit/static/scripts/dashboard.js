@@ -4,7 +4,7 @@ var config = {
         title: {
             display: true,
             align: 'start',
-            text: 'Number of times restocked',
+            text: 'Inventory Health',
             font: {
                 family: "'Roboto', sans-serif",
                 size: 24,
@@ -29,10 +29,10 @@ const restockctx = document.getElementById('restockChart').getContext('2d');
 const restockChart = new Chart(restockctx, {
     type: 'bar',
     data: {
-        labels: data[0].x,
+        labels: data[3].x,
         datasets: [{
             label: '# Orders',
-            data: data[0].y,
+            data: data[3].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -55,15 +55,15 @@ const restockChart = new Chart(restockctx, {
     options: config
 });
 
-config.plugins.title.text = 'Number of times out of stock'
+config.plugins.title.text = 'Vistors Today'
 const outofstockctx = document.getElementById('outofstockChart').getContext('2d');
 const outofstockChart = new Chart(outofstockctx, {
     type: 'bar',
     data: {
-        labels: data[1].x,
+        labels: data[6].x,
         datasets: [{
-            label: '# Orders',
-            data: data[1].y,
+            label: 'Visitors',
+            data: data[6].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -86,15 +86,15 @@ const outofstockChart = new Chart(outofstockctx, {
     options: config
 });
 
-config.plugins.title.text = 'Inventory Health'
+config.plugins.title.text = 'Revenue this month'
 const productQtyctx = document.getElementById('productQtyChart').getContext('2d');
 const productQtyChart = new Chart(productQtyctx, {
     type: 'bar',
     data: {
-        labels: data[1].x,
+        labels: data[4].x,
         datasets: [{
-            label: '# Orders',
-            data: data[1].y,
+            label: '$',
+            data: data[4].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

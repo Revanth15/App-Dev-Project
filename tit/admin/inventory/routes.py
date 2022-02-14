@@ -123,8 +123,8 @@ def edit_product(sku):
         for sku in products_dict:
             if products_dict[sku].get_quantity() < 30:
                 if products_dict[sku].get_quantity() == 0:
-                    set_notifications(f'{sku} is out of stock', 'OutOfStock', 'Click here to go to restock', 'inventory.retrieve_products')
-                set_notifications(f'{sku} is low in stock', 'LowStock', 'Click here to go to restock', 'inventory.retrieve_products' )
+                    set_notifications(f'{sku} is out of stock', 'OOS', 'Click here to go to restock', 'inventory.retrieve_products', sku)
+                set_notifications(f'{sku} is low in stock', 'LS', 'Click here to go to restock', 'inventory.retrieve_products' , sku)
 
         return redirect(url_for('admin.inventory.retrieve_products'))
     else:

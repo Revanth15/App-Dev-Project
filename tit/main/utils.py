@@ -53,6 +53,7 @@ def checkoutFunc():
         product.set_quantity(qty)
         
     cart_dict.pop(int(user_id))
+    print(cart_dict)
     set_db('cart', 'cart', cart_dict)
     set_db('orders', 'orders', orders_dict)
     set_db('vouchers', 'Vouchers', vouchers_dict)

@@ -2,8 +2,8 @@ from flask import render_template, request, redirect, url_for, session, send_fil
 
 from tit.classes.Archive import Archive
 from tit.admin.reporting.Forms import CreateReportForm, UpdateReportForm
-from tit.admin.reporting.utils import createExcel, createPDF, db_count_occurence, db_get_qty, get_ext, createCSV
-from tit.utils import dbkeys, get_db, set_db
+from tit.admin.reporting.utils import createExcel, createPDF, db_add_manual, db_count_occurence, db_get_qty, get_data, get_ext, createCSV
+from tit.utils import dbkeys, get_db, set_db, current_time
 from tit import app
 
 import shelve
@@ -44,10 +44,8 @@ def reports():
 
         return redirect(url_for('admin.reporting.archives', filetype=get_ext(archive.get_filetype())))
 
-    data = []
-    data.append(db_count_occurence('traffic', 'Sessions', 'get_created', '%m-%d'))
-    data.append(db_get_qty('products', 'products', 'get_quantity'))
-    # data.append(get_db('archive', 'Archives', 'get_created', '%m-%d'))
+    data = get_data()
+    
     return render_template('reports/admin_reports.html', data=data, form=createReportForm, datetime=datetime.datetime.now(), tab=tab)
 
 @reporting.route('/logs')

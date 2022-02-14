@@ -1,3 +1,4 @@
+import datetime
 import os
 from PIL import Image
 import base64
@@ -9,21 +10,20 @@ from tit import app
 
 from fpdf import FPDF
 from pandas import DataFrame, ExcelWriter
-from tit.utils import get_db
+from tit.utils import get_db, current_time
 
-def db_count_occurence(database, dbkey, method, args=None):
-    dict = get_db(database, dbkey)
-    if len(dict) == 0:
-        return {}
-    datalist= []
+def db_add_manual(dict):
+    x = []
+    y = []
     for key in dict:
-        obj = dict[key]
-        func = getattr(obj, method)
-        if args is None:
-            data = func()
-        else:
-            data = func(str(args))
-        datalist.append(data)
+        x.append(key)
+        y.append(dict[key])
+    jsondata = {'x': x, 'y': y}
+    return jsondata
+
+
+
+def db_count_occurence(datalist):
     datalist = Counter(datalist)
     x = []
     y = []
@@ -59,6 +59,64 @@ def db_get_qty(database, dbkey, method, args=None):
         y.append(data)
     jsondata = {'x': x, 'y': y}
     return jsondata
+
+def get_data():
+    data = []
+    datalist = []
+    restock_db = get_db('products','delivery')
+    for restock in restock_db.values():
+        if restock.get_created('date', 'obj') == current_time().date():
+            datalist.append(restock.get_sku())
+    data.append(db_count_occurence(datalist))
+
+    datalist = []
+    stock_db = get_db('notification','Notifications')
+    for stock in stock_db.values():
+        if stock.get_created(flag='obj').year == current_time().year and stock.get_type() == 'LS':
+            datalist.append(stock.get_obj_id())
+    data.append(db_count_occurence(datalist))
+
+
+    datalist = []
+    stock_db = get_db('notification','Notifications')
+    for stock in stock_db.values():
+        if stock.get_created(flag='obj').year == current_time().year and stock.get_type() == 'OOS':
+            datalist.append(stock.get_obj_id())
+    data.append(db_count_occurence(datalist))
+
+
+    data.append(db_get_qty('products', 'products', 'get_quantity'))
+
+
+    order_db = get_db('orders','orders')
+    revenue_dict = {}
+    for user in order_db.values():
+        for order in user.values():
+            if order.get_created(flag='obj').year == current_time().year:
+                total = 0 if revenue_dict.get(order.get_created('%Y-%m')) is None else revenue_dict.get(order.get_created('%Y-%m'))
+                total += order.get_total_price()
+                revenue_dict[order.get_created('%Y-%m')] = total
+    data.append(db_add_manual(revenue_dict))
+
+    datalist = []
+    for user in order_db.values():
+        for order in user.values():
+            if order.get_created(flag='obj').year == current_time().year:
+                datalist.append(order.get_created('%m-%d'))
+    data.append(db_count_occurence(datalist))
+
+
+    datalist = []
+    session_db = get_db('traffic','Sessions')
+    for session in session_db.values():
+        
+        if session.get_views()[-1][1].date() == current_time().date():
+            datalist.append(session.get_created('%I%p'))
+    data.append(db_count_occurence(datalist))
+
+
+    print(data)
+    return data
 
 def b64toimg(b64strs):
     b64strs = b64strs.split(',')

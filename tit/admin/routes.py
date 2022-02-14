@@ -6,7 +6,7 @@ import datetime
 from tit import app
 from tit.admin.inventory.routes import inventory
 from tit.admin.reporting.routes import reporting
-from tit.admin.reporting.utils import db_count_occurence, db_get_qty
+from tit.admin.reporting.utils import get_data
 from tit.admin.rewards.routes import rewards
 from tit.admin.accounts.routes import accounts
 from tit.admin.support.routes import support
@@ -102,10 +102,11 @@ def dashboard():
     #* Sales Count
     sales_dict = get_db('orders', 'orders')
     sales_list = []
-    for sale in sales_dict.values():
-        saledate = sale.get_created('date', 'obj')
-        if saledate == datetime.date.today():
-            sales_list.append(sale)
+    for order_dict in sales_dict.values():
+        for sale in order_dict.values():
+            saledate = sale.get_created('date', 'obj')
+            if saledate == datetime.date.today():
+                sales_list.append(sale)
 
 
     # Format data for Dashboard
@@ -116,10 +117,7 @@ def dashboard():
     sales_data = ['Sales Today', len(data[1]), data]
     dashboard_list.append(sales_data)
 
-    chartdata = []
-    chartdata.append(db_count_occurence('traffic', 'Sessions', 'get_created', '%m-%d'))
-    chartdata.append(db_get_qty('products', 'products', 'get_quantity'))
-    # data.append(get_db('archive', 'Archives', 'get_created', '%m-%d'))
+    chartdata = get_data()
     return render_template('dashboard.html', cards = dashboard_list, data=chartdata)
 
 

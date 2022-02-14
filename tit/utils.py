@@ -3,9 +3,12 @@ from os import listdir
 
 import shelve
 import json
+import datetime
 
 from tit.classes.Notification import Notification
 
+def current_time():
+    return datetime.datetime.now()
 
 def dbkeys(flag=False):
         
@@ -65,9 +68,9 @@ def get_notifications(id=None):
         return notification_dict
     return notification_dict.get(id)
 
-def set_notifications(name, type, message, url):
+def set_notifications(name, type, message, url, id):
     notification_dict = get_db('notification', 'Notifications')
-    notification = Notification(name, type, message, url)
+    notification = Notification(name, type, message, url, id)
     notification_dict[notification.get_id()] = notification
     set_db('notification', 'Notifications', notification_dict)
 

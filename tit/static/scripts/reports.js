@@ -114,7 +114,7 @@ const restockChart = new Chart(restockctx, {
     options: configIMG
 });
 
-config.plugins.title.text = 'Number of times out of stock'
+config.plugins.title.text = 'Number of times low stock by product'
 const outofstockctx = document.getElementById('outofstockChart').getContext('2d');
 const outofstockChart = new Chart(outofstockctx, {
     type: 'bar',
@@ -150,10 +150,10 @@ const productQtyctx = document.getElementById('productQtyChart').getContext('2d'
 const productQtyChart = new Chart(productQtyctx, {
     type: 'bar',
     data: {
-        labels: data[1].x,
+        labels: data[3].x,
         datasets: [{
             label: '# Orders',
-            data: data[1].y,
+            data: data[3].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -176,15 +176,45 @@ const productQtyChart = new Chart(productQtyctx, {
     options: config
 });
 
-config.plugins.title.text = 'Revenue'
+config.plugins.title.text = 'Revenue this year'
 const revenuectx = document.getElementById('revenueChart').getContext('2d');
 const revenueChart = new Chart(revenuectx, {
-    type: 'bar',
+    type: 'line',
     data: {
-        labels: data[1].x,
+        labels: data[4].x,
         datasets: [{
             label: '# Orders',
-            data: data[1].y,
+            data: data[4].y,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: config
+});
+config.plugins.title.text = 'Sales this month'
+const salesctx = document.getElementById('salesChart').getContext('2d');
+const salesChart = new Chart(salesctx, {
+    type: 'line',
+    data: {
+        labels: data[5].x,
+        datasets: [{
+            label: '# Orders',
+            data: data[5].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -207,14 +237,15 @@ const revenueChart = new Chart(revenuectx, {
     options: config
 });
 
-const salesctx = document.getElementById('salesChart').getContext('2d');
-const salesChart = new Chart(salesctx, {
-    type: 'bar',
+config.plugins.title.text = 'Visitors Today'
+const visitorctx = document.getElementById('visitorChart').getContext('2d');
+const visitorChart = new Chart(visitorctx, {
+    type: 'line',
     data: {
-        labels: data[1].x,
+        labels: data[6].x,
         datasets: [{
             label: '# Orders',
-            data: data[1].y,
+            data: data[6].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -235,59 +266,6 @@ const salesChart = new Chart(salesctx, {
         }]
     },
     options: config
-});
-const visitorctx = document.getElementById('visitorChart').getContext('2d');
-const visitorChart = new Chart(visitorctx, {
-    type: 'bar',
-    data: {
-        labels: data[1].x,
-        datasets: [{
-            label: '# Orders',
-            data: data[1].y,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        plugins: {
-            title: {
-                display: true,
-                align: 'start',
-                text: 'Number of times restocked',
-                font: {
-                    family: "'Roboto', sans-serif",
-                    size: 24,
-                },
-                color: [
-                    'rgba(0, 0, 0, 1)'
-                ],
-                padding: {
-                    top: 20
-                }
-            }
-        },
-        scales: {
-            yAxis: {
-                min: 0,
-                suggestedMax: 10
-            }
-        }
-    }
 });
 
 const purchasectx = document.getElementById('purchaseChart').getContext('2d');
