@@ -5,7 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="../static/styles/cart.css">
 
-
+{{discount}}
 <div class="row">
   <div class="container content-section col-12 col-md-9">
     <div class="card cart-card">
@@ -79,7 +79,7 @@
         </div>
         <div class="discount d-flex">
           <p>Discount</p>
-          <p class="cart-discount ms-auto">10%</p>
+          <p class="cart-discount ms-auto">{{discount}}%</p>
         </div>
         <div class="grandtotal d-flex">
           <p>Grand Total</p>
@@ -116,10 +116,7 @@
             </div>
           </div>
         </form>
-        <form action="{{url_for('main.apply')}}" method="POST">
-          <input type="hidden" value="" id="discountcode" name="discountcode">
-          <button class="btn btn-purchase checkout" id="checkout" type="submit">Checkout</button>
-        </form>
+        <button class="btn btn-purchase checkout" id="checkout" type="submit" onclick="location.href = '/checkout'">Checkout</button>
       </div>
       
     </div>
@@ -136,67 +133,3 @@
 {% block scripts %}
 <script src="../static/scripts/cart.js"  async></script> 
 {% endblock %}
-
-<!-- <section class="container content-section">
-  <h2 class="section-header">CART</h2>
-  <div class="cart-row">
-      <span class="cart-item cart-header cart-column">ITEM</span>
-      <span class="cart-price cart-header cart-column">PRICE</span>
-      <span class="cart-quantity cart-header cart-column">QUANTITY</span>
-  </div>
-  <div class="cart-items">
-    {% for product in cart_list %}
-    <div class="cart-row">
-      <div class="cart-item cart-column">
-        <img class="cart-item-image" src="{{ url_for('static', filename='product_uploads/' + product[0].get_filename()) }}" width="100" height="100">
-        <span class="cart-item-title">{{ product[0].get_product_name() }}</span>
-      </div>
-      <span class="cart-price cart-column">S${{ product[0].get_product_price() }}</span>
-      <div class="cart-quantity cart-column">
-          <input class="cart-quantity-input" type="number" value="{{product[1]}}">
-          <form action="{{url_for('main.transactions.remove_item', sku=product[0].get_sku())}}" method="POST">
-
-            <button type="submit" class="btn"data-toggle="tooltip" data-placement="right" title="Clicking this will remove the item from cart"> 
-              <i class="bx bx-x"></i>
-            </button>
-
-          </form>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  <div class="cart-total">
-    <strong class="cart-total-title">Total</strong>
-    <span class="cart-total-price">$0</span>
-  </div>
-  
-  <button class="btn btn-purchase" type="button">Proceed to Checkout</button>
-  <form action="{{url_for('main.transactions.delete_cart', user_id=1)}}" method="POST">
-
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">
-      Empty Cart
-    </button>
-
-    <div class="modal" id="myModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-
-          <div class="modal-header">
-            <h4 class="modal-title">Delete Confirmation</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-
-          <div class="modal-body">
-            Are you sure you want to delete EVERYTHING in the cart?
-          </div>
-
-          <div class="modal-footer">
-            <input type="submit" value="Delete" class="btn btn-danger">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </form>
-</section> -->

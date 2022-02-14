@@ -8,7 +8,7 @@ def checkoutFunc():
     with shelve.open('tit/database/cart.db', 'w') as cart_db:
         with shelve.open('tit/database/orders.db', 'c') as orders_db:
             with shelve.open('tit/database/products.db') as products_db:
-                with shelve.open('tit/database/customers.db', 'w') as customer_db:
+                with shelve.open('tit/database/users.db', 'w') as customer_db:
                     customers_dict = {}
                     cart_dict = {}
                     orders_dict = {}
@@ -63,6 +63,9 @@ def checkoutFunc():
                     spools = current_user.get_spools() + int(order_total)
                     customer = customers_dict[cust_id]
                     customer.set_spools(spools)
+                    print(order_total)
+                    print(spools)
+                    customers_dict[cust_id] = customer
 
                     # minus qty
                     cart = cart_dict.get(cust_id)

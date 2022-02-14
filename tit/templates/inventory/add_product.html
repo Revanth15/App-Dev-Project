@@ -29,11 +29,66 @@
       </div>
       <div class="form-group col py-3">
         {{ form.hidden_tag() }}
-        {{ form.file }}
+        {{ render_field(form.file, id='file-input')}}
+        <div class="image-preview" id="imagePreview">
+          <img src="" alt="Image Preview" class="image-preview__image">
+          <span class="image-preview__default-text">
+            Image Preview
+          </span>
+        </div>
       </div>
       <input type="submit" value="Add Product" class="btn btn-primary col py-3"/>
       <button onclick="location.href = '/admin/inventory/retrieve_product';" id="goBack" class="align-right submit-button" >Go Back</button>
     </form>
   </div>
 </div>
+
+<style type="text/css">
+  .image-preview {
+    width:300px;
+    min-height: 100px;
+    border: 2px solid #dddddd;
+    margin-top: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #cccccc;
+  }
+
+  .image-preview__image {
+    display: none;
+    width: 100%;
+  }
+</style>
+
+<script>
+  const fileInput = document.getElementById('file-input');
+  const previewContainer = document.getElementById('imagePreview');
+  const previewImage = previewContainer.querySelector('.image-preview__image');
+  const previewDefaultText = previewContainer.querySelector('.image-preview__default-text');
+
+  fileInput.addEventListener('change', function() {
+    const file = this.files[0]
+
+    if (file) {
+      const reader = new FileReader();
+
+      previewDefaultText.style.display = "none";
+      previewImage.style.display = "block";
+
+      reader.addEventListener('load', function() {
+        console.log(this)
+        previewImage.setAttribute('src', this.result);
+      })
+
+      reader.readAsDataURL(file);
+    } else {
+      previewDefaultText.style.display = null;
+      previewImage.style.display = null;
+      previewImage.setAttribute('src', '');
+    }
+  });
+</script>
 {% endblock %}
