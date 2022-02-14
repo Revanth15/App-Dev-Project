@@ -73,7 +73,6 @@ def parseVisitorData(session_id):
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
-    print(current_user.get_spools())
     products_dict = {}
     try:
         products_db = shelve.open('tit/database/products.db', 'r')

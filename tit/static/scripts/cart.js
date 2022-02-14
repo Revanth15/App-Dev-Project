@@ -70,7 +70,6 @@ $('.cart-quantity-input').change(function() {
 $('.apply-discount-button').click(function() {
     var discountcode = document.getElementsByClassName('discount-input')[0].value
     console.log(discountcode)
-    document.getElementById('discountcode').value = discountcode
     $.getJSON('/transactions/discount', {
         discount_code: discountcode
     })
