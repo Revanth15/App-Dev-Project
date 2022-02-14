@@ -23,6 +23,14 @@ function addtocartClicked(element) {
     })
 }
 
+function disc(){
+    var discountamount = $('.cart-discount').text().replace('%', '')
+    var subtotal = $('.cart-total-price').text().replace('S$', '')
+    subtotal = (subtotal/100) * (100- discountamount)
+    document.getElementsByClassName('cart-grandtotal-price')[0].innerText = 'S$' + subtotal
+    localStorage.setItem('discountcode',discountcode)
+}
+
 
 function quantityChanged(event) {
     var input = event.target
@@ -30,6 +38,7 @@ function quantityChanged(event) {
         input.value = 1
     }
     updateCartTotal()
+    disc()
 }
 
 
@@ -65,18 +74,21 @@ $('.cart-quantity-input').change(function() {
         sku: sku,
         quantity : quantity,
       })
+    disc()
 }) 
 
 $('.apply-discount-button').click(function() {
     var discountcode = document.getElementsByClassName('discount-input')[0].value
-    console.log(discountcode)
-    $.getJSON('/transactions/discount', {
-        discount_code: discountcode
-    })
-    var discountamount = $('.cart-discount').text().replace('%', '')
-    var subtotal = $('.cart-grandtotal-price').text().replace('S$', '')
-    subtotal = (subtotal/100) * (100- discountamount)
-    document.getElementsByClassName('cart-grandtotal-price')[0].innerText = 'S$' + subtotal
+    if (discountcode != localStorage.getItem('discountcode')) {
+        console.log(discountcode)
+        $.getJSON('/transactions/discount', {
+            discount_code: discountcode
+        }, function(data) {
+            console.log(data)
+            $('.cart-discount').text(data.discountcode + "%")
+            disc()
+        })
+    }
     
 })
 

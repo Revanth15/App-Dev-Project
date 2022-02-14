@@ -14,7 +14,7 @@ class Order():
     def get_total_price(self):
         return self.__total_price
 
-    def get_order_id(self):
+    def get_order(self):
         return self.__order
 
     def get_order_id(self):
