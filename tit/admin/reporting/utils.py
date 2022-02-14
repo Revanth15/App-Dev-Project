@@ -1,13 +1,62 @@
+import os
 from PIL import Image
 import base64
 from io import BytesIO
 import csv
-
+from collections import Counter
+from os import listdir
 from tit import app
 
 from fpdf import FPDF
 from pandas import DataFrame, ExcelWriter
+from tit.utils import get_db
 
+def db_count_occurence(database, dbkey, method, args=None):
+    dict = get_db(database, dbkey)
+
+    datalist= []
+    for key in dict:
+        obj = dict[key]
+        func = getattr(obj, method)
+        if args is None:
+            data = func()
+        else:
+            data = func(str(args))
+        datalist.append(data)
+    datalist = Counter(datalist)
+    x = []
+    y = []
+    for xtick in datalist:
+        ytick = datalist[xtick]
+        if ytick== '' or None:
+            ytick = 0
+        if xtick=='':
+            xtick = 'undefined'
+        x.append(xtick)
+        y.append(ytick)
+    jsondata = {'x': x, 'y': y}
+    return jsondata
+
+def db_get_qty(database, dbkey, method, args=None):
+    dict = get_db(database, dbkey)
+
+    x = []
+    y = []
+    for key in dict:
+        obj = dict[key]
+        func = getattr(obj, method)
+        if args is None:
+            data = func()
+        else:
+            data = func(str(args))
+        if data == '' or None:
+            data = 0
+        if str(obj) == '':
+            obj = 'undefined'
+        x.append(str(obj))
+        y.append(data)
+    jsondata = {'x': x, 'y': y}
+    return jsondata
 
 def b64toimg(b64strs):
     b64strs = b64strs.split(',')
@@ -19,7 +68,8 @@ def b64toimg(b64strs):
             im.save(f'tit/tmp/chart{index}.png', 'PNG')
             index += 1
 
-def createPDF(output, imgs):
+def createPDF(output, imgs, choices):
+    print(choices)
     WIDTH = 210
     HEIGHT = 297
 
@@ -28,6 +78,7 @@ def createPDF(output, imgs):
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_font('BebasNeue', '', 'BebasNeue-Regular.ttf', uni=True)
     pdf.add_page()
+    
     pdf.image(f"{app.config['STATIC_PATH']}/images/Letterhead.png", 0, 0, WIDTH)
     pdf.set_fill_color(255,255,255)
     pdf.rect(5, 50, 100, 50, 'D')
@@ -43,8 +94,18 @@ def createPDF(output, imgs):
     pdf.set_font('BebasNeue', '', 32)
     pdf.cell(0, 0, "Report")
 
-    pdf.image("tit/tmp/chart0.png", 10, 50, WIDTH/2-20)
-    pdf.image("tit/tmp/chart1.png", WIDTH/2+10, 50, WIDTH/2-20)
+    index = 0
+    height = 50
+    for img in listdir('tit/tmp'):
+        if int(img[-5]) in choices:
+            print('img!')
+            if index % 2 == 0:
+                pdf.image(f"tit/tmp/{img}", 10, height, WIDTH/2-20)
+            else:
+                pdf.image(f"tit/tmp/{img}", WIDTH/2+10, height, WIDTH/2-20)
+                height+=50
+            index +=1
+        os.remove(img)
     #pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\test.pdf')
     pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\{output}')
     

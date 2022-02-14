@@ -1,5 +1,6 @@
 {% extends "includes/_report.html" %}
-{% from 'includes/_formhelper.html' import render_field %}
+{% from 'includes/formhelper.html' import render_field %}
+{% set breadcrumb = [['reporting.reports', 'reports']] %}
 
 {% block header %}
 {{super()}}
@@ -7,9 +8,41 @@
 {% endblock %}
 
 {% block create %}
-<button type="button" class="btn btn-primary ms-auto align-self-start" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Create report &nbsp; <i class="bi bi-plus-square"></i>
-</button>
+<div class="modal fade" id="loader" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content container-fluid">
+            <div class="d-flex justify-content-center align-items-center my-5">
+                <p class="text-blac fs-3 m-0 me-5">Loading Charts...</p>
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul class="navbar-nav">
+    <li class="nav-item dropdown">
+    <a class="nav-link px-3 dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Logs
+    </a>
+    <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+        <li><a class="dropdown-item" href="{{url_for('admin.reporting.logs', tab='inventory')}}">Inventory</a></li>
+        <li><a class="dropdown-item" href="{{url_for('admin.reporting.logs', tab='sales')}}">Sales</a></li>
+        <li><a class="dropdown-item" href="{{url_for('admin.reporting.logs', tab='traffic')}}">Traffic</a></li>
+    </ul>
+    </li>
+</ul>
+<div class="btn-group ms-auto align-self-start">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Create report &nbsp; <i class="bi bi-plus-square"></i>
+    </button>
+    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="visually-hidden">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{url_for('admin.reporting.archives')}}">View Reports</a></li>
+    </ul>
+</div>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 <div class="modal-dialog">
     <div class="modal-content">
@@ -18,16 +51,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form method="POST" action="{{url_for('admin.reporting.reports')}}">
+            {{ form.csrf_token }}
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12">
                         <div class="form-floating ">
                             {{ render_field(form.filename, class="form-control") }}
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-floating ">
-                            {{ render_field(form.filetype, class="form-select") }}
                         </div>
                     </div>
                 </div>
@@ -37,6 +66,16 @@
                             {{ render_field(form.tags, class="form-control") }}
                             {{ form.images }}
                         </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating ">
+                            {{ render_field(form.filetype, class="form-select") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{form.charts}}
                     </div>
                     <span id="result">Result: newReport.pdf</span>
                 </div>
@@ -52,53 +91,75 @@
 {% endblock %}
 {% block inventory -%}
 <div class="row">
-    <div class="container-fluid card col-xl-5 col-md-10">
-        <canvas id="restockChart"></canvas>
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-body"><canvas id="restockChart" width="100%" height="40"></canvas></div>
+        </div>
     </div>
-    <div class="container-fluid card col-xl-5 col-md-10">
-        <canvas id="outofstockChart"></canvas>
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-body"><canvas id="outofstockChart" width="100%" height="40"></canvas></div>
+        </div>
+    </div>
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-body"><canvas id="productQtyChart" width="100%" height="40"></canvas></div>
+        </div>
     </div>
 </div>
-<div class="row">
-</div>
-<a href="{{url_for('admin.reporting.logs', tab='inventory')}}">See Logs</a>
+
 {% endblock -%}
 {% block sales -%}
 <div class="row">
-    <div class="container-fluid card col-5">
-        <canvas id="revenueChart"></canvas>
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-body"><canvas id="revenueChart" width="100%" height="40"></canvas></div>
+        </div>
     </div>
-    <div class="container-fluid card col-5">
-        <canvas id="salesChart"></canvas>
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-body"><canvas id="salesChart" width="100%" height="40"></canvas></div>
+        </div>
     </div>
 </div>
-<a href="{{url_for('admin.reporting.logs', tab='sales')}}">See Logs</a>
 {% endblock -%}
 {% block traffic -%}
 <div class="row">
-    <div class="container-fluid card col-5">
-        <canvas id="visitorChart"></canvas>
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-body"><canvas id="visitorChart" width="100%" height="40"></canvas></div>
+        </div>
     </div>
-    <div class="container-fluid card col-5">
-        <canvas id="purchaseChart"></canvas>
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-body"><canvas id="purchaseChart" width="100%" height="40"></canvas></div>
+        </div>
     </div>
 </div>
-<a id="test" href="{{url_for('admin.reporting.logs', tab='traffic')}}">See Logs</a>
 {% endblock -%}
 
 {% block chartjs %}
     <script type="text/javascript">
-        data = {{inventory|tojson}}
+        let run = false
         function done() {
             const imgarray = []
             document.querySelectorAll('canvas').forEach(element => {
                 image = element.toDataURL()       
                 imgarray.push(image)
-
+                
             });
             document.getElementById('images').value = imgarray
+            console.log(imgarray)
+            hidetabs()
+            run = true
         }
-
+        function doneOnce() {
+            if (!run) done();
+        }
+        data = []
+        {% for data in data %}
+            data.push({{data|tojson}})
+        {% endfor %}
 
 
     </script>

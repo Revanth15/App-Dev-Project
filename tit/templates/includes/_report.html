@@ -4,8 +4,8 @@
 {% from 'includes/_formhelper.html' import render_field %}
 
 {% block content %}
-    <div class="admin-padding">
-        <div class="card">
+    <div class="container-fluid">
+        <div class="card" id="report-card">
             <div class="card-header">
                 <ul id="reportTabs" class="nav nav-tabs card-header-tabs", role="tablist">
                     <li class="nav-item" role="presentation">
@@ -21,9 +21,9 @@
                     {% endblock %}
                 </ul>
             </div>
-            <div class="card-body">
-                <p>Last Updated: {{datetime.strftime('%D, %I:%M %p')}}</p>
-                <div class="tab-content" id="reportTabContent">
+            <div class="card-body ">
+                <div class="tab-content d-flex flex-column" id="reportTabContent">
+                    <p>Last Updated: {{datetime.strftime('%D, %I:%M %p')}}</p>
                     <div id="inventory" class="tab-pane fade {% if 'inventory' == tab %}show active{% endif %}" role="tabpanel" aria-labelledby="inventory-tab">
                         {% block inventory -%}
                         {% endblock -%}
@@ -48,4 +48,5 @@
     {{ super() }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="/static/scripts/reports.js"></script>
+    <script src="/static/scripts/loader.js"></script>
 {% endblock %}

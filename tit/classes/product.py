@@ -51,5 +51,8 @@ class Product:
 
     def set_category(self,category):
         self.__category = category
+
+    def __str__(self):
+        return self.get_product_name()
     
 

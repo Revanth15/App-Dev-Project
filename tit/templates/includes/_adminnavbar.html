@@ -1,9 +1,11 @@
-<nav class="sidebars close">
+<nav class="sidebars close shadow-sm">
     <header>
         <div class="image-text">
-            <span class="image">
-                <img src="../../static/images/logo.png">
-            </span>
+            <div class="image">
+                <a href="{{url_for('main.home')}}">
+                    <img src="{{url_for('static', filename='images/logo.png')}}">
+                </a>
+            </div>
 
             <div class="text logo-text">
                 <span class="name">Admin</span>

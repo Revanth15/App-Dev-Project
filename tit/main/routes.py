@@ -6,8 +6,8 @@ import urllib
 import json
 import hashlib
 
-from tit.admin.inventory.forms import Checkout
-from tit.main.transactions.routes import cart, transactions
+
+from tit.main.transactions.routes import transactions
 from tit.main.rewards.routes import rewards
 from tit.main.accounts.routes import accounts
 from tit.main.support.routes import support
@@ -16,8 +16,7 @@ from tit.utils import get_db, set_db, event
 
 from tit.classes.Traffic import Session
 import tit.classes.payment as Payment
-import tit.classes.order as Order
-
+from tit.admin.inventory.forms import Checkout
 
 
 main = Blueprint('main', __name__)
@@ -29,6 +28,7 @@ main.register_blueprint(support)
 
 @main.before_request
 def getSession():
+    print(current_user)
     if 'static' not in request.url:
         time = datetime.datetime.now().replace(microsecond=0)
         userIP = request.remote_addr
@@ -60,7 +60,7 @@ def getSession():
         parseVisitorData(sessionID)
 
 def parseVisitorData(session_id):
-    data = [request.path, datetime.datetime.now().strftime('%Y-%m-%d, %H:%M:%S'), request.method, event()]
+    data = [request.path, datetime.datetime.now(), event()]
     sessions_dict = get_db('traffic', 'Sessions')
     viewer = sessions_dict.get(session_id)
     if viewer is None:
@@ -71,7 +71,7 @@ def parseVisitorData(session_id):
     return f'{session_id} Parsed'
             
 
-@main.route('/', methods=['GET', 'POST'])
+@main.route('/')
 def home():
     print(current_user.get_spools())
     products_dict = {}

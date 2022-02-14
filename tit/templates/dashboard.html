@@ -1,8 +1,112 @@
 {% extends "baseAdmin.html" %}
 {% block title %} Admin - Dashboard {% endblock %}
 {% set active_page = "dashboard" %}
+{% set card_color = [
+    'bg-primary',
+    'bg-primary',
+    'bg-warning',
+    'bg-success'
+] %}
+{% set breadcrumb = [['dashboard', 'dashboard']] %}
 {% block content %} 
-    <div class="container-fluid d-flex admin-padding">
-        
+    {% for name, count, data in cards %}
+    <div class="modal fade g-0" id="{{name|replace(' ', '_')}}" tabindex="-1" aria-labelledby="{{name|replace(' ', '_')}}Label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable w-75">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="{{name|replace(' ', '_')}}Label">Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                {% for key in data[0] %}
+                                <th>{{key}}</th>
+                                {% endfor %}
+                            </thead>
+                            <tbody>
+                                {% for row in data[1] %}
+                                <tr>
+                                    {% for col in row %}
+                                    <td>{{col}}</td> 
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    {% endfor %}
+    <div>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="my-2">Today's Outlook</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for name, count, data in cards %}
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card {{card_color[loop.index0]}} text-white mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 border-end">{{name}}</div>
+                                    <div class="col-md-6 m-auto fs-4 text-center" style="font-family:'Roboto Mono', monospace ;">{{count}}</div>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <a type="button" class="small text-white stretched-link" data-bs-toggle="modal" data-bs-target="#{{name|replace(' ', '_')}}">View Details</a>
+                                <div class="small text-white"><i class="bi bi-chevron-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-body"><canvas id="restockChart" width="100%" height="40"></canvas></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-body"><canvas id="outofstockChart" width="100%" height="40"></canvas></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12">
+                        <div class="card mb-4">
+                            <div class="card-body"><canvas id="productQtyChart" width="100%" height="40"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    function done() {
+        const imgarray = []
+        document.querySelectorAll('canvas').forEach(element => {
+            image = element.toDataURL()       
+            imgarray.push(image)
+            
+        });
+        // document.getElementById('images').value = imgarray
+    }
+    data = []
+    {% for data in data %}
+        data.push({{data|tojson}})
+    {% endfor %}
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+<script src="/static/scripts/dashboard.js"></script>
 {% endblock %}

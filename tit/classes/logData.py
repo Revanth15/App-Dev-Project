@@ -7,18 +7,29 @@ class logData:
         self.__datetimeModified = datetime.datetime.now()
 
 
-    def get_Created(self, period='datetime'):
-        if period == 'time':
-            return self.__datetimeCreated.strftime("%H:%M:%S")
+    def get_created(self, period='datetime', flag=''):
+        if flag == 'obj':
+            if period == 'time':
+                return self.__datetimeCreated.time()
 
-        elif period == 'date':
-            return self.__datetimeCreated.strftime("%Y-%m-%d")
+            elif period == 'date':
+                return self.__datetimeCreated.date()
 
-        elif period == 'datetime':
-            return self.__datetimeCreated.strftime("%Y-%m-%d %H:%M:%S")
+            else:
+                return self.__datetimeCreated
 
         else:
-            return self.__datetimeCreated.strftime(period)
+            if period == 'time':
+                return self.__datetimeCreated.strftime("%H:%M:%S")
+
+            elif period == 'date':
+                return self.__datetimeCreated.strftime("%Y-%m-%d")
+
+            elif period == 'datetime':
+                return self.__datetimeCreated.strftime("%Y-%m-%d %H:%M:%S")
+
+            else:
+                return self.__datetimeCreated.strftime(period)
 
     def get_id(self):
         return self.__id

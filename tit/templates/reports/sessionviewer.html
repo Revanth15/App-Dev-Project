@@ -2,7 +2,7 @@
 {% block title %} Admin - Session {% endblock %}
 {% set back = ['logs', 'traffic'] %}
 {% set active_page = 'reports' %}
-
+{% set breadcrumb = [['reporting.reports', 'reports'], ['reporting.logs', 'Logs', 'traffic'], ['', 'Session']] %}
 {% block content %}
     <div>
         <div class="card">
@@ -20,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {%for view in session.get_views()%}
+                        {%for view in session.get_views()|reverse%}
                         <tr>
                             <td>{{loop.index}}</td>
                             <td>{{view[1]}}</td>

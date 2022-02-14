@@ -1,56 +1,57 @@
 from flask import request
+from os import listdir
 
 import shelve
-import ast
 import json
 
 from tit import app
-from collections import Counter
 
 from tit.classes.Notification import Notification
 
 
-
-def get_ip():
-    return request.remote_addr
-
-def get_db(database, key, get_x=None, params=None):
-    with shelve.open(f"tit/database/{database}.db", 'c') as db:
+def dbkeys(flag=False):
+        
+    mypath = 'tit/database'
+    db_dict = {}
+    for f in listdir(mypath):
+        if f.endswith('.dir'):
+            f=f.rstrip('.dir')
+            db = shelve.open(f'tit/database/{f}', 'c')
+            klist = list(db.keys())
+            db_dict.update({f: klist})
+    if flag :
+        print(db_dict)
+    return db_dict
+                
+def get_db(database, key):
+    if '.db' in database:
+        print('".db" found in argument! If this was not intentional, please remove it as .db is appended automatically.')
+    if database+'.db' not in dbkeys().keys():
+        print('Database not found! Returning empty dictionary')
+        return {}
+    with shelve.open(f"tit/database/{database}.db", 'r') as db:
         dict = {}
         try:
             dict = db[f'{key}']
+            print(f'Retrieved {database}[{key}] Successfully!')
+
+        except KeyError:
+            print(f'Error Retrieving {database}[{key}]')
+            print(f'Key [{key}] not found')
+
         except Exception as ex:
             print(ex)
 
-    if get_x is None:
-        return dict
-    else:
-        datalist = []
-        for key in dict:
-            obj = dict[key]
-            func = getattr(obj, get_x)
-            if params is None:
-                data = func()
-            else:
-                data = func(str(params))
-            datalist.append(data)
-        datalist = Counter(datalist)
-        x = []
-        y = []
-        for xtick in datalist:
-            ytick = datalist[xtick]
-            if ytick== '':
-                ytick = 0
-            if xtick=='':
-                xtick = 'undefined'
-            x.append(xtick)
-            y.append(ytick)
-        jsondata = {'x': x, 'y': y}
-        return jsondata
-
+    return dict
+    
 def set_db(database, key, value):
-    with shelve.open(f"tit/database/{database}.db", 'w') as db:
+    if '.db' in database:
+        print('".db" found in argument! If this was not intentional, please remove it as .db is appended automatically.')
+    if database+'.db' not in dbkeys().keys():
+        print('Database not found! Creating new database')
+    with shelve.open(f"tit/database/{database}.db", 'c') as db:
         db[f'{key}'] = value
+        print(f'Set value for {database}[{key}] Successfully!')
 
 def get_notifications(id=None):
     notification_dict = get_db('notification', 'Notifications')
@@ -65,15 +66,20 @@ def set_notifications(name, type, message, url):
     set_db('notification', 'Notifications', notification_dict)
 
 def event():
-    file = open('index.txt', 'r')
-    index = file.read()
-    index = json.loads(index)
+    file = open('index.json', 'r')
+    index = json.load(file)
     file.close()
     
-    # path = request.path
-    # method = request.method
-    # index = app.url
-    # if path == '/' and 
+    path = request.path
+    method = request.method
+    
+    if index.get(path) is not None:
+        if index.get(path).get(method) is not None and index.get(path).get(method) != '':
+            return index.get(path).get(method)
+        else:
+            return "Unnamed Event"
+    else:
+        return "Path not registered"
         
 def update_url_map():
     file = open('index.txt', 'r')

@@ -1,4 +1,4 @@
-from wtforms import StringField, SelectField, IntegerField, TextAreaField, FileField, validators, PasswordField
+from wtforms import StringField, SelectField, IntegerField, TextAreaField, FileField, validators, PasswordField, Field
 import wtforms
 from wtforms.fields import EmailField, DateField
 from wtforms.widgets.core import NumberInput

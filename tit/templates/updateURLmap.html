@@ -3,9 +3,14 @@
 {% set active_page = "dashboard" %}
 {% from 'includes/formhelper.html' import render_field %}
 {% block content %} 
-    <div class="container-fluid d-flex admin-padding">
-        <form action="">
-            {{}}
+    <div class="container-fluid col-6">
+        <form method="post">
+            {% for field in form %}
+            <div class="form-floating ">
+                {{ render_field(field, class="form-control")}}
+            </div>
+            {% endfor %}
+            <input type="submit">
         </form>
     </div>
 {% endblock %}

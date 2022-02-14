@@ -5,7 +5,7 @@ import tit.classes.Customer as Customer
 from tit.classes.admin import Admin
 from tit.main.accounts.Forms import CustomerSignUpForm, ChangePasswordForm, getOTPForm
 
-from flask_login import current_user, login_required
+from flask_login import current_user, login_required, login_user, logout_user
 
 accounts = Blueprint('accounts', __name__, template_folder='templates', static_url_path='static', url_prefix='/user')
 

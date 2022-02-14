@@ -1,11 +1,13 @@
 from flask_login import UserMixin
+from tit.classes.logData import logData
 
-class User(UserMixin):
+class User(logData, UserMixin):
     count_id = 0
 
 # more, use this. User class
     def __init__(self, name, email, phone_number, password, role='Customer'):
-        super().__init__()
+        logData.__init__(self)
+        UserMixin.__init__(self)
         User.count_id += 1
         self.__user_id = User.count_id
         self.__name = name
@@ -49,4 +51,3 @@ class User(UserMixin):
  
     def set_password(self, password):
         self.__password = password
-    

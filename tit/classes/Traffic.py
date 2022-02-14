@@ -1,10 +1,11 @@
 import datetime
+from tit.classes.logData import logData
 
-class Session():
+class Session(logData):
     def __init__(self, userip, session, country=None, continent=None, city=None):
+        super().__init__()
         self.__userIP = userip
         self.__sessionID = session
-        self.__time = datetime.datetime.now().replace(microsecond=0)
         self.__userCountry = country
         self.__userContinent = continent
         self.__userCity = city
@@ -15,9 +16,6 @@ class Session():
 
     def get_session(self):
         return self.__sessionID
-
-    def get_time(self):
-        return self.__time
 
     def get_country(self):
         return self.__userCountry
