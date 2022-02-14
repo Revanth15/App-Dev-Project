@@ -3,9 +3,21 @@
 
 
 {% block content %}
+<h1>Past Orders</h1>
 
-{% for order_id in orders_list %}
-<p>{{order_id}}</p>
-{% endfor %}
+<div class="container">
+    <div class="row mt-3">
+        {% for order_id in orders_list %}
+        <div class="col-12 col-xs-12 col-md-6 ">
+            <div class="card mt-3">
+                <div class="card-body text-center">
+                    <p>OrderID: {{order_id}}</p>
+                    <button class="btn btn-primary">View Order</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock%}   

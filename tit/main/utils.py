@@ -5,7 +5,7 @@ import tit.classes.order as Order
 from tit.utils import get_db, set_db
 
 def checkoutFunc():
-    cust_id = current_user.get_id()
+    user_id = current_user.get_customer_id()
     with shelve.open('tit/database/cart.db', 'w') as cart_db:
         with shelve.open('tit/database/orders.db', 'c') as orders_db:
             with shelve.open('tit/database/products.db') as products_db:
@@ -32,23 +32,23 @@ def checkoutFunc():
                     except:
                         print("Error in retrieving Customer from customers.db")
                     
-                    if cart_dict.get(cust_id) is None:
-                        cart_dict[cust_id] = [{},0,0]
+                    if cart_dict.get(user_id) is None:
+                        cart_dict[user_id] = [{},0,0]
 
-                    cart = cart_dict[cust_id]
+                    cart = cart_dict[user_id]
                     status = 'Processing'
                     order = Order.Order(cart[1],cart[0],status)
                     order_id = order.get_order_id()
-                    if orders_dict.get(cust_id) is not None:
-                        cust_order = orders_dict.get(cust_id) 
+                    if orders_dict.get(user_id) is not None:
+                        cust_order = orders_dict.get(user_id) 
                     else:
                         cust_order = {}
                     cust_order.update({order_id : order})
-                    orders_dict[cust_id] = cust_order
+                    orders_dict[user_id] = cust_order
 
                     vouchers_dict = get_db('vouchers', 'Vouchers')
                     
-                    discount_code_applied = cart_dict[cust_id][2]
+                    discount_code_applied = cart_dict[user_id][2]
                     for key in vouchers_dict:
                         voucher = vouchers_dict.get(key)
                         if discount_code_applied == voucher.get_discount_code():
@@ -57,23 +57,23 @@ def checkoutFunc():
                             vouchers_dict = voucher
 
                     # hand out spools
-                    order_total = cart_dict[cust_id][1]
+                    order_total = cart_dict[user_id][1]
                     spools = current_user.get_spools() + int(order_total)
-                    customer = customers_dict[cust_id]
+                    customer = customers_dict[user_id]
                     customer.set_spools(spools)
                     print(order_total)
                     print(spools)
-                    customers_dict[cust_id] = customer
+                    customers_dict[user_id] = customer
 
                     # minus qty
-                    cart = cart_dict.get(cust_id)
+                    cart = cart_dict.get(user_id)
                     user_cart = cart[0]
                     for sku in user_cart:
                         product = products_dict.get(sku)
-                        qty = product.get_quantity() - cart_dict[cust_id][0][sku]
+                        qty = product.get_quantity() - cart_dict[user_id][0][sku]
                         product.set_quantity(qty)
                         
-                    cart_dict.pop(int(cust_id))
+                    cart_dict.pop(int(user_id))
                     cart_db['cart'] = cart_dict
                     orders_db['orders'] = orders_dict
                     set_db('vouchers', 'Vouchers', vouchers_dict)

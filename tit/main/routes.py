@@ -82,10 +82,16 @@ def home():
         print("Error in retrieving Product from products.db.")
 
     products_list = []
+    i = 1
     for key in products_dict:
         product = products_dict.get(key)
-        if product.get_quantity() >= 5:
-            products_list.append(product)
+        if i <= 8:
+            if product.get_quantity() >= 10:
+                products_list.append(product)
+                i += 1
+        else:
+            break
+        
 
     return render_template('homepage.html',products_list=products_list)
 
@@ -152,7 +158,7 @@ def hoodies():
 
 @main.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-    cust_id = current_user.get_id()
+    user_id = current_user.get_customer_id()
     checkout_form = Checkout()
     if request.method == 'POST' and checkout_form.validate_on_submit():
         with shelve.open('tit/database/payment.db', 'c') as payment_db:
@@ -191,14 +197,14 @@ def checkout():
             payment_db['payment'] = payment_dict
             return redirect(url_for('main.home'))
     else:
-        with shelve.open('tit/database/customers.db', 'r') as customer_db:
+        with shelve.open('tit/database/users.db', 'r') as customer_db:
             customer_dict = {}
             try: 
                 customer_dict = customer_db['Customers']
             except:
                 print("Error in retrieving Customers from customers.db.")
 
-            customer = customer_dict.get(cust_id)
+            customer = customer_dict.get(user_id)
             checkout_form.name.data = customer.get_name()
             checkout_form.email.data = customer.get_email()
             checkout_form.phone_number.data = customer.get_phone_number()
@@ -207,7 +213,7 @@ def checkout():
 
 @main.route('/myOrders')
 def myOrders():
-    user_id = current_user.get_id()
+    user_id = current_user.get_customer_id()
     with shelve.open('tit/database/orders.db', 'w') as orders_db:
         orders_dict = {}
         try:

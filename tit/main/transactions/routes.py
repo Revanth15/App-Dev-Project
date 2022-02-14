@@ -8,7 +8,7 @@ transactions = Blueprint('transactions', __name__, template_folder='templates', 
 
 @transactions.route('/cart', methods=['GET','POST'])
 def cart(): 
-    user_id = current_user.get_id()
+    user_id = current_user.get_customer_id()
     if request.method == 'POST':     
         with shelve.open('tit/database/cart.db','c') as cart_db:
             cart_dict = {}
@@ -54,7 +54,7 @@ def cart():
 
 @transactions.route('/remove_item/<sku>', methods=['POST'])
 def remove_item(sku):
-    user_id = current_user.get_id()
+    user_id = current_user.get_customer_id()
     cart_dict = {}
     cart_db = shelve.open('tit/database/cart.db', 'w')
     cart_dict = cart_db['cart']
@@ -67,7 +67,7 @@ def remove_item(sku):
 
 @transactions.route('/delete_cart', methods=['POST'])
 def delete_cart():
-    user_id = current_user.get_id()
+    user_id = current_user.get_customer_id()
     cart_dict = {}
     cart_db = shelve.open('tit/database/cart.db', 'w')
     cart_dict = cart_db['cart']
@@ -80,7 +80,7 @@ def delete_cart():
 
 @transactions.route('/update_cart' ,methods=['GET'])
 def update_cart():
-    user_id = current_user.get_id()
+    user_id = current_user.get_customer_id()
     with shelve.open('tit/database/cart.db','c') as cart_db: 
         cart_dict = {}
         try:
@@ -100,7 +100,7 @@ def update_cart():
 
 @transactions.route('/update_total' ,methods=['GET', 'POST'])
 def update_total():
-    user_id = current_user.get_id()
+    user_id = current_user.get_customer_id()
     with shelve.open('tit/database/cart.db','c') as cart_db: 
         cart_dict = {}
         try:
@@ -115,9 +115,9 @@ def update_total():
 
 @transactions.route('/discount' ,methods=['GET','POST'])
 def discount():
-    user_id = current_user.get_id()
+    user_id = current_user.get_customer_id()
     discount_code_applied = request.args.get('discount_code')
-    with shelve.open('tit/database/customers.db', 'w') as customer_db:
+    with shelve.open('tit/database/users.db', 'w') as customer_db:
         with shelve.open('tit/database/cart.db', 'c') as cart_db:
             cart_dict = {}
             try:
@@ -137,6 +137,7 @@ def discount():
             except:
                 print("Error in retrieving Customer from customers.db")
 
+            print(customers_dict)
             customer = customers_dict.get(user_id)
             spools = customer.get_spools()
             print(spools)
