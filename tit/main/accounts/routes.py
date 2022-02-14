@@ -5,7 +5,7 @@ import tit.classes.Customer as Customer
 from tit.classes.admin import Admin
 from tit.main.accounts.Forms import CustomerSignUpForm, ChangePasswordForm, getOTPForm
 
-from flask_login import login_required
+from flask_login import current_user, login_required
 
 accounts = Blueprint('accounts', __name__, template_folder='templates', static_url_path='static', url_prefix='/user')
 
@@ -151,46 +151,32 @@ def update_profile(id):
 def retrieve_password():
     change_password_form = ChangePasswordForm(request.form)  
     if request.method == 'POST':
-        if change_password_form.password.data == 'adminTime':
-            flash("Type in your new password.")
-        else:
-            users_dict = {}
-            db = shelve.open('tit/database/users.db', 'r')
-        
-            try:
-                users_dict = db['Customers']
-                for customer in users_dict.values():
-                    if customer.get_password() == change_password_form.password.data:
-                        redirect()
-                        print('Customer keyed in the correct password.')
-                        flash('You are able to change password.')
-                        redirect(url_for("main.accounts.update_password"))
-                        # redirect(url_for("updatePassword/<int:id>/"))
+        if current_user.get_password() == change_password_form.password.data:
+            return redirect(url_for('main.accounts.update_password'))
 
-            except:
-                print("Error in retrieving Customers from users.db")
 
         # return redirect(url_for('main.accounts.update_password/<int:id>/'))
     return render_template('accounts/retrievePassword.html', form=change_password_form)
 
 
 # Update/Change Password
-@accounts.route('/updatePassword/<int:id>/', methods=['GET', 'POST'])
+@accounts.route('/updatePassword', methods=['GET', 'POST'])
 @login_required
-def update_password(id):
-    update_password_form = CustomerSignUpForm(request.form)
+def update_password():
+    id = current_user.get_customer_id()
+    update_password_form = ChangePasswordForm(request.form)
     if request.method == 'POST':
         users_dict = {}
         db = shelve.open('tit/database/users.db', 'w')
         users_dict = db['Customers']
 
         customer = users_dict.get(id)
-        customer.set_password(update_password_form.password.data)
+        customer.set_password(update_password_form.new_password.data)
         customer.set_confirm_password(update_password_form.confirm_password.data)
         db['Customers'] = users_dict
         db.close()
 
-        return redirect(url_for('main.accounts.retrievePassword'))
+        return redirect(url_for('main.accounts.retrieve_password'))
     else:
         users_dict = {}
         db = shelve.open('tit/database/users.db', 'r')
@@ -209,7 +195,7 @@ def update_password(id):
 
 
         # PROMPT: CUSTOMER PROFILE HAS BEEN UPDATED
-        return render_template('accounts/updateAdminPW.html', form=update_password_form)
+        return render_template('accounts/updatePassword.html', form=update_password_form)
 
 
 

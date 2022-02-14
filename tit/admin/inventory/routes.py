@@ -1,6 +1,6 @@
 from re import S
 from flask import render_template, request, redirect, url_for, Blueprint
-from tit.admin.inventory.forms import CreateProductForm, RestockForm, ImportForm, PaymentForm, Delivery
+from tit.admin.inventory.forms import CreateProductForm, RestockForm, ImportForm
 from tit.utils import set_notifications
 import datetime
 import os

@@ -31,10 +31,6 @@ def get_notifications():
 def authorize():
     if current_user.get_role() != 'Admin':
         abort(404)
-<<<<<<< HEAD
-=======
-
->>>>>>> 8f69e118ce7bfd6896ba10a4436d3523d22270f7
 
 
 @admin.route('/')

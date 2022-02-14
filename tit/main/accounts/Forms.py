@@ -28,7 +28,7 @@ class LoginForm(FlaskForm):
 class ChangePasswordForm(FlaskForm):
     password = PasswordField('Password', [validators.DataRequired()])
     new_password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm_new_password', message='Passwords do not match')])
-    confirm_new_password = PasswordField('Confirm New Password', [validators.DataRequired(),validators.EqualTo('new_password', message='Passwords do not match')])
+    confirm_password = PasswordField('Confirm New Password', [validators.DataRequired(),validators.EqualTo('new_password', message='Passwords do not match')])
     remember = BooleanField('Remember Me')
 
 class getOTPForm(FlaskForm):

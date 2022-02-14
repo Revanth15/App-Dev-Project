@@ -17,32 +17,6 @@ body{
     background: rgb(219, 226, 226);
 }
 
-.row{
-    background: white;
-    border-radius: 30px;
-    box-shadow: 12px 12px 22px grey;
-}
-
-
-
-img{
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-
-}
-
-.btn {
-    border: none;
-    outline: none;
-    height: 50px;
-    width: 100%;
-    background-color: rgb(95, 153, 207);
-    color: white;
-    border-radius: 4px;
-    font-weight: bold;
-
-}
-
 .btn:hover{
     background: white;
     border: 1px solid;
@@ -50,24 +24,25 @@ img{
 
 }
 
-
 </style>
 
 
-<section class="Form my-4 mx-5">
-    <div class="container width-20">
-        <div class="row justify-content-md-center">
-            <div class="col-lg-9 px-5 pt-5">
-                <h1 class="font-weight-bold py-3">Forgot your password?</h1>
+<div class="card mx-auto my-5" style="max-width: 70%">
+    <div class="row g-0">
+      <div class="col-md-8 d-flex justify-content-center align-items-center border-start border-info">
+        <div class="card-body">
+          <div class="row mb-5">
+            <h5 class="col-10 card-title mb-0 fs-3">Forgot Password</h5>
+          </div>
                 <form method="POST" action="/getOTP">
                     
                     <div class="form-row">
-                        <div class="col-lg-7">
+                        <div class="col-7">
                             {{ render_field(form.phone_number, class="form-control my-3 p-2" ) }}
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-lg-7">
+                        <div class="col-7">
                             <button type="submit" type="submit" class="btn btn-primary mt-3 mb-5">Get OTP</button>
                         </div>
                     </div>
@@ -76,13 +51,6 @@ img{
                  
             
             </div>
-
-             {% for customer in customers_list %}
-
-                  <a href="{{url_for('main.accounts.retrieve_profile', id=current_user.get_customer_id())}}" class="btn btn-warning">Back to Profile</a>
-                  {% endfor %}
-
-
         </div>
   </div>
         
