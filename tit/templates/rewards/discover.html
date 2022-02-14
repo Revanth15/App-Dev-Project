@@ -37,7 +37,7 @@
     {% endfor %}
     
     <div class="border border-primary w-100 py-3 my-3" style="background-color: rgb(239, 241, 206);">
-      
+      <p class="text-center mb-1" style="font-size: 50px;">My Spools: {{ current_user.get_spools() }}</p>
       <p class="text-center" style="font-size: 17px;">$1 Spent = 1 Spool</p>
     </div>
     
