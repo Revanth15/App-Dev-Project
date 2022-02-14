@@ -12,8 +12,8 @@ def dbkeys(flag=False):
     mypath = 'tit/database'
     db_dict = {}
     for f in listdir(mypath):
-        if f.endswith('.dir'):
-            f=f.rstrip('.dir')
+        if f.endswith('.dat'):
+            f=f.rstrip('.dat')
             db = shelve.open(f'tit/database/{f}', 'c')
             klist = list(db.keys())
             db_dict.update({f: klist})
@@ -22,28 +22,34 @@ def dbkeys(flag=False):
         print(db_dict)
     return db_dict
                 
-def get_db(database, key):
+def get_db(database, key, v=None):
+    if v is None:
+        default = {}
+    else:
+        default = v
+    print(default)
     if '.db' in database:
         print('".db" found in argument! If this was not intentional, please remove it as .db is appended automatically.')
     if database+'.db' not in dbkeys().keys():
         print('Database not found! Returning empty dictionary')
-        return {}
+        return default
     db = shelve.open(f"tit/database/{database}.db", 'r')
-    dict = {}
+    default_value = default
+    print(default_value)
     try:
-        dict = db[str(key)]
+        default_value = db[str(key)]
         print(f'Retrieved {database}[{key}] Successfully!')
 
     except KeyError:
         print(f'Error Retrieving {database}[{key}]')
         print(f'Key [{key}] not found')
-        print(f'Returning {dict}')
+        print(f'Returning {default_value}')
 
     except Exception as ex:
         print(ex)
     db.close()
 
-    return dict
+    return default_value
     
 def set_db(database, key, value):
     if '.db' in database:

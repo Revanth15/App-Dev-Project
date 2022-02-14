@@ -54,7 +54,7 @@ def checkoutFunc():
                         if discount_code_applied == voucher.get_discount_code():
                             qty = voucher.get_quantity() - 1
                             voucher.set_quantity(qty)
-                            vouchers_dict = voucher
+                            vouchers_dict[key] = voucher
 
                     # hand out spools
                     order_total = cart_dict[cust_id][1]

@@ -1,6 +1,6 @@
 import shelve
 
 
-with shelve.open('tit/database/users.db', 'r') as db:
-    dict = db['Admins']
+with shelve.open('tit/database/vouchers.db', 'r') as db:
+    dict = db['Vouchers']
     print(dict)
