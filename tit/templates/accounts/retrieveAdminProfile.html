@@ -5,37 +5,39 @@
 
 {% block content %}
 
-<div class='admin-padding'>
-<h1 class="display-4"> {{ current_user.get_name() }}'s Profile</h1>
 <div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Gender</th>
-        <th>Phone Number</th>
-      </tr>
-    </thead>
-    <tbody>
-
-      <td>{{ current_user.get_name() }}</td>
-      <td>{{ current_user.get_email() }}</td>
-      <td>{{ current_user.get_gender() }}</td>
-      <td>{{ current_user.get_phone_number() }}</td>
-
-      <td><a href="{{url_for('admin.accounts.updateAdminProfile', id=current_user.get_customer_id())}}" class="btn btn-warning">Update</a></td>
-
-    </tr>
-    </tbody>
-  </table>
-
-<td><a href="{{url_for('admin.accounts.retrieveAdminPW', id=current_user.get_customer_id())}}" class="btn btn-warning">Change Password</a></td>
-
+  <div class="card mx-auto my-5" style="max-width: 70%">
+    <div class="row g-0">
+      <div class="col-md-4 p-4 d-flex justify-content-center align-items-center">
+        <img src="/static/images/logo.png" class="img-fluid rounded-start" alt="">
+      </div>
+      <div class="col-md-8 d-flex justify-content-center align-items-center border-start border-info">
+        <div class="card-body">
+          <div class="row mb-5">
+            <h5 class="col-10 card-title mb-0 fs-3">{{current_user.get_name()}} (Admin)</h5>
+            <a class='col-1 btn btn-outline-dark p-1 border-0' href="{{url_for('admin.accounts.updateAdminProfile', id=current_user.get_admin_id())}}"><i class="bi bi-pencil-square" title="Edit profile"></i></a>
+          </div>
+          <div class="row">
+            <p class="col-5">Email:</p>
+            <p class="col-7">{{current_user.get_email()}}</p>
+          </div>
+          <div class="row">
+            <p class="col-5">Phone Number:</p>
+            <p class="col-7">{{current_user.get_phone_number()}}</p>
+          </div>
+          <div class="row">
+            <p class="col-5">Password:</p>
+            <a class="col-7" href="{{url_for('admin.accounts.retrieveAdminPW', id=current_user.get_admin_id())}}">Change Password</a>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-</div>
 {% endblock %}
+
 
 
 

@@ -4,10 +4,10 @@ class Admin(User.User):
     count_id = 0
 
     # Admin
-    def __init__(self, name, email, gender, phone_number, password, confirm_password):
+    def __init__(self, name, email, gender, phone_number, password, confirm_password, role):
 
     #   User
-        super().__init__(name, email, phone_number, password)
+        super().__init__(name, email, phone_number, password, role)
         Admin.count_id += 1
         self.__admin_id = Admin.count_id
         self.__gender = gender

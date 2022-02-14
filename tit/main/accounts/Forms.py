@@ -31,6 +31,8 @@ class ChangePasswordForm(FlaskForm):
     confirm_new_password = PasswordField('Confirm New Password', [validators.DataRequired(),validators.EqualTo('new_password', message='Passwords do not match')])
     remember = BooleanField('Remember Me')
 
+class getOTPForm(FlaskForm):
+    phone_number = StringField('Phone Number', [validators.Length(min=8, max=8), validators.DataRequired()])
 
 
 
