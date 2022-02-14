@@ -11,7 +11,8 @@ def discover():
     vouchers_list = []
     for key in vouchers_dict:
         voucher = vouchers_dict.get(key)
-        vouchers_list.append(voucher)
+        if voucher.get_quantity() != 0:
+            vouchers_list.append(voucher)
 
     return render_template('rewards/discover.html', count=len(vouchers_list), vouchers_list=vouchers_list)
 

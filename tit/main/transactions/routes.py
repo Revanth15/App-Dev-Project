@@ -127,7 +127,7 @@ def discount():
             print(cart_dict)
             print(user_id)
             try:
-                cart_dict[user_id][2] = request.form['discountcode']
+                cart_dict[user_id][2] = discount_code_applied
             except KeyError:
                 cart_dict[user_id][2] = None
             cart_db['cart'] = cart_dict
@@ -139,14 +139,13 @@ def discount():
 
             customer = customers_dict.get(user_id)
             spools = customer.get_spools()
-
+            print(spools)
             db = shelve.open('tit/database/vouchers.db', 'w')
             try:
                 vouchers_dict = db['Vouchers']
             except:
                 print("Error in retrieving Vouchers from vouchers.db.")
 
-            
             for key in vouchers_dict:
                 voucher = vouchers_dict.get(key)
                 if discount_code_applied == voucher.get_discount_code():
@@ -162,11 +161,13 @@ def discount():
                         print("Oh noo,This voucher has been used it")
                 else:
                     print("There is no such voucher code")
+            discount = discount_code_applied
+            print(cart_dict)
             customer_db['Customers'] = customers_dict
             db['Vouchers'] = vouchers_dict 
             cart_db['cart'] = cart_dict
             db.close()
-    return render_template('inventory/cart.html')
+    return render_template('inventory/cart.html', discount = discount)
 
 
 # def cart(): 

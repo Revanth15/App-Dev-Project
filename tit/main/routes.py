@@ -73,8 +73,14 @@ def parseVisitorData(session_id):
 
 @main.route('/')
 def home():
-    products_dict = get_db('products', 'products')
-    print(products_dict)
+    products_dict = {}
+    try:
+        products_db = shelve.open('tit/database/products.db', 'r')
+        products_dict = products_db['products']
+        products_db.close()
+    except:
+        print("Error in retrieving Product from products.db.")
+
     products_list = []
     for key in products_dict:
         product = products_dict.get(key)
