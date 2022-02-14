@@ -4,7 +4,16 @@ from wtforms.fields import EmailField, DateField
 from wtforms.widgets.core import NumberInput
 from flask_wtf import FlaskForm
 from wtforms.validators import ValidationError
-import datetime
+from tit.utils import get_db
+
+
+def validatesku(form, field):
+    products_dict = get_db('products', 'products')
+    for key in products_dict:
+        product = products_dict.get(key)
+        sku = int(product.get_sku())
+        if field.data == sku:
+            raise ValidationError('This SKU already exists')
 
 def validate_card(form, field):
     card_number = field.data
@@ -42,7 +51,7 @@ def validatecvv(form, field):
 
 class CreateProductForm(FlaskForm):
     product_name = StringField('Product Name', [validators.length(min=1, max=100), validators.data_required()])
-    sku = StringField('SKU', [validators.length(min=8, max=12), validators.data_required()]) #SKU = Stock Keeping Unit
+    sku = StringField('SKU', [validators.length(min=8, max=12), validators.data_required(), validatesku]) #SKU = Stock Keeping Unit
     product_price = IntegerField('Product Price', [validators.NumberRange(min=1, max=10000), validators.data_required()], widget=NumberInput())
     quantity = IntegerField('Quantity', [validators.NumberRange(min=1, max=10000), validators.data_required()], widget=NumberInput())
     product_description = TextAreaField('Product Description', [validators.length(min=0, max=250), validators.data_required()])

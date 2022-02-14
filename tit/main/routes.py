@@ -169,16 +169,21 @@ def checkout():
 
         exp_mm = payment.get_exp_mm()
         exp_yy = payment.get_exp_yy()
+        print(year, month, exp_mm, exp_yy)
 
         if year < exp_yy :
             if month <= exp_mm:
                 checkoutFunc()
+            else:
+                print("card is expired")
 
         elif year == exp_yy :
-            if month > exp_mm:
+            if month < exp_mm:
                 checkoutFunc()
+            else:
+                print("card is expired")
         else:
-            print("card is invalidddddd")
+            print("card is expired")
 
         payment_dict[payment.get_card_number()] = payment
         set_db('payment','payment', payment_dict)
@@ -196,9 +201,34 @@ def checkout():
 @main.route('/myOrders')
 def myOrders():
     user_id = current_user.get_customer_id()
-
     orders_dict = get_db('orders', 'orders')
-    orders_list = orders_dict[user_id]
     print(orders_dict)
-    return render_template('myorder.html', orders_list=orders_list)
+    order_list = []
+    for key in orders_dict[user_id]:
+        order = orders_dict[user_id].get(key)
+        order_id = key
+        status = order.get_status()
+        order_list.append([order,order_id,status])
+    print(order_list)
+    return render_template('myorder.html', orders_list=order_list)
 
+@main.route('/order/<id>/', methods=['GET', 'POST'])
+def order(id):
+    user_id = current_user.get_customer_id()
+    orders_dict = get_db('orders', 'orders')
+    products_dict = get_db('products', 'products')
+    products_list = []
+    print(orders_dict)
+    order = orders_dict[user_id].get(id)
+    for sku in order.get_order():
+        product = products_dict.get(sku)
+        dict = order.get_order()
+        qty = dict[sku]
+        products_list.append([product,qty])
+
+    return render_template('order.html',products_list=products_list)
+
+# edit users
+# delete
+# forget password
+# validation

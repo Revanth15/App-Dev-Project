@@ -3,19 +3,41 @@ from flask_login import current_user
 from wtforms import StringField, BooleanField, SelectField, validators, PasswordField, IntegerField, TextAreaField, RadioField, EmailField, TelField, Form
 from wtforms.validators import Email
 from flask_wtf import FlaskForm
+from wtforms.validators import ValidationError
+from password_strength import PasswordPolicy, PasswordStats
 
 from tit.classes.Customer import Customer
 # from wtforms.fields.html5 import EmailField, DateField
 
-
+policy = PasswordPolicy.from_names(
+    length=8,  
+    uppercase=1,  
+    numbers=1,  
+    strength=0.66
+)
 # from flask import Flask, render_template, request, redirect, url_for, flash, session
+
+def validate_email(form,field):
+    email = field.data
+    email_end = email.split('@')[-1]
+    if email_end != 'gmail.com' or email_end != 'yahoo.com':
+        raise ValidationError('Please enter a valid gmail/yahoo mail')
+
+def validate_password(form, field):
+    password = field.data
+    stats = PasswordStats(password)
+    checkpolicy = policy.test(password)
+    if stats.strength() < 0.66:
+        raise ValidationError('Password is weak.Make sure to have atleast 8 characters,2 uppercase,2 number')
+
+
 
 class CustomerSignUpForm(FlaskForm):
     name = StringField('Name(as in ID)', [validators.Length(min=1, max=30), validators.DataRequired()])
-    email = StringField('Email', [validators.DataRequired(), Email()])
+    email = StringField('Email', [validators.DataRequired(), Email(), validate_email])
     gender = SelectField('Gender', [validators.DataRequired()], choices=[('', 'Select'), ('F', 'Female'), ('M', 'Male')], default='')
     phone_number = StringField('Phone Number', [validators.Length(min=8, max=8), validators.DataRequired()])
-    password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm_password', message='Passwords do not match')])
+    password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm_password', message='Passwords do not match'),validate_password])
     confirm_password = PasswordField('Confirm Password', [validators.DataRequired(),validators.EqualTo('password', message='Passwords do not match')])
 
 

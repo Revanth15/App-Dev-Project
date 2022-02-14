@@ -34,7 +34,7 @@ def cart():
         if str(sku) in product_dict:
             product = product_dict.get(str(sku))
             cart_list.append([product,user_cart[sku]])
-            print(cart_dict)
+            print(cart_list)
 
     return render_template('inventory/cart.html', cart_list = cart_list)
 
