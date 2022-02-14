@@ -47,7 +47,7 @@ class CreateProductForm(FlaskForm):
     quantity = IntegerField('Quantity', [validators.NumberRange(min=1, max=10000), validators.data_required()], widget=NumberInput())
     product_description = TextAreaField('Product Description', [validators.length(min=0, max=250), validators.data_required()])
     file = FileField('Product Photo', [validators.data_required()])
-    category = SelectField('Category', [validators.data_required()], choices=[('T-Shirts & Polos & Tank Tops','T-Shirts & Polos & Tank Tops'),('Jeans & Joggers','Jeans & Joggers'),('Shorts & Skirts','Shorts & Skirts'),('Dresses','Dresses'),('Hoodies','Hoodies')], coerce=str)
+    category = SelectField('Category', [validators.data_required()], choices=[('T-Shirts & Tops','T-Shirts & Tops'),('Jeans & Joggers','Jeans & Joggers'),('Shorts & Skirts','Shorts & Skirts'),('Dresses','Dresses'),('Hoodies','Hoodies')], coerce=str)
 
 class Checkout(FlaskForm):
     name = StringField('Name', [validators.length(min=1), validators.data_required()])

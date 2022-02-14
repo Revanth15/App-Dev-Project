@@ -58,7 +58,7 @@ def remove_item(sku):
     cart_dict = {}
     cart_db = shelve.open('tit/database/cart.db', 'w')
     cart_dict = cart_db['cart']
-    cart_dict[user_id][0].pop(int(sku))
+    cart_dict[user_id][0].pop(sku)
 
     cart_db['cart'] = cart_dict
     cart_db.close() 
@@ -112,6 +112,7 @@ def update_total():
         cart_db['cart'] = cart_dict
     return redirect(url_for('main.checkout'))
 
+
 @transactions.route('/discount' ,methods=['GET','POST'])
 def discount():
     user_id = current_user.get_id()
@@ -153,16 +154,7 @@ def discount():
         db['Vouchers'] = vouchers_dict 
         db.close()
     return render_template('inventory/cart.html', discount = discount)
-    # get user spools
-    # get the discount code used
-    # check if it is in the database
-    # if it is then check if they have enough spools
-    # if they do, apply the code. If they dont, show an error message 
-    # update the total in the cart db
-    # change the value in the <p> to the discount Amount
-    # take that value using js and do what needs to be download_reports
 
-    # also sidenote - the copy code button shouldnt be there, the copy code button should only be there are they have "purchased" the discount code with spools_needed
 
 # def cart(): 
 #     user_id = 1

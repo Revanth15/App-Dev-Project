@@ -92,6 +92,6 @@ $('.checkout').click(function() {
 })
 
 
-function wishList(wishlist) {
-    wishlist.classList.toggle("bxs-heart")
+function wishList(element) {
+    element.classList.toggle("bxs-heart")
 }

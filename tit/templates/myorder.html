@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock %}
+
+
+{% block content %}
+
+{% for order_id in orders_list %}
+<p>{{order_id}}</p>
+{% endfor %}
+
+{% endblock%}   

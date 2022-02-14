@@ -18,19 +18,19 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
-              <a class="dropdown-item" href="#">T-Shirts & Polos & Tank Tops</a>
+              <a class="dropdown-item" href="{{url_for('main.tops')}}">T-Shirts & Tops</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Jeans & Joggers</a>
+              <a class="dropdown-item" href="{{url_for('main.jeans')}}">Jeans & Joggers</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Shorts & Skirts</a>
+              <a class="dropdown-item" href="{{url_for('main.shorts')}}">Shorts & Skirts</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Dresses</a>
+              <a class="dropdown-item" href="{{url_for('main.dresses')}}">Dresses</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Hoodies</a>
+              <a class="dropdown-item" href="{{url_for('main.hoodies')}}">Hoodies</a>
             </li>
           </ul>
         </li>
@@ -73,10 +73,7 @@
               <a class="dropdown-item" href="{{url_for('main.accounts.sign_up')}}">Sign Up</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Wish List</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">My Orders</a>
+              <a class="dropdown-item" href="{{url_for('main.myOrders')}}">My Orders</a>
             </li>
             <li>
               <a class="dropdown-item" href="#">{{current_user.get_spools()}} Spools</a>

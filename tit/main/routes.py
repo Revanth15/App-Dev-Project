@@ -1,15 +1,15 @@
-from flask import render_template, session, Blueprint, request, redirect, url_for
+from unicodedata import category
+from flask import render_template, Blueprint, request, redirect, url_for
 from tit.admin.inventory.forms import Checkout
 import shelve
 import datetime
 from flask_login import current_user
 
-from tit.main.transactions.routes import cart, transactions
+from tit.main.transactions.routes import transactions
 from tit.main.rewards.routes import rewards
 from tit.main.accounts.routes import accounts
 from tit.main.support.routes import support
 import tit.classes.payment as Payment
-import tit.classes.order as Order
 from tit.main.utils import checkoutFunc
 
 main = Blueprint('main', __name__)
@@ -36,50 +36,96 @@ def home():
 
     return render_template('homepage.html',products_list=products_list)
 
-# @main.route('/category/<str:category>')
-# def category():
-#     pass
-#     return '1'
+@main.route('/category/T-Shirts & Tops')
+def tops():
+    products_dict = {}
+    try:
+        products_db = shelve.open('tit/database/products.db', 'r')
+        products_dict = products_db['products']
+        products_db.close()
+    except:
+        print("Error in retrieving Product from products.db.")
 
-# @main.route('/payment', methods=['GET', 'POST'])
-# def payment():
-#     payment_form = PaymentForm()
-#     if request.method == 'POST' and payment_form.validate_on_submit():
-#         with shelve.open('tit/database/payment.db', 'c') as payment_db:
-#             payment_dict = {}
+    products_list = []
+    category = 'T-Shirts & Tops'
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_category() == category:
+            products_list.append(product)
+    return render_template('category/product.html', products_list=products_list, category = category)
 
-#             try:
-#                 payment_dict = payment_db['payment']
-#             except:
-#                 print("Error in retrieving Info from payment.db")
+@main.route('/category/Jeans & Joggers')
+def jeans():
+    products_dict = {}
+    try:
+        products_db = shelve.open('tit/database/products.db', 'r')
+        products_dict = products_db['products']
+        products_db.close()
+    except:
+        print("Error in retrieving Product from products.db.")
 
-#             payment = Payment.Payment(
-#                 card_number = payment_form.card_number.data,
-#                 card_holder = payment_form.card_holder.data,
-#                 exp_mm = payment_form.exp_mm.data,
-#                 exp_yy = payment_form.exp_yy.data,
-#                 cvv = payment_form.cvv.data)
+    products_list = []
+    category = 'Jeans & Joggers'
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_category() == category:
+            products_list.append(product)
+    return render_template('category/product.html', products_list=products_list, category = category)
 
-#             current_time = datetime.datetime.now()
-#             year = str(current_time.year)
-#             month = str(current_time.month)
+@main.route('/category/Shorts & Skirts')
+def shorts():
+    products_dict = {}
+    try:
+        products_db = shelve.open('tit/database/products.db', 'r')
+        products_dict = products_db['products']
+        products_db.close()
+    except:
+        print("Error in retrieving Product from products.db.")
 
-#             exp_mm = payment.get_exp_mm()
-#             exp_yy = payment.get_exp_yy()
-            
-#             if year < exp_yy :
-#                 if month <= exp_mm:
-#                     pass
-#             elif year == exp_yy :
-#                 if month < exp_mm:
-#                     pass
-#             else:
-#                 print("card is invalidddddd")
+    products_list = []
+    category = 'Shorts & Skirts'
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_category() == category:
+            products_list.append(product)
+    return render_template('category/product.html', products_list=products_list, category = category)
 
-#             payment_dict[payment.get_card_number()] = payment
-#             payment_db['payment'] = payment_dict
-#             return redirect(url_for('main.home'))
-#     return render_template('shipping.html', form=payment_form)
+@main.route('/category/Dresses')
+def dresses():
+    products_dict = {}
+    try:
+        products_db = shelve.open('tit/database/products.db', 'r')
+        products_dict = products_db['products']
+        products_db.close()
+    except:
+        print("Error in retrieving Product from products.db.")
+
+    products_list = []
+    category = 'Dresses'
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_category() == category:
+            products_list.append(product)
+
+    return render_template('category/product.html', products_list=products_list, category = category)
+
+@main.route('/category/Hoodies')
+def hoodies():
+    products_dict = {}
+    try:
+        products_db = shelve.open('tit/database/products.db', 'r')
+        products_dict = products_db['products']
+        products_db.close()
+    except:
+        print("Error in retrieving Product from products.db.")
+
+    products_list = []
+    category = 'Hoodies'
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_category() == category:
+            products_list.append(product)
+    return render_template('category/product.html', products_list=products_list, category = category)
 
 @main.route('/checkout', methods=['GET', 'POST'])
 def checkout():
@@ -153,3 +199,18 @@ def apply():
             cart_dict[user_id][2] = None
         cart_db['cart'] = cart_dict
     return redirect(url_for('main.checkout'))
+
+@main.route('/myOrders')
+def myOrders():
+    user_id = current_user.get_id()
+    with shelve.open('tit/database/orders.db', 'w') as orders_db:
+        orders_dict = {}
+        try:
+            orders_dict = orders_db['orders']
+        except:
+            print("Error in retrieving orders from orders.db")
+
+        orders_list = orders_dict[user_id]
+        print(orders_dict)
+    return render_template('myorder.html', orders_list=orders_list)
+
