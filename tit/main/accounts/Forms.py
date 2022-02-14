@@ -13,7 +13,7 @@ from tit.classes.Customer import Customer
 class CustomerSignUpForm(FlaskForm):
     name = StringField('Name(as in ID)', [validators.Length(min=1, max=30), validators.DataRequired()])
     email = StringField('Email', [validators.DataRequired(), Email()])
-    gender = SelectField('Gender', [validators.DataRequired()], choices=[('', 'Select'), ('F', 'Female'), ('M', 'Male')], default='')
+    gender = SelectField('Gender', [validators.DataRequired()], choices=[('', 'Select'), ('Female', 'Female'), ('Male', 'Male')], default='')
     phone_number = StringField('Phone Number', [validators.Length(min=8, max=8), validators.DataRequired()])
     password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm_password', message='Passwords do not match')])
     confirm_password = PasswordField('Confirm Password', [validators.DataRequired(),validators.EqualTo('password', message='Passwords do not match')])

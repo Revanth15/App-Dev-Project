@@ -115,12 +115,12 @@
         <td>{{ user.get_gender() }}</td>
         <td>{{ user.get_phone_number() }}</td>
         <td>{{ user.get_password() }}</td>
-        <td><a href="{{url_for('admin.accounts.update_user', id=user.get_id())}}" class="btn btn-warning">Update Admin</a></td>
+        <td><a href="{{url_for('admin.accounts.update_admin', id=user.get_id())}}" class="btn btn-warning">Update Admin</a></td>
         <td>
           <form action="{{url_for('admin.accounts.delete_user', id=user.get_id())}}" method="POST">
             <!-- Button to Open the Modal -->
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{current_user.get_id()}}">
-              Delete user
+              Delete Admin
             </button>
             
             <!-- The Modal -->

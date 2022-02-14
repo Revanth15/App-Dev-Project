@@ -60,13 +60,12 @@ def retrieveUsers():
 
 
 
-# Admin Updates Customer profile
+# Admin Updates User profile
 @accounts.route('/updateCustomer/<int:id>/', methods=['GET', 'POST'])
 @login_required
 def update_user(id):
     update_customer_form = CustomerSignUpForm(request.form)
     customers_dict = get_db('users', 'Customers')
-    admins_dict = get_db('users', 'Admins')
     if request.method == 'POST':
         customer = customers_dict.get(id)
         customer.set_name(update_customer_form.name.data)
@@ -81,7 +80,35 @@ def update_user(id):
     else:
         if id in customers_dict:
             customer = customers_dict.get(id)
-        elif id in admins_dict:
+        update_customer_form.name.data = customer.get_name()
+        update_customer_form.email.data = customer.get_email()
+        update_customer_form.gender.data = customer.get_gender()
+        update_customer_form.phone_number.data = customer.get_phone_number()
+        update_customer_form.password.data = customer.get_password()
+
+# PROMPT: CUSTOMER PROFILE HAS BEEN UPDATED
+        return render_template('accounts/updateCustomer.html', form=update_customer_form)
+
+
+# Admin Updates Admin profile
+@accounts.route('/updateAdmin/<int:id>/', methods=['GET', 'POST'])
+@login_required
+def update_admin(id):
+    update_customer_form = CustomerSignUpForm(request.form)
+    admins_dict = get_db('users', 'Admins')
+    if request.method == 'POST':
+        customer = admins_dict.get(id)
+        customer.set_name(update_customer_form.name.data)
+        customer.set_email(update_customer_form.email.data)
+        customer.set_gender(update_customer_form.gender.data)
+        customer.set_phone_number(update_customer_form.phone_number.data)
+        customer.set_password(update_customer_form.password.data)
+
+        set_db('users', 'Admins', admins_dict)
+
+        return redirect(url_for('admin.accounts.retrieveUsers'))
+    else:
+        if id in admins_dict:
             customer = admins_dict.get(id)
         update_customer_form.name.data = customer.get_name()
         update_customer_form.email.data = customer.get_email()
@@ -93,7 +120,8 @@ def update_user(id):
         return render_template('accounts/updateCustomer.html', form=update_customer_form)
 
 
-# Admin deletes customer
+
+# Admin deletes Customers
 @accounts.route('/deleteCustomer/<int:id>', methods=['POST'])
 @login_required
 def delete_user(id):
