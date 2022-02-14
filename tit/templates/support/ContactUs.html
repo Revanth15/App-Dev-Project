@@ -1,32 +1,71 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="d-flex flex-column min-vh-100">
-
-<div class = "header">
-  <hr>
+<style>
+  *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
   
-<h2 class = "greeting">Hello!<br> How can we help?</h2>
-<!--Search bar code-->
+  }
+  
+  body{ 
+      background: rgb(219, 226, 226);
+  }
+  
+  .row {
+      background: blue;
+      border-radius: 30px;
+      box-shadow: 12px 12px 22px grey;
+  }
+  
+  
+  
 
 
-<!--Search bar code-->
-<hr>
-</div>
+  
+  </style>
+  
+  
+  <section>
+      <div class="container" style="padding-top: 50px;">
+          <div class="row no-gutters">
+            <div class="d-flex flex-column min-vh-20">
+
+              <div class = "header">
+                <hr>
+                
+              <h2 class = "greeting">Hello!<br> How can we help?</h2>
+              <!--Search bar code-->
+              
+              
+              <!--Search bar code-->
+              <hr>
+              </div>
+              
+               
+                
+              
+              </div>
+          </div>
+    </div>
+  </section>
+
+
 
 <div>
 
 
 <h1 class ="Tp">Topics</h1>
 
-</div>
+
 
 
 <div>
   <form>
   <ul style="list-style-type: none;">
-    <div class = "container-sm border">
-    <div class="row">
+    <div class = "container-sm border" style="background-color:rgb(219, 226, 226);">
+    <div class="row" style="background-color:whitesmoke;">
     <div class="col"><li class= "topics"><a href="{{url_for('main.support.FAQ_GS')}}" ><div class="card" style="width: 18rem;">
       <img src="/static/images/GS.png" class="card-img-top" >
       <div class="card-body">
@@ -46,10 +85,7 @@
         <p class="card-text">Payment & Shipping</p>
       </div>
     </div></a></li></div>
-    </div>
-
-
-    <div class="row">
+    
     <div class= "col"><li class= "topics"><a href="{{url_for('main.support.FAQ_RAO')}}" ><div class="card" style="width: 18rem;">
       <img src="/static/images/R&O.png" class="card-img-top" >
       <div class="card-body">
@@ -100,7 +136,7 @@
     margin-bottom: 40px;
   }
   [class="header"]{
-      background-color: blue;
+      
       height: 200px;
       border-top: black;
       border-color: black;
@@ -152,7 +188,7 @@
 <div class="mt auto">
 <hr>
 
-<p class = "footer">Customer Support Page  | <a style="color: white;" href="/ContactInfo">Contact Information</a></p> 
+<p class = "footer">Customer Support Page  | <a style="color: white;" href="{{url_for('main.support.Contact_Info')}}">Contact Information</a></p> 
 
 </div>
 
