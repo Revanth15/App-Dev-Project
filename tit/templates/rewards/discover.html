@@ -28,7 +28,6 @@
 
       <div class="col align-self-center">
         <input type="hidden" name="voucher_id" value="{{voucher_id}}">
-        <!-- <button type="submit" class="btn btn-sm btn-warning add_to_myvoucher_button collect">Collect</button> -->
         <button class="btn btn-sm btn-warning copy-btn">Copy Code</button>
       </div>
 
@@ -38,6 +37,7 @@
     {% endfor %}
     
     <div class="border border-primary w-100 py-3 my-3" style="background-color: rgb(239, 241, 206);">
+      
       <p class="text-center" style="font-size: 17px;">$1 Spent = 1 Spool</p>
     </div>
     
@@ -45,5 +45,4 @@
     {% endblock %}
     {% block scripts %}
     <script src="/static/scripts/copycode.js"></script>
-    <!-- <script src="/static/scripts/addVoucher.js"></script> -->
     {% endblock %}
