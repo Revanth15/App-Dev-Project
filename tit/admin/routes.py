@@ -100,30 +100,27 @@ def dashboard():
 
 
     #* Sales Count
-    # sales_dict = get_db('user', 'Users')
-    # sales_list = []
-    # for sale in sales_dict.values():
-    #     saledate = sale.get_created('date', 'obj')
-    #     if saledate == datetime.date.today():
-    #         sales_list.append(sale)
+    sales_dict = get_db('orders', 'orders')
+    sales_list = []
+    for sale in sales_dict.values():
+        saledate = sale.get_created('date', 'obj')
+        if saledate == datetime.date.today():
+            sales_list.append(sale)
 
 
-    # # Format data for Dashboard
-    # data = []
-    # for sale in sales_list:
-    #     sale_data = {
-    #     'Order ID': user.get_id(),
-    #     '': user.get_name(),
-    #     'Time': user.get_created()
-    #     }
-    #     data.append(sale_data)
-    # sales_data = ['Feedback Today', len(data), data]
-    # dashboard_list.append(sales_data)
-    # data = []
-    # data.append(db_count_occurence('traffic', 'Sessions', 'get_created', '%m-%d'))
-    # data.append(db_get_qty('products', 'products', 'get_quantity'))
+    # Format data for Dashboard
+    data = [['ID', 'Name', 'Time'], []]
+    for sale in sales_list:
+        sale_data = [sale.get_order_id(), sale.get_order(), sale.get_created()]
+        data[1].append(sale_data)
+    sales_data = ['Sales Today', len(data[1]), data]
+    dashboard_list.append(sales_data)
+
+    chartdata = []
+    chartdata.append(db_count_occurence('traffic', 'Sessions', 'get_created', '%m-%d'))
+    chartdata.append(db_get_qty('products', 'products', 'get_quantity'))
     # data.append(get_db('archive', 'Archives', 'get_created', '%m-%d'))
-    return render_template('dashboard.html', cards = dashboard_list, data=data)
+    return render_template('dashboard.html', cards = dashboard_list, data=chartdata)
 
 
 

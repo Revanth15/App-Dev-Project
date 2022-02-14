@@ -27,7 +27,6 @@ def get_db(database, key, v=None):
         default = {}
     else:
         default = v
-    print(default)
     if '.db' in database:
         print('".db" found in argument! If this was not intentional, please remove it as .db is appended automatically.')
     if database+'.db' not in dbkeys().keys():
@@ -35,7 +34,6 @@ def get_db(database, key, v=None):
         return default
     db = shelve.open(f"tit/database/{database}.db", 'r')
     default_value = default
-    print(default_value)
     try:
         default_value = db[str(key)]
         print(f'Retrieved {database}[{key}] Successfully!')

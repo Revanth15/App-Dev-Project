@@ -1,8 +1,10 @@
 from uuid import uuid4
+from tit.classes.logData import logData
 
-class Order():
+class Order(logData):
     uuid = ("#" + str(uuid4())[-12:]).upper()
     def __init__(self,total_price,order,status):
+        super().__init__()
         self.__order_id = Order.uuid
         self.__total_price = total_price
         self.__order = order
@@ -14,7 +16,7 @@ class Order():
     def get_total_price(self):
         return self.__total_price
 
-    def get_order_id(self):
+    def get_order(self):
         return self.__order
 
     def get_order_id(self):
