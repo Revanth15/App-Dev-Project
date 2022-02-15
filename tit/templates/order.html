@@ -41,12 +41,8 @@
         <div class="cart-header card-header">
             <p>Order Summary</p>
         </div>
-        <div class="grandtotal d-flex">
-            <p>Grand Total</p>
-            <p class="cart-grandtotal-price ms-auto" id="total">0%</p>
-        </div>
         <div class="grandtotal-after d-flex">
-          <p>Grand Total after discount</p>
+          <p>Grand Total after discount and shipping </p>
           <p class="cart-gt-after ms-auto">0</p>
         </div>
     </div>
@@ -177,7 +173,6 @@ margin-top:60px;
 
         }
         subtotal = Math.round(subtotal * 100) / 100
-        document.getElementsByClassName('cart-grandtotal-price')[0].innerText = 'S$' + subtotal
         document.getElementsByClassName('cart-gt-after')[0].innerText = 'S$' + tl
     })
 
