@@ -10,7 +10,7 @@
 
 
 <div class="card">
-<h1 class="display-4">Retrieve Customers</h1>
+<h1 class="display-4">Retrieve Users</h1>
 <div>
   {% if count == 0 %}
   <p>There are no Customers.</p>
@@ -33,7 +33,6 @@
         <th>Email</th>
         <th>Gender</th>
         <th>Phone Number</th>
-        <th>Password</th>
       </tr>
     </thead>
     <tbody>
@@ -47,18 +46,17 @@
         <td>{{ user.get_email() }}</td>
         <td>{{ user.get_gender() }}</td>
         <td>{{ user.get_phone_number() }}</td>
-        <td>{{ user.get_password() }}</td>
-        <td><a href="{{url_for('admin.accounts.update_user', id=user.get_id())}}" class="btn btn-warning">Update User</a></td>
+        <td><a href="{{url_for('admin.accounts.update_customer', id=user.get_customer_id())}}" class="btn btn-warning">Update User</a></td>
         <td>
-          <form action="{{url_for('admin.accounts.delete_user', id=user.get_id())}}" method="POST">
+          <form action="{{url_for('admin.accounts.delete_customer', id=user.get_customer_id())}}" method="POST">
             <!--<input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{user.get_name()}}?');">-->
             <!-- Button to Open the Modal -->
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{user.get_id()}}">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{user.get_customer_id()}}">
               Delete user
             </button>
         
             <!-- The Modal -->
-            <div class="modal" id="myModal_{{user.get_id()}}">
+            <div class="modal" id="myModal_{{user.get_customer_id()}}">
               <div class="modal-dialog">
                 <div class="modal-content">
         
@@ -100,7 +98,6 @@
         <th>Email</th>
         <th>Gender</th>
         <th>Phone Number</th>
-        <th>Password</th>
       </tr>
     </thead>
     <tbody>
@@ -114,17 +111,16 @@
         <td>{{ user.get_email() }}</td>
         <td>{{ user.get_gender() }}</td>
         <td>{{ user.get_phone_number() }}</td>
-        <td>{{ user.get_password() }}</td>
-        <td><a href="{{url_for('admin.accounts.update_admin', id=user.get_id())}}" class="btn btn-warning">Update Admin</a></td>
+        <td><a href="{{url_for('admin.accounts.update_admin', id=user.get_admin_id())}}" class="btn btn-warning">Update Admin</a></td>
         <td>
-          <form action="{{url_for('admin.accounts.delete_user', id=user.get_id())}}" method="POST">
+          <form action="{{url_for('admin.accounts.delete_admin', id=user.get_admin_id())}}" method="POST">
             <!-- Button to Open the Modal -->
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{current_user.get_id()}}">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{current_user.get_admin_id()}}">
               Delete Admin
             </button>
             
             <!-- The Modal -->
-            <div class="modal" id="myModal_{{current_user.get_id()}}">
+            <div class="modal" id="myModal_{{current_user.get_admin_id()}}">
               <div class="modal-dialog">
                 <div class="modal-content">
                   

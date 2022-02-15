@@ -1,6 +1,9 @@
 {% extends "baseAdmin.html" %}
 {% block title %} Admin - Edit Voucher {% endblock %}
 
+{% set back = ['rewards.viewVouchers_admin'] %}
+{% set breadcrumb = [['rewards.viewVouchers_admin', 'Rewards'], ['', 'Edit Voucher']] %}
+
 {% block content %} 
 {% from "includes/_formHelper.html" import render_field %}    
 

@@ -1,6 +1,9 @@
 {% extends "baseAdmin.html" %}
 {% block title %}Threads in Time - Restock Product{% endblock %}
 
+{% set back = ['inventory.retrieve_products'] %}
+{% set breadcrumb = [['inventory.retrieve_products', 'Inventory'], ['', 'Restock Product']] %}
+
 {% set active_page = 'inventory' %}
 {% block content %}
 {% from "includes/_formhelper.html" import render_field %}

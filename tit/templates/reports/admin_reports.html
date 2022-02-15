@@ -1,5 +1,5 @@
 {% extends "includes/_report.html" %}
-{% from 'includes/_formhelper.html' import render_field %}
+{% from 'includes/__formHelper.html' import render_field %}
 {% set breadcrumb = [['reporting.reports', 'reports']] %}
 
 {% block header %}
@@ -69,11 +69,11 @@
                     </div>
                     <div class="col-6">
                         <div class="form-floating ">
-                            {{ render_field(form.filetype, class="form-select") }}
+                            {{ render_field(form.filetype, class="form-select", id='fileselect') }}
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row chartselect">
                     <div class="col-12">
                         {{form.charts}}
                     </div>
@@ -139,8 +139,14 @@
 {% endblock -%}
 
 {% block chartjs %}
-<script src="/static/scripts/loader.js"></script>
 <script type="text/javascript">
+    function hidetabs() {
+    id = $('.nav-link.active').attr('data-bs-target')
+    $('.tab-pane').not(id).removeClass('show active')
+    myModal.hide()
+    console.log('close!')
+    }
+
     let run = false
     function done() {
         const imgarray = []

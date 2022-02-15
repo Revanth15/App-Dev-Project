@@ -63,7 +63,7 @@ def retrieveUsers():
 # Admin Updates User profile
 @accounts.route('/updateCustomer/<int:id>/', methods=['GET', 'POST'])
 @login_required
-def update_user(id):
+def update_customer(id):
     update_customer_form = CustomerSignUpForm(request.form)
     customers_dict = get_db('users', 'Customers')
     if request.method == 'POST':
@@ -124,7 +124,7 @@ def update_admin(id):
 # Admin deletes Customers
 @accounts.route('/deleteCustomer/<int:id>', methods=['POST'])
 @login_required
-def delete_user(id):
+def delete_customer(id):
     customers_dict = get_db('users', 'Customers')
     customers_dict.pop(id)
     set_db('users', 'Customers', customers_dict)
@@ -135,7 +135,7 @@ def delete_user(id):
 
 @accounts.route('/deleteAdmin/<int:id>', methods=['POST'])
 @login_required
-def delete_user(id):
+def delete_admin(id):
     admins_dict = get_db('users', 'Admins')
     admins_dict.pop(id)
     set_db('users', 'Admins', admins_dict)

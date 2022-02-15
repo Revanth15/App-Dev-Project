@@ -24,6 +24,14 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
+$('#fileselect').change(function() {
+    $('.chartselect').hide()
+    console.log($('#fileselect').val())
+    if ($('#fileselect').val() == 1) {
+        $('.chartselect').show()
+    }
+})
+
 
 var config = {
     aspect_ratio: 1,
@@ -31,7 +39,7 @@ var config = {
         title: {
             display: true,
             align: 'start',
-            text: 'Number of times restocked',
+            text: 'Out of Stocks',
             font: {
                 family: "'Roboto', sans-serif",
                 size: 24,
@@ -50,6 +58,7 @@ var config = {
             suggestedMax: 10
         }
     }
+    
 }
 config.animation = false;
 var configIMG = {
@@ -58,7 +67,7 @@ var configIMG = {
         title: {
             display: true,
             align: 'start',
-            text: 'Number of times restocked',
+            text: 'Restocks by SKU',
             font: {
                 family: "'Roboto', sans-serif",
                 size: 24,
@@ -83,14 +92,13 @@ var configIMG = {
 }
 
 
-//Chart.js
 const restockctx = document.getElementById('restockChart').getContext('2d');
 const restockChart = new Chart(restockctx, {
     type: 'bar',
     data: {
         labels: data[0].x,
         datasets: [{
-            label: '# Orders',
+            label: '#',
             data: data[0].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -114,15 +122,15 @@ const restockChart = new Chart(restockctx, {
     options: configIMG
 });
 
-config.plugins.title.text = 'Number of times low stock by product'
+
 const outofstockctx = document.getElementById('outofstockChart').getContext('2d');
 const outofstockChart = new Chart(outofstockctx, {
     type: 'bar',
     data: {
-        labels: data[1].x,
+        labels: data[2].x,
         datasets: [{
-            label: '# Orders',
-            data: data[1].y,
+            label: 'Stocks',
+            data: data[2].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -145,14 +153,14 @@ const outofstockChart = new Chart(outofstockctx, {
     options: config
 });
 
-config.plugins.title.text = 'Inventory Health'
+config.plugins.title.text = 'Inventory Health';
 const productQtyctx = document.getElementById('productQtyChart').getContext('2d');
 const productQtyChart = new Chart(productQtyctx, {
     type: 'bar',
     data: {
         labels: data[3].x,
         datasets: [{
-            label: '# Orders',
+            label: 'Stocks',
             data: data[3].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -176,15 +184,15 @@ const productQtyChart = new Chart(productQtyctx, {
     options: config
 });
 
-config.plugins.title.text = 'Revenue this year'
+config.plugins.title.text = 'Revenue this month';
 const revenuectx = document.getElementById('revenueChart').getContext('2d');
 const revenueChart = new Chart(revenuectx, {
-    type: 'line',
+    type: 'bar',
     data: {
-        labels: data[4].x,
+        labels: data[3].x,
         datasets: [{
-            label: '# Orders',
-            data: data[4].y,
+            label: '$',
+            data: data[3].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -204,16 +212,44 @@ const revenueChart = new Chart(revenuectx, {
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Revenue over time',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        }
+        
+    }
 });
-config.plugins.title.text = 'Sales this month'
+
+
+config.plugins.title.text = 'Sales this month';
 const salesctx = document.getElementById('salesChart').getContext('2d');
 const salesChart = new Chart(salesctx, {
-    type: 'line',
+    type: 'bar',
     data: {
         labels: data[5].x,
         datasets: [{
-            label: '# Orders',
+            label: '#',
             data: data[5].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -234,17 +270,43 @@ const salesChart = new Chart(salesctx, {
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Sales over time',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        }
+        
+    }
 });
 
-config.plugins.title.text = 'Visitors Today'
+
 const visitorctx = document.getElementById('visitorChart').getContext('2d');
 const visitorChart = new Chart(visitorctx, {
-    type: 'line',
+    type: 'bar',
     data: {
         labels: data[6].x,
         datasets: [{
-            label: '# Orders',
+            label: 'Visitors',
             data: data[6].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -265,9 +327,38 @@ const visitorChart = new Chart(visitorctx, {
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Visitors Today',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        }
+        
+    }
 });
 
+
+
+config.plugins.title.text = 'Cart Status';
 const piectx = document.getElementById('pieChart').getContext('2d');
 const pieChart = new Chart(piectx, {
     type: 'pie',

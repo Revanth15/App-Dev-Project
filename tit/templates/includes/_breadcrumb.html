@@ -1,7 +1,7 @@
 <div class="container-fluid home shadow-sm d-flex align-items-center">
   <nav class="nav navbar-light d-flex align-items-center flex-fill">
     {% if back is defined %}
-    <a id='back-link' class="fs-2 ms-3" href="{{url_for('admin.reporting.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-short"></i></a>
+    <a id='back-link' class="fs-2 ms-3" href="{{url_for('admin.'+back[0], tab = back[1])}}"><i class="bi bi-arrow-left-short"></i></a>
     {% else %}
     <a id='back-link' class="btn p-0 fs-2 ms-3 disabled" role='button' aria-disabled="true"><i class="bi bi-arrow-left-short"></i></a>
     {% endif %}

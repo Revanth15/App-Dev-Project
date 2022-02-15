@@ -2,7 +2,7 @@
 {% block title %} Report {% endblock %}
 {% set active_page = "reports" %}
 {% set breadcrumb = [['reporting.reports', 'reports'], ['reporting.archives', 'archives']] %}
-{% from "includes/formhelper.html" import render_field %}
+{% from "includes/__formhelper.html" import render_field %}
 {% block content %}
     <div class="admin-padding">
         {% if 'create_exist' in session %}

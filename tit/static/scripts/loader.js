@@ -7,9 +7,3 @@ $(document).ready(function() {
     console.log('open!')
 }) 
 
-function hidetabs() {
-    id = $('.nav-link.active').attr('data-bs-target')
-    $('.tab-pane').not(id).removeClass('show active')
-    myModal.hide()
-    console.log('close!')
-}
