@@ -42,7 +42,7 @@ def updateAdminProfile(id):
 
 
 # Admin - Retrieve Customers
-@accounts.route('/retrieveCustomers')
+@accounts.route('/retrieveUsers')
 @login_required
 def retrieveUsers():
     customers_list = []
@@ -74,12 +74,12 @@ def update_user(id):
         customer.set_phone_number(update_customer_form.phone_number.data)
         customer.set_password(update_customer_form.password.data)
 
+        customers_dict[id] = customer
         set_db('users', 'Customers', customers_dict)
 
         return redirect(url_for('admin.accounts.retrieveUsers'))
     else:
-        if id in customers_dict:
-            customer = customers_dict.get(id)
+        customer = customers_dict.get(id)
         update_customer_form.name.data = customer.get_name()
         update_customer_form.email.data = customer.get_email()
         update_customer_form.gender.data = customer.get_gender()
@@ -97,24 +97,24 @@ def update_admin(id):
     update_customer_form = CustomerSignUpForm(request.form)
     admins_dict = get_db('users', 'Admins')
     if request.method == 'POST':
-        customer = admins_dict.get(id)
-        customer.set_name(update_customer_form.name.data)
-        customer.set_email(update_customer_form.email.data)
-        customer.set_gender(update_customer_form.gender.data)
-        customer.set_phone_number(update_customer_form.phone_number.data)
-        customer.set_password(update_customer_form.password.data)
+        admin = admins_dict.get(id)
+        admin.set_name(update_customer_form.name.data)
+        admin.set_email(update_customer_form.email.data)
+        admin.set_gender(update_customer_form.gender.data)
+        admin.set_phone_number(update_customer_form.phone_number.data)
+        admin.set_password(update_customer_form.password.data)
 
+        admins_dict[id] = admin
         set_db('users', 'Admins', admins_dict)
 
         return redirect(url_for('admin.accounts.retrieveUsers'))
     else:
-        if id in admins_dict:
-            customer = admins_dict.get(id)
-        update_customer_form.name.data = customer.get_name()
-        update_customer_form.email.data = customer.get_email()
-        update_customer_form.gender.data = customer.get_gender()
-        update_customer_form.phone_number.data = customer.get_phone_number()
-        update_customer_form.password.data = customer.get_password()
+        admin = admins_dict.get(id)
+        update_customer_form.name.data = admin.get_name()
+        update_customer_form.email.data = admin.get_email()
+        update_customer_form.gender.data = admin.get_gender()
+        update_customer_form.phone_number.data = admin.get_phone_number()
+        update_customer_form.password.data = admin.get_password()
 
 # PROMPT: CUSTOMER PROFILE HAS BEEN UPDATED
         return render_template('accounts/updateCustomer.html', form=update_customer_form)
@@ -126,19 +126,20 @@ def update_admin(id):
 @login_required
 def delete_user(id):
     customers_dict = get_db('users', 'Customers')
+    customers_dict.pop(id)
+    set_db('users', 'Customers', customers_dict)
+    print('Customer Deleted!')
+
+    return redirect(url_for('admin.accounts.retrieveUsers'))
+
+
+@accounts.route('/deleteAdmin/<int:id>', methods=['POST'])
+@login_required
+def delete_user(id):
     admins_dict = get_db('users', 'Admins')
-    print(customers_dict)
-    print(admins_dict)
-    if id in customers_dict:
-        customers_dict.pop(id)
-        set_db('users', 'Customers', customers_dict)
-        print('Customer Deleted!')
-    elif id in admins_dict:
-        admins_dict.pop(id)
-        set_db('users', 'Admins', admins_dict)
-        print('Admin Deleted!')
-    else:
-        print('ID not found. Could not delete.')
+    admins_dict.pop(id)
+    set_db('users', 'Admins', admins_dict)
+    print('Admins Deleted!')
 
     return redirect(url_for('admin.accounts.retrieveUsers'))
 

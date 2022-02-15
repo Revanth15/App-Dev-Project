@@ -50,21 +50,20 @@ def load_user(user_id):
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-    login_form = LoginForm(request.form)  
+    login_form = LoginForm(request.form)
+
     if request.method == 'POST':
         if 'admin@tit.com' in login_form.email.data:
-            try:
-                users_dict = get_db('users', 'Admins')
-            except:
-                print("Error in retrieving Admins from users.db.")
+            users_dict = get_db('users', 'Admins')
 
         else:
-            try:
-                users_dict = get_db('users', 'Customers')
-            except:
-                print("Error in retrieving Customers from users.db.")
+            users_dict = get_db('users', 'Customers')
+
+        print(login_form.email.data)  
+        print(login_form.password.data)
         for user in users_dict.values():
             if 'admin@tit.com' in login_form.email.data:
+                print('yes')
                 if user.get_password() == login_form.password.data:
                     login_user(user)
                     print("Admin login successful")
