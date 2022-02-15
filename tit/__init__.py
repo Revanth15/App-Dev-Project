@@ -58,12 +58,8 @@ def login():
 
         else:
             users_dict = get_db('users', 'Customers')
-
-        print(login_form.email.data)  
-        print(login_form.password.data)
         for user in users_dict.values():
             if 'admin@tit.com' in login_form.email.data:
-                print('yes')
                 if user.get_password() == login_form.password.data:
                     login_user(user)
                     print("Admin login successful")

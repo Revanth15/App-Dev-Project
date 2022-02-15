@@ -1,7 +1,7 @@
 {% extends "baseAdmin.html" %}
 {% block title %} Admin - Reports {% endblock %}
 {% set active_page = "reports" %}
-{% from 'includes/_formhelper.html' import render_field %}
+{% from 'includes/__formhelper.html' import render_field %}
 
 {% block content %}
     <div class="container-fluid">
@@ -40,12 +40,16 @@
             </div>
         </div>
     </div>
-    
     {% block chartjs %}
     {% endblock %}
+    
 {% endblock %}
 {% block scripts %}
     {{ super() }}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="/static/scripts/reports.js"></script>
+    <script src="/static/scripts/loader.js"></script>
+
+    {% block loader %}
+    {% endblock %}
 {% endblock %}

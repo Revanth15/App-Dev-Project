@@ -8,7 +8,7 @@ class MultiCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
     option_widget = widgets.CheckboxInput()
 class CreateReportForm(FlaskForm):
-    filename = StringField('Filename', [validators.Length(min=0, max=64, message='filename'), validators.Regexp('([a-zA-Z0-9\s_.])$', message='Please enter valid filename')], default='')
+    filename = StringField('Filename', [validators.Length(min=0, max=64, message='filename')], default='')
     filetype = SelectField('Filetype', [validators.DataRequired(message='filetype')], choices=[(1, 'Report(.pdf)'), (2, '.xlsx'), (3, '.csv')])
     tags = StringField('Tags', [validators.Length(min=0, max=100, message='tags')], default='')
     images = HiddenField('images', default='')

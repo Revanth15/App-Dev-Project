@@ -63,13 +63,13 @@ def logs():
     delivery_dict = get_db('products', "delivery")
     deliveries = []
     for delivery in delivery_dict.values():
-        deliveries.append((delivery.get_created(), delivery.get_sku(), delivery.get_restock_quantity(), delivery.get_delivery_date(), delivery.get_restock_price()))
+        deliveries.append((delivery.get_created(), delivery.get_sku(), delivery.get_restock_quantity(), delivery.get_delivery_date(), f"{delivery.get_restock_price():.2f}"))
 
     transactions_dict = get_db('orders', "orders")
     orders = []
     for user in transactions_dict:
         for order in transactions_dict[user].values():
-            orders.append((user, order.get_order_id(), order.get_order(), order.get_created(), order.get_total_price()))
+            orders.append((user, order.get_order_id(), order.get_order(), order.get_created(), f"{order.get_total_price():.2f}"))
 
 
     return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(),orders = orders, deliveries= deliveries, traffic = traffic, tab=tab)

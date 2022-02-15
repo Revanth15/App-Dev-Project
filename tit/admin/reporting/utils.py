@@ -29,7 +29,7 @@ def db_count_occurence(datalist):
     y = []
     for xtick in datalist:
         ytick = datalist[xtick]
-        if ytick== '' or None:
+        if ytick== ('' or None or []):
             ytick = 0
         if xtick=='':
             xtick = 'undefined'
@@ -51,7 +51,8 @@ def db_get_qty(database, dbkey, method, args=None):
             data = func()
         else:
             data = func(str(args))
-        if data == '' or None:
+
+        if data == ('' or None or []):
             data = 0
         if str(obj) == '':
             obj = 'undefined'
@@ -119,7 +120,6 @@ def get_data():
     for user in user_db.values():
         print(user.get_cartStatus(0))
         datalist.append(user.get_cartStatus(0))
-    print(datalist)
     data.append(db_count_occurence(datalist))
 
     print(data)
@@ -172,7 +172,8 @@ def createPDF(output, imgs, choices):
                 pdf.image(f"tit/tmp/{img}", WIDTH/2+10, height, WIDTH/2-20)
                 height+=50
             index +=1
-        os.remove(img)
+        if os.path.exists('tit\\tmp'+img):
+            os.remove(img)
     #pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\test.pdf')
     pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\{output}')
     
