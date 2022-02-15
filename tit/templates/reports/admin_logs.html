@@ -48,20 +48,38 @@
 <table id="sales-table" class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">Sales ID</th>
-            <th scope="col">Quantity</th>
+            <th scope="col">User ID</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Order</th>
             <th scope="col">Date</th>
-            <th scope="col">Cost</th>
+            <th scope="col">Paid</th>
             <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
-        {% for orderdate, SKU, quantity, date, cost in deliveries %}
+        {% for user, orderid, order, date, paid in orders %}
         <tr>
-            <th scope="row">{{ SKU }}</th>
-            <td>{{quantity}}</td>
+            <th scope="row">{{ user }}</th>
+            <td>{{orderid}}</td>
+            <td>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>QTY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sku in order%}
+                        <tr>
+                            <td>{{sku}}</td>
+                            <td>{{order[sku]}}</td>
+                        </tr>
+                        {%endfor%}
+                </table>
+            </td>
             <td>{{date}}</td>
-            <td>{{cost}}</td>
+            <td>${{paid}}</td>
             <td><a href="" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i></a></td>
         </tr>
         {% endfor %}

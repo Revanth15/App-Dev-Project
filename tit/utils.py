@@ -58,7 +58,7 @@ def set_db(database, key, value):
     if database+'.db' not in dbkeys().keys():
         print('Database not found! Creating new database')
     db = shelve.open(f"tit/database/{database}.db", 'c')
-    db[f'{key}'] = value
+    db[str(key)] = value
     print(f'Set value for {database}[{key}] Successfully!')
     db.close()
 

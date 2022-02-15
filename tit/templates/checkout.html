@@ -12,11 +12,11 @@
       <div class="accordion accordion-flush" id="checkout-parent">
         <div class="accordion-item">
           <h2 class="accordion-header" id="shipping-acc">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#shipping-collapse" aria-expanded="false" aria-controls="shipping-collapse">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#shipping-collapse" aria-expanded="true" aria-controls="shipping-collapse">
               Shipping information
             </button>
           </h2>
-          <div id="shipping-collapse" class="accordion-collapse collapse" aria-labelledby="shipping-acc" data-bs-parent="#checkout-parent">
+          <div id="shipping-collapse" class="accordion-collapse collapse show" aria-labelledby="shipping-acc" data-bs-parent="#checkout-parent">
             <div class="accordion-body">
               <div class="card shipping">
                 <div class="card-header">
@@ -135,6 +135,9 @@
             <p>Grand Total</p>
             <p class="cart-grandtotal-price ms-auto">S$0</p>
           </div>
+        </div>
+        <div class="card-footer">
+          <a class="btn btn-primary w-100" href="{{url_for('main.cancel')}}">Cancel</a>
         </div>
       </div>
     </form>

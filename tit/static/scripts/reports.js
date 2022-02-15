@@ -268,14 +268,14 @@ const visitorChart = new Chart(visitorctx, {
     options: config
 });
 
-const purchasectx = document.getElementById('purchaseChart').getContext('2d');
-const purchaseChart = new Chart(purchasectx, {
-    type: 'bar',
+const piectx = document.getElementById('pieChart').getContext('2d');
+const pieChart = new Chart(piectx, {
+    type: 'pie',
     data: {
-        labels: data[1].x,
+        labels: data[7].x,
         datasets: [{
             label: '# Orders',
-            data: data[1].y,
+            data: data[7].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

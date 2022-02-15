@@ -35,6 +35,16 @@ def cart():
             product = product_dict.get(str(sku))
             cart_list.append([product,user_cart[sku]])
 
+    user_dict = get_db('users', 'Customers')
+    user = user_dict[current_user.get_customer_id()]
+    if len(cart_list) > 0:
+        user.set_cartStatus('Items in cart')
+        user_dict[user.get_customer_id()] = user
+    else:
+        current_user.set_cartStatus('Empty')
+        user_dict[user.get_customer_id()] = user
+    set_db('users', 'Customers', user_dict)
+
     return render_template('inventory/cart.html', cart_list = cart_list)
 
 

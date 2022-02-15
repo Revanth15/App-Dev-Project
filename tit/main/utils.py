@@ -2,7 +2,7 @@ import shelve
 from flask_login import current_user
 
 import tit.classes.order as Order
-from tit.utils import get_db, set_db
+from tit.utils import get_db, set_db, set_notifications
 
 def checkoutFunc():
     user_id = current_user.get_customer_id()
@@ -51,6 +51,12 @@ def checkoutFunc():
         product = products_dict.get(sku)
         qty = product.get_quantity() - cart_dict[user_id][0][sku]
         product.set_quantity(qty)
+
+    for sku in products_dict:
+            if products_dict[sku].get_quantity() == 0:
+                set_notifications(f'{sku} is out of stock', 'OOS', 'Click here to go to restock', 'inventory.retrieve_products', sku)
+            elif products_dict[sku].get_quantity() < 30:
+                set_notifications(f'{sku} is low in stock', 'LS', 'Click here to go to restock', 'inventory.retrieve_products' , sku)
         
     cart_dict.pop(int(user_id))
     print(cart_dict)

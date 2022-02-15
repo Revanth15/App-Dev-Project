@@ -65,8 +65,14 @@ def logs():
     for delivery in delivery_dict.values():
         deliveries.append((delivery.get_created(), delivery.get_sku(), delivery.get_restock_quantity(), delivery.get_delivery_date(), delivery.get_restock_price()))
 
+    transactions_dict = get_db('orders', "orders")
+    orders = []
+    for user in transactions_dict:
+        for order in transactions_dict[user].values():
+            orders.append((user, order.get_order_id(), order.get_order(), order.get_created(), order.get_total_price()))
 
-    return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(), deliveries= deliveries, traffic = traffic, tab=tab)
+
+    return render_template('reports/admin_logs.html', datetime=datetime.datetime.now(),orders = orders, deliveries= deliveries, traffic = traffic, tab=tab)
 
 @reporting.route('/logs/session/<id>')
 def get_session(id):

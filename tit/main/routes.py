@@ -28,7 +28,6 @@ main.register_blueprint(support)
 
 @main.before_request
 def getSession():
-    print(current_user)
     if 'static' not in request.url:
         time = datetime.datetime.now().replace(microsecond=0)
         userIP = request.remote_addr
@@ -182,6 +181,7 @@ def checkout():
 
         payment_dict[payment.get_card_number()] = payment
         set_db('payment','payment', payment_dict)
+        current_user.set_cartStatus('Purchased')
         return redirect(url_for('main.home'))
     else:
         customers_dict = get_db('users', 'Customers')
@@ -192,6 +192,14 @@ def checkout():
         checkout_form.phone_number.data = customer.get_phone_number()
         return render_template('checkout.html', form=checkout_form)
 
+@main.route('/cancelOrder')
+def cancel():
+    if current_user.get_role() == 'Customer':
+        user_dict = get_db('users', 'Customers')
+        current_user.set_cartStatus('Cancelled')
+        user_dict[current_user.get_customer_id()] = current_user
+        set_db('users', 'Customers', user_dict)
+    return redirect(url_for('main.transactions.cart'))
 
 @main.route('/myOrders')
 def myOrders():

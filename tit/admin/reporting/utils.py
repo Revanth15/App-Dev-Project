@@ -114,6 +114,13 @@ def get_data():
             datalist.append(session.get_created('%I%p'))
     data.append(db_count_occurence(datalist))
 
+    datalist = []
+    user_db = get_db('users', 'Customers')
+    for user in user_db.values():
+        print(user.get_cartStatus(0))
+        datalist.append(user.get_cartStatus(0))
+    print(datalist)
+    data.append(db_count_occurence(datalist))
 
     print(data)
     return data
