@@ -136,6 +136,9 @@
   background-color:#265F63;
   color: white;
 }
+.flash {
+  padding : 10px;
+}
 
 .discount-card .card-body input {
   line-height: 2em;

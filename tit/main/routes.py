@@ -1,4 +1,4 @@
-from flask import render_template, session, Blueprint, request, redirect, url_for
+from flask import flash, render_template, session, Blueprint, request, redirect, url_for
 from flask_login import current_user
 import shelve
 import datetime
@@ -172,10 +172,7 @@ def checkout():
         print(year, month, exp_mm, exp_yy)
 
         if year < exp_yy :
-            if month <= exp_mm:
-                checkoutFunc()
-            else:
-                print("card is expired")
+            checkoutFunc()
 
         elif year == exp_yy :
             if month < exp_mm:
@@ -202,7 +199,9 @@ def checkout():
 def myOrders():
     user_id = current_user.get_customer_id()
     orders_dict = get_db('orders', 'orders')
-    print(orders_dict)
+    if orders_dict[user_id] is None:
+        orders_dict[user_id] = {}
+        
     order_list = []
     for key in orders_dict[user_id]:
         order = orders_dict[user_id].get(key)
@@ -224,7 +223,7 @@ def order(id):
         product = products_dict.get(sku)
         dict = order.get_order()
         qty = dict[sku]
-        products_list.append([product,qty])
+        products_list.append([product,qty,order])
 
     return render_template('order.html',products_list=products_list)
 

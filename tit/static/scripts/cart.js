@@ -86,6 +86,7 @@ $('.apply-discount-button').click(function() {
         }, function(data) {
             console.log(data)
             $('.cart-discount').text(data.discountcode + "%")
+            $('.flash').text(data.flash)
             disc()
         })
     }

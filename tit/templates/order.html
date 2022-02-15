@@ -29,6 +29,7 @@
               <span class="cart-quantityy"">{{product[1]}}</span>
           </div>
         </div>
+        <input type="hidden" value="{{ product[2].get_total_price()}}" class="total-p">
         {% endfor %}
         </div>
       </div>
@@ -42,7 +43,11 @@
         </div>
         <div class="grandtotal d-flex">
             <p>Grand Total</p>
-            <p class="cart-grandtotal-price ms-auto" id="total">S$0</p>
+            <p class="cart-grandtotal-price ms-auto" id="total">0%</p>
+        </div>
+        <div class="grandtotal-after d-flex">
+          <p>Grand Total after discount</p>
+          <p class="cart-gt-after ms-auto">0</p>
         </div>
     </div>
   </div>
@@ -145,7 +150,7 @@ margin-top:60px;
   border-bottom: 1px solid black;
 }
 
-.grandtotal {
+.grandtotal, .grandtotal-after {
   padding: 10px;
 }
 </style>
@@ -157,6 +162,8 @@ margin-top:60px;
     $(document).ready (function() {
         var cartItemContainer = document.getElementsByClassName('cart-items')[0]
         var cartRows = cartItemContainer.getElementsByClassName('cart-row')
+        var tl = $('.total-p').val()
+        console.log(tl)
         var subtotal = 0
         for (var i = 0; i < cartRows.length; i++) {
             var cartRow = cartRows[i]
@@ -171,6 +178,7 @@ margin-top:60px;
         }
         subtotal = Math.round(subtotal * 100) / 100
         document.getElementsByClassName('cart-grandtotal-price')[0].innerText = 'S$' + subtotal
+        document.getElementsByClassName('cart-gt-after')[0].innerText = 'S$' + tl
     })
 
     

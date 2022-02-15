@@ -1,5 +1,5 @@
 from io import SEEK_CUR
-from flask import render_template, request, redirect, url_for, Blueprint
+from flask import render_template, request, redirect, url_for, Blueprint,session
 import shelve
 from tit import app 
 from flask_login import current_user
@@ -44,7 +44,7 @@ def remove_item(sku):
     user_id = current_user.get_customer_id()
     cart_dict = get_db('cart', 'cart')
     cart_dict[user_id][0].pop(sku)
-
+    
     set_db('cart', 'cart', cart_dict)
 
     return redirect(url_for('main.transactions.cart'))
@@ -112,13 +112,13 @@ def discount():
                     discount = voucher.get_discount_amount()
                     print(discount)
                     set_db('cart', 'cart', cart_dict)   
-                    return {'discountcode' : discount}
+                    return {'discountcode' : discount, 'flash': "Discount Code applied successfully!"}
                 else:
-                    return  {'discountcode' : 0, 'flash' : "insufficient spools"}
+                    return  {'discountcode' : 0, 'flash' : "Insufficient spools!"}
             else:
-                return  {'discountcode' : 0, 'flash' : "Oh noo,This voucher has been used up"}
+                return  {'discountcode' : 0, 'flash' : "Oh noo,This voucher has been used up!"}
                 
-    return {'discountcode' : 0, 'flash' : "There is no such voucher code"}
+    return {'discountcode' : 0, 'flash' : "There is no such voucher code!"}
 
 
 # def cart(): 
