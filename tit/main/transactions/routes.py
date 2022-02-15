@@ -89,6 +89,12 @@ def update_total():
     user_id = current_user.get_customer_id()
     cart_dict = get_db('cart', 'cart')
     subtotal = int(request.args.get('subtotal'))
+    if subtotal <= 75:
+        subtotal = subtotal + 15
+    elif subtotal <= 150:
+        subtotal = subtotal + 7.50
+    else:
+        subtotal = subtotal
     cart_dict[user_id][1] = subtotal
     set_db('cart', 'cart', cart_dict)
     return redirect(url_for('main.checkout'))
