@@ -3,16 +3,19 @@
 
 
 {% block content %}
+<link rel="stylesheet" href="static/styles/myorder.css">
 <h1>Past Orders</h1>
 
 <div class="container">
     <div class="row mt-3">
-        {% for order_id in orders_list %}
+        {% for order in orders_list %}
         <div class="col-12 col-xs-12 col-md-6 ">
             <div class="card mt-3">
                 <div class="card-body text-center">
-                    <p>OrderID: {{order_id}}</p>
-                    <button class="btn btn-primary">View Order</button>
+                    <p>OrderID: {{order[1]}}</p>
+                    <p>Order Total: ${{order[0].get_total_price()}}</p>
+                    <p>Order Status: {{order[2]}}</p>
+                    <td><a href="{{url_for('main.order', id = order[1])}}" class="btn btn-secondary">View Order</a></td>
                 </div>
             </div>
         </div>

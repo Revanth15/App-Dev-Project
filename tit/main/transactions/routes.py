@@ -1,5 +1,5 @@
 from io import SEEK_CUR
-from flask import render_template, request, redirect, url_for, Blueprint
+from flask import render_template, request, redirect, url_for, Blueprint,session
 import shelve
 from tit import app 
 from flask_login import current_user
@@ -34,6 +34,7 @@ def cart():
         if str(sku) in product_dict:
             product = product_dict.get(str(sku))
             cart_list.append([product,user_cart[sku]])
+            print(cart_list)
 
     user_dict = get_db('users', 'Customers')
     user = user_dict[current_user.get_customer_id()]
@@ -53,7 +54,7 @@ def remove_item(sku):
     user_id = current_user.get_customer_id()
     cart_dict = get_db('cart', 'cart')
     cart_dict[user_id][0].pop(sku)
-
+    
     set_db('cart', 'cart', cart_dict)
 
     return redirect(url_for('main.transactions.cart'))
@@ -110,27 +111,24 @@ def discount():
     customer = customers_dict.get(user_id)
     spools = customer.get_spools()
     print(spools)
+    print(discount_code_applied)
     for key in vouchers_dict:
         voucher = vouchers_dict.get(key)
+        print(voucher.get_discount_code())
         if discount_code_applied == voucher.get_discount_code():
-            discount = voucher.get_discount_amount()
             if voucher.get_quantity() > 0:
                 spools_needed = int(voucher.get_spools())
                 if spools >= spools_needed:
-                    spools_left = spools - spools_needed
-                    customer.set_spools(spools_left)
+                    discount = voucher.get_discount_amount()
+                    print(discount)
+                    set_db('cart', 'cart', cart_dict)   
+                    return {'discountcode' : discount, 'flash': "Discount Code applied successfully!"}
                 else:
-                    print("insufficient spools")
+                    return  {'discountcode' : 0, 'flash' : "Insufficient spools!"}
             else:
-                print("Oh noo,This voucher has been used it")
-        else:
-            print("There is no such voucher code")
-    discount = discount_code_applied
-    print(cart_dict)
-    set_db('cart', 'cart', cart_dict)
-    set_db('vouchers', 'Vouchers', vouchers_dict)
-    set_db('users', 'Customers', customers_dict)
-    return render_template('inventory/cart.html', discount = discount)
+                return  {'discountcode' : 0, 'flash' : "Oh noo,This voucher has been used up!"}
+                
+    return {'discountcode' : 0, 'flash' : "There is no such voucher code!"}
 
 
 # def cart(): 

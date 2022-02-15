@@ -5,7 +5,6 @@
 {% block content %}
 <link rel="stylesheet" href="../static/styles/cart.css">
 
-{{discount}}
 <div class="row">
   <div class="container content-section col-12 col-md-9">
     <div class="card cart-card">
@@ -62,6 +61,9 @@
         </button>
 
       </div>
+      <div class="flash">
+        <p></p>
+      </div>
     </div>
 
     <div class="card summary-card">
@@ -79,7 +81,7 @@
         </div>
         <div class="discount d-flex">
           <p>Discount</p>
-          <p class="cart-discount ms-auto">10%</p>
+          <p class="cart-discount ms-auto">0%</p>
         </div>
         <div class="grandtotal d-flex">
           <p>Grand Total</p>
