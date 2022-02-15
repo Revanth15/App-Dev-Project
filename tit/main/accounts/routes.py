@@ -151,7 +151,7 @@ def update_password():
         customer.set_confirm_password(update_password_form.confirm_password.data)
         set_db('users','Customers', users_dict)
 
-        return redirect(url_for('main.accounts.retrieve_password'))
+        return redirect(url_for('main.accounts.retrieveProfile'))
     else:
         customer = users_dict.get(id)
         update_password_form.password.data = customer.get_password()
