@@ -196,10 +196,11 @@ def checkout():
 
 @main.route('/cancelOrder')
 def cancel():
+    user_dict = get_db('users', 'Customers')
+    user = user_dict[current_user.get_customer_id()]
     if current_user.get_role() == 'Customer':
-        user_dict = get_db('users', 'Customers')
-        current_user.set_cartStatus('Cancelled')
-        user_dict[current_user.get_customer_id()] = current_user
+        user.set_cartStatus('Cancelled')
+        user_dict[user.get_customer_id()] = user
         set_db('users', 'Customers', user_dict)
     return redirect(url_for('main.transactions.cart'))
 

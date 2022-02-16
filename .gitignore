@@ -12,7 +12,4 @@ tit/admin/rewards/__pycache__/
 tit/main/transactions/__pycache__/
 tit/main/rewards/__pycache__/
 tit/classes/__pycache__/
-tit/database/*.dir
-tit/database/*.bak
-tit/database/*.dat
 *.pyc

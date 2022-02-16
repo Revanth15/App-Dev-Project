@@ -114,7 +114,8 @@ def edit_product(sku):
 
         if update_product_form.file.data:
             filename = update_product_form.sku.data + "." + update_product_form.file.data.filename.split(".")[-1]
-            os.remove(app.config['STATIC_PATH']+ 'product_uploads/' + product.get_filename())
+            if os.path.exists(app.config['STATIC_PATH']+ 'product_uploads/' + product.get_filename()):
+                os.remove(app.config['STATIC_PATH']+ 'product_uploads/' + product.get_filename())
             product.set_filename(filename)
             update_product_form.file.data.save(app.config['STATIC_PATH']+ 'product_uploads/' + filename)
 

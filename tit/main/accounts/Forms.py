@@ -1,34 +1,31 @@
-from flask import flash
+from ast import Pass
+from xml.dom import ValidationErr
+from xmlrpc.client import Boolean
 from flask_login import current_user
-from pyparsing import Regex
 from wtforms import StringField, BooleanField, SelectField, validators, PasswordField, IntegerField, TextAreaField, RadioField, EmailField, TelField, Form
-from wtforms.validators import Email
+from wtforms.validators import InputRequired, EqualTo, DataRequired, Length, Email
+from flask import request, flash
 from flask_wtf import FlaskForm
-from wtforms.validators import ValidationError
-from password_strength import PasswordPolicy, PasswordStats
-
+from tit.classes.admin import User
 from tit.classes.Customer import Customer
 # from wtforms.fields.html5 import EmailField, DateField
 
+
 # from flask import Flask, render_template, request, redirect, url_for, flash, session
-
-def validate_email(form,field):
-    email = field.data
-    print(email)
-    email_end = email.split('@')[-1]
-    print(email_end)
-    if email_end != 'gmail.com' and email_end != 'yahoo.com' and email_end != 'tit.com':
-        print('error')
-        raise ValidationError('Please enter a valid gmail/yahoo mail')
-
 
 class CustomerSignUpForm(FlaskForm):
     name = StringField('Name(as in ID)', [validators.Length(min=1, max=30), validators.DataRequired()])
-    email = StringField('Email', [validators.DataRequired(), validators.Email(), validate_email])
+    email = StringField('Email', [validators.DataRequired(), Email()])
     gender = SelectField('Gender', [validators.DataRequired()], choices=[('', 'Select'), ('F', 'Female'), ('M', 'Male')], default='')
     phone_number = StringField('Phone Number', [validators.Length(min=8, max=8), validators.DataRequired()])
-    password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm_password', message='Passwords do not match'), validators.Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$", message='Weak Password')])
+    password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm_password', message='Passwords do not match')])
     confirm_password = PasswordField('Confirm Password', [validators.DataRequired(),validators.EqualTo('password', message='Passwords do not match')])
+
+
+    # def validate_email(self, email):
+    #     customer = Customer.query.filter_by(email=email.data).first()
+    #     if customer:
+    #         raise ValidationErr('That email is taken. Please choose a different one.')
 
 
 class LoginForm(FlaskForm):
@@ -40,11 +37,9 @@ class LoginForm(FlaskForm):
 class ChangePasswordForm(FlaskForm):
     password = PasswordField('Password', [validators.DataRequired()])
     new_password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm_new_password', message='Passwords do not match')])
-    confirm_password = PasswordField('Confirm New Password', [validators.DataRequired(),validators.EqualTo('new_password', message='Passwords do not match')])
+    confirm_new_password = PasswordField('Confirm New Password', [validators.DataRequired(),validators.EqualTo('new_password', message='Passwords do not match')])
     remember = BooleanField('Remember Me')
 
-class getOTPForm(FlaskForm):
-    phone_number = StringField('Phone Number', [validators.Length(min=8, max=8), validators.DataRequired()])
 
 
 

@@ -54,6 +54,8 @@ function updateCartTotal() {
         var quantity = quantityElement.value
         total = price * quantity
         subtotal = subtotal + (price * quantity)
+        var points = document.getElementsByClassName('vouchers-points').innerText
+        localStorage.setItem('cart')
 
         cartRow.getElementsByClassName('cart-total')[0].innerText = 'S$' + total
     }
