@@ -1,5 +1,5 @@
 from flask import flash, render_template, session, Blueprint, request, redirect, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 import shelve
 import datetime
 import urllib
@@ -149,6 +149,7 @@ def hoodies():
     return render_template('category/product.html', products_list=products_list, category = category)
 
 @main.route('/checkout', methods=['GET', 'POST'])
+@login_required
 def checkout():
     user_id = current_user.get_customer_id()
     checkout_form = Checkout()
@@ -195,6 +196,7 @@ def checkout():
         return render_template('checkout.html', form=checkout_form)
 
 @main.route('/cancelOrder')
+@login_required
 def cancel():
     user_dict = get_db('users', 'Customers')
     user = user_dict[current_user.get_customer_id()]
@@ -205,6 +207,7 @@ def cancel():
     return redirect(url_for('main.transactions.cart'))
 
 @main.route('/myOrders')
+@login_required
 def myOrders():
     user_id = current_user.get_customer_id()
     orders_dict = get_db('orders', 'orders')
@@ -221,6 +224,7 @@ def myOrders():
     return render_template('myorder.html', orders_list=order_list)
 
 @main.route('/order/<id>/', methods=['GET', 'POST'])
+@login_required
 def order(id):
     user_id = current_user.get_customer_id()
     orders_dict = get_db('orders', 'orders')

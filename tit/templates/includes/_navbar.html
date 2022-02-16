@@ -45,15 +45,6 @@
 
       </ul>
 
-      <form class="w-auto">
-        <input
-          type="search"
-          class="form-control"
-          placeholder="Search"
-          aria-label="Search"
-        />
-      </form>
-
       <ul class="navbar-nav d-flex flex-row me-1">
         <li class="nav-item me-3 me-lg-0 cart">
           <a class="nav-link bx bxs-cart" href="{{url_for('main.transactions.cart')}}">
@@ -66,26 +57,28 @@
             
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+            {% if not current_user.is_authenticated %}
             <li>
               <a class="dropdown-item" href="{{url_for('login')}}">Log In</a>
             </li>
             <li>
               <a class="dropdown-item" href="{{url_for('main.accounts.sign_up')}}">Sign Up</a>
             </li>
+            {%endif%}
+            {% if current_user.is_authenticated %}
             <li>
               <a class="dropdown-item" href="{{url_for('main.myOrders')}}">My Orders</a>
             </li>
-            {% if current_user.is_authenticated %}
             <li>
               <a class="dropdown-item" href="#">{{current_user.get_spools() if current_user.get_role()=='Customer' else '0'}} Spools</a>
             </li>
             <li>
               <a class="dropdown-item" href="{{url_for('main.accounts.retrieveProfile')}}">My Profile</a>
             </li>
-            {% endif %}
             <li>
               <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
             </li>
+            {% endif %}
           </ul>
         </li>
       </ul>
