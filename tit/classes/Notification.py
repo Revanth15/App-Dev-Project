@@ -33,3 +33,6 @@ class Notification(logData):
 
     def update_seenby(self, user_id):
         self.__seenby.append(user_id)
+
+    def delete_seenby(self, user_id):
+        self.__seenby.pop(user_id)

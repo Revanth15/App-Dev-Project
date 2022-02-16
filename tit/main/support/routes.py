@@ -5,7 +5,7 @@ import tit.classes.User as User
 import shelve
 from flask_login import current_user
 
-from tit.utils import get_db, set_db
+from tit.utils import get_db, set_db, set_notifications
 
 
 support = Blueprint('support', __name__, template_folder="templates", static_url_path="static", url_prefix="/support" )
@@ -126,7 +126,7 @@ def create_user():
 
         users_dict[user.get_id()] = user
         set_db('feedback', 'Feedback', users_dict)
-
+        set_notifications('Support ticket/feedback', user.get_type(), f'{user.get_Name()} has sent a support ticket/feedback. Click here to view.', "support.AdminFeedbackPage", user.get_id())
         # Test codes
         
        

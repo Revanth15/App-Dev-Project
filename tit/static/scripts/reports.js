@@ -24,44 +24,23 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
+$(document).ready(function(){
+    $('.dbselect').hide()
+    $('.chartselect').find('input').attr('checked', 'True')
+})
+
 $('#fileselect').change(function() {
     $('.chartselect').hide()
-    console.log($('#fileselect').val())
+    $('.dbselect').hide()
     if ($('#fileselect').val() == 1) {
         $('.chartselect').show()
+    } else if ($('#fileselect').val() == 3){
+        $('.dbselect').show()
     }
 })
 
 
 var config = {
-    aspect_ratio: 1,
-    plugins: {
-        title: {
-            display: true,
-            align: 'start',
-            text: 'Out of Stocks',
-            font: {
-                family: "'Roboto', sans-serif",
-                size: 24,
-            },
-            color: [
-                'rgba(0, 0, 0, 1)'
-            ],
-            padding: {
-                top: 20
-            }
-        }
-    },
-    scales: {
-        yAxis: {
-            min: 0,
-            suggestedMax: 10
-        }
-    }
-    
-}
-config.animation = false;
-var configIMG = {
     aspect_ratio: 1,
     plugins: {
         title: {
@@ -85,11 +64,10 @@ var configIMG = {
             min: 0,
             suggestedMax: 10
         }
-    },
-    animation: {
-        onComplete: doneOnce
     }
+    
 }
+config.animation = false
 
 
 const restockctx = document.getElementById('restockChart').getContext('2d');
@@ -101,12 +79,12 @@ const restockChart = new Chart(restockctx, {
             label: '#',
             data: data[0].y,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -119,10 +97,10 @@ const restockChart = new Chart(restockctx, {
             borderWidth: 1
         }]
     },
-    options: configIMG
+    options: config
 });
 
-
+config.plugins.title.text = 'Out of Stocks by SKU'
 const outofstockctx = document.getElementById('outofstockChart').getContext('2d');
 const outofstockChart = new Chart(outofstockctx, {
     type: 'bar',
@@ -132,12 +110,12 @@ const outofstockChart = new Chart(outofstockctx, {
             label: 'Stocks',
             data: data[2].y,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -154,6 +132,19 @@ const outofstockChart = new Chart(outofstockctx, {
 });
 
 config.plugins.title.text = 'Inventory Health';
+const backgroundColor = []
+data[3].y.forEach(element => {
+    console.log(element)
+    if (element <= 30 ) {
+        backgroundColor.push('rgba(255, 99, 132, 1)')
+    } else if (element <= 100) {
+        backgroundColor.push('rgba(255, 206, 86, 1)')
+    } else {
+        backgroundColor.push('green')
+    }
+});
+console.log(backgroundColor)
+console.log(data[3].y)
 const productQtyctx = document.getElementById('productQtyChart').getContext('2d');
 const productQtyChart = new Chart(productQtyctx, {
     type: 'bar',
@@ -162,22 +153,8 @@ const productQtyChart = new Chart(productQtyctx, {
         datasets: [{
             label: 'Stocks',
             data: data[3].y,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
+            backgroundColor: backgroundColor,
+            borderColor: backgroundColor,
             borderWidth: 1
         }]
     },
@@ -187,19 +164,19 @@ const productQtyChart = new Chart(productQtyctx, {
 config.plugins.title.text = 'Revenue this month';
 const revenuectx = document.getElementById('revenueChart').getContext('2d');
 const revenueChart = new Chart(revenuectx, {
-    type: 'bar',
+    type: 'line',
     data: {
-        labels: data[3].x,
+        labels: data[4].x,
         datasets: [{
             label: '$',
-            data: data[3].y,
+            data: data[4].y,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -245,19 +222,19 @@ const revenueChart = new Chart(revenuectx, {
 config.plugins.title.text = 'Sales this month';
 const salesctx = document.getElementById('salesChart').getContext('2d');
 const salesChart = new Chart(salesctx, {
-    type: 'bar',
+    type: 'line',
     data: {
         labels: data[5].x,
         datasets: [{
             label: '#',
             data: data[5].y,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -309,12 +286,12 @@ const visitorChart = new Chart(visitorctx, {
             label: 'Visitors',
             data: data[6].y,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -368,12 +345,12 @@ const pieChart = new Chart(piectx, {
             label: '# Orders',
             data: data[7].y,
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
