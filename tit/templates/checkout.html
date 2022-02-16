@@ -6,6 +6,11 @@
 <link rel="stylesheet" href="../static/styles/shipping.css">
 <link rel="stylesheet" href="../static/styles/payment.css">
 
+{% if 'card_expired' in session %}
+<div class="alert alert-warning alert-dismissible">
+  Card {{ session.pop('card_expired', None) }} is expired.
+</div>
+{% endif %}
 <div class="row">
   <div class="container content-section col-12 col-md-9">
     <form method="POST" enctype="multipart/form-data">

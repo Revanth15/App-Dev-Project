@@ -173,19 +173,23 @@ def checkout():
 
         if year < exp_yy :
             checkoutFunc()
+            payment_dict[payment.get_card_number()] = payment
+            set_db('payment','payment', payment_dict)
+            current_user.set_cartStatus('Purchased')
+            return redirect(url_for('main.home'))
 
         elif year == exp_yy :
             if month < exp_mm:
                 checkoutFunc()
+                payment_dict[payment.get_card_number()] = payment
+                set_db('payment','payment', payment_dict)
+                current_user.set_cartStatus('Purchased')
+                return redirect(url_for('main.home'))
             else:
-                print("card is expired")
+                session['card_expired'] = payment.get_card_number()
         else:
-            print("card is expired")
-
-        payment_dict[payment.get_card_number()] = payment
-        set_db('payment','payment', payment_dict)
-        current_user.set_cartStatus('Purchased')
-        return redirect(url_for('main.home'))
+             session['card_expired'] = payment.get_card_number()
+        return redirect(url_for('main.checkout'))
     else:
         customers_dict = get_db('users', 'Customers')
 
@@ -211,15 +215,16 @@ def cancel():
 def myOrders():
     user_id = current_user.get_customer_id()
     orders_dict = get_db('orders', 'orders')
-    if orders_dict[user_id] is None:
-        orders_dict[user_id] = {}
         
     order_list = []
-    for key in orders_dict[user_id]:
-        order = orders_dict[user_id].get(key)
-        order_id = key
-        status = order.get_status()
-        order_list.append([order,order_id,status])
+    if orders_dict.get(user_id) is not None:
+        for key in orders_dict[user_id]:
+            order = orders_dict[user_id].get(key)
+            order_id = key
+            status = order.get_status()
+            order_list.append([order,order_id,status])
+    else:
+        order_list = []
     print(order_list)
     return render_template('myorder.html', orders_list=order_list)
 
