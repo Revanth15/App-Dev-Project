@@ -165,7 +165,10 @@ def createPDF(output, imgs, choices):
 
     index = 0
     height = 50
-    for img in listdir('tit/tmp'):
+
+    img_list = listdir('tit/tmp')
+    img_list.remove('__init__.py')
+    for img in img_list:
         if int(img[-5]) in choices:
             print('img!')
             if index % 2 == 0:
