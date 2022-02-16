@@ -3,7 +3,7 @@ from flask import flash, redirect, render_template, request, url_for, Blueprint
 
 import tit.classes.Customer as Customer
 from tit.classes.admin import Admin
-from tit.main.accounts.Forms import CustomerSignUpForm, ChangePasswordForm, getOTPForm
+from tit.main.accounts.Forms import CustomerSignUpForm, ChangePasswordForm
 
 from flask_login import current_user, login_required, login_user, logout_user
 
@@ -12,18 +12,18 @@ from tit.utils import get_db, set_db
 accounts = Blueprint('accounts', __name__, template_folder='templates', static_url_path='static', url_prefix='/user')
 
 
-@accounts.route('/getOTP', methods=['GET', 'POST'])
-def getOTP():
-    get_OTP_form = getOTPForm(request.form)
-    if request.method == 'POST':
-        customers_dict = get_db('users','Customers')
+# @accounts.route('/getOTP', methods=['GET', 'POST'])
+# def getOTP():
+#     get_OTP_form = getOTPForm(request.form)
+#     if request.method == 'POST':
+#         customers_dict = get_db('users','Customers')
         
-        for customer in customers_dict.values():
-            if customer.get_phone_number() == get_OTP_form.phone_number.data:
-                print('Customer keyed in the correct number.')
-                redirect(url_for("main.accounts.login"))
+#         for customer in customers_dict.values():
+#             if customer.get_phone_number() == get_OTP_form.phone_number.data:
+#                 print('Customer keyed in the correct number.')
+#                 redirect(url_for("main.accounts.login"))
 
-    return render_template('accounts/getOTP.html', form=get_OTP_form)
+#     return render_template('accounts/getOTP.html', form=get_OTP_form)
 
 
 
