@@ -3,6 +3,7 @@ from flask_login import current_user
 
 import tit.classes.order as Order
 from tit.utils import get_db, set_db, set_notifications
+from uuid import uuid4
 
 def checkoutFunc():
     user_id = current_user.get_customer_id()
@@ -16,8 +17,9 @@ def checkoutFunc():
 
     cart = cart_dict[user_id]
     status = 'Processing'
-    order = Order.Order(cart[1],cart[0],status)
-    order_id = order.get_order_id()
+    uuid = ("#" + str(uuid4())[-12:]).upper()
+    order_id = uuid
+    order = Order.Order(order_id,cart[1],cart[0],status)
     if orders_dict.get(user_id) is not None:
         cust_order = orders_dict.get(user_id) 
     else:
