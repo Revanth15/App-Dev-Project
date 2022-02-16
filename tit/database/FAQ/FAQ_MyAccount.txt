@@ -1,4 +1,3 @@
 How do I sign up for an account?|Click on the Sign up button on the top right. Enter your choice of Username, Password and email address. Tap on "Create my Account!" and your ready!
 How do I change my Username/Password?|Sign in to your account and click on "My profile". Then tap edit user and make the necessary changes, before clicking on "Save Changes" to save your edits.
 What do I do if I forgot my password?|Click on the "Forgot Password" option and enter your email address, a link to reset your password will be sent to you via email. 
-What do I do if I forgot my Username?|Click on the "Forgot Username" option and enter your email address, a link to reset your Username will be sent to you via email.

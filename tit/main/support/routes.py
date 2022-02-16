@@ -88,7 +88,7 @@ def FAQ_T():
     db = open('tit/database/FAQ/FAQ_Troubleshooting.txt')
     
     for i in db:
-        a,b = i.rstrip('\n').split(',')
+        a,b = i.rstrip('\n').split('|')
         question[str(a)] = str(b)
         
         
