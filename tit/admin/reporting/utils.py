@@ -6,6 +6,8 @@ from io import BytesIO
 import csv
 from collections import Counter
 from os import listdir
+
+from numpy import product
 from tit import app
 
 from fpdf import FPDF
@@ -66,7 +68,7 @@ def get_data():
     datalist = []
     restock_db = get_db('products','delivery')
     for restock in restock_db.values():
-        if restock.get_created('date', 'obj') == current_time().date():
+        if restock.get_created('datetime', 'obj').year == current_time().year:
             datalist.append(restock.get_sku())
     data.append(db_count_occurence(datalist))
 
@@ -172,8 +174,8 @@ def createPDF(output, imgs, choices):
                 pdf.image(f"tit/tmp/{img}", WIDTH/2+10, height, WIDTH/2-20)
                 height+=50
             index +=1
-        if os.path.exists('tit\\tmp'+img):
-            os.remove(img)
+        if os.path.exists(f"tit/tmp/{img}"):
+            os.remove(f"tit/tmp/{img}")
     #pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\test.pdf')
     pdf.output(f'{app.config["STATIC_PATH"]}files\\reports\\{output}')
     
@@ -191,7 +193,25 @@ def create_obj_dict(obj):
     return field_dict
 
 
-def createCSV(output, dict):
+def createCSV(output, db):
+    dict_list=[]
+    restock_db = get_db('products','delivery')
+    stock_db = get_db('notification','Notifications')
+    order_db = get_db('orders','orders')
+    session_db = get_db('traffic','Sessions')
+    user_db = get_db('users', 'Customers')
+
+    order_dict = {}
+    for user in list(order_db.values()):
+        for order in user.values():
+            order_dict.update({order.get_order_id(): order})
+    dict_list.append(restock_db)
+    dict_list.append(stock_db)
+    dict_list.append(order_dict)
+    dict_list.append(session_db)
+    dict_list.append(user_db)
+
+    dict = dict_list[int(db)-1]
     lines = []
     for obj in dict.values():
         lines.append(create_obj_dict(obj))
@@ -203,9 +223,29 @@ def createCSV(output, dict):
         writer.writerows(lines)
     print("csv created")
 
-def createExcel(output, dict_list):
-    if not isinstance(dict_list, list):
-        dict_list = [dict_list]
+def createExcel(output):
+    dict_list=[]
+    restock_db = get_db('products','delivery')
+    notifications_db = get_db('notification','Notifications')
+    products = get_db('products','products')
+    order_db = get_db('orders','orders')
+    session_db = get_db('traffic','Sessions')
+    user_db = get_db('users', 'Customers')
+
+    order_dict = {}
+    for user in list(order_db.values()):
+        for order in user.values():
+            order_dict.update({order.get_order_id(): order})
+
+    dict_list.append(restock_db)
+    dict_list.append(notifications_db)
+    dict_list.append(products)
+    dict_list.append(order_dict)
+    dict_list.append(session_db)
+    dict_list.append(user_db)
+
+    sheetnames= ['restock', 'notifications', 'inventory', 'orders', 'traffic', 'customers']
+
     df_list = []
     for dict in dict_list:
         d = {}
@@ -218,9 +258,9 @@ def createExcel(output, dict_list):
                 dlist.append(obj_dict.get(attr))
                 d.update({attr:dlist})
         df_list.append(DataFrame(data=d))
-        df_list.append(DataFrame(data=d))
     with ExcelWriter(f'{app.config["STATIC_PATH"]}files\\excel\\{output}') as writer:  
-        for df in df_list:
-            df.to_excel(writer, sheet_name='Sheet1')
-            df.to_excel(writer, sheet_name='Sheet2')
+        i = 1
+        for df, sheetname in zip(df_list, sheetnames):
+            df.to_excel(writer, sheet_name=sheetname)
+            i+=1
 

@@ -62,11 +62,6 @@ def set_db(database, key, value):
     print(f'Set value for {database}[{key}] Successfully!')
     db.close()
 
-def get_notifications(id=None):
-    notification_dict = get_db('notification', 'Notifications')
-    if id is None:
-        return notification_dict
-    return notification_dict.get(id)
 
 def set_notifications(name, type, message, url, id):
     notification_dict = get_db('notification', 'Notifications')

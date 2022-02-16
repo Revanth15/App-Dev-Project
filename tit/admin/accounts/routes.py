@@ -141,6 +141,12 @@ def delete_admin(id):
     set_db('users', 'Admins', admins_dict)
     print('Admins Deleted!')
 
+    notifications_dict = get_db('notification', 'Notifications')
+    for notif in notifications_dict.values():
+        if id in notif.get_seenby():
+            notif.delete_seenby(id)
+    set_db('notification', 'Notifications', notifications_dict)
+
     return redirect(url_for('admin.accounts.retrieveUsers'))
 
 

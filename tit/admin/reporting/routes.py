@@ -36,9 +36,9 @@ def reports():
             jsdata = request.form['images']
             createPDF(f"{archive.get_filename()}.pdf", jsdata, createReportForm.charts.data)
         elif createReportForm.filetype.data == '2':
-            createExcel(f"{archive.get_filename()}.xlsx",archive_dict)
+            createExcel(f"{archive.get_filename()}.xlsx")
         elif createReportForm.filetype.data == '3':
-            createCSV(f"{archive.get_filename()}.csv", archive_dict)
+            createCSV(f"{archive.get_filename()}.csv", createReportForm.db.data)
 
         session['create_success'] = [archive.get_filename(), get_ext(archive.get_filetype()), archive.get_id()]
 

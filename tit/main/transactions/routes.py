@@ -2,12 +2,13 @@ from io import SEEK_CUR
 from flask import render_template, request, redirect, url_for, Blueprint,session
 import shelve
 from tit import app 
-from flask_login import current_user
+from flask_login import current_user, login_required
 from tit.utils import get_db, set_db
 
 transactions = Blueprint('transactions', __name__, template_folder='templates', static_url_path='static', url_prefix='/transactions')
 
 @transactions.route('/cart', methods=['GET','POST'])
+@login_required
 def cart(): 
     user_id = current_user.get_customer_id()
     if request.method == 'POST':     

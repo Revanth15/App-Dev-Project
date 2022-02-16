@@ -75,9 +75,16 @@
                 </div>
                 <div class="row chartselect">
                     <div class="col-12">
+                        <label for="charts">Charts</label>
                         {{form.charts}}
                     </div>
-                    <span id="result">Result: newReport.pdf</span>
+                </div>
+                <div class="row dbselect">
+                    <div class="col-12">
+                        <div class="form-floating ">
+                            {{ render_field(form.db, class="form-select") }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -138,15 +145,8 @@
 </div>
 {% endblock -%}
 
-{% block chartjs %}
+{% block loader %}
 <script type="text/javascript">
-    function hidetabs() {
-    id = $('.nav-link.active').attr('data-bs-target')
-    $('.tab-pane').not(id).removeClass('show active')
-    myModal.hide()
-    console.log('close!')
-    }
-
     let run = false
     function done() {
         const imgarray = []
@@ -157,7 +157,6 @@
         });
         document.getElementById('images').value = imgarray
         console.log(imgarray)
-        hidetabs()
         run = true
     }
     function doneOnce() {
@@ -167,7 +166,7 @@
     {% for data in data %}
         data.push({{data|tojson}})
     {% endfor %}
-    console.log(data[0])
+    console.log(data)
 
 
 </script>

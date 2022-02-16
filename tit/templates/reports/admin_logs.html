@@ -22,7 +22,7 @@
 <table id="inventory-table" class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">Order Date</th>
+            <th scope="col">Restock Order Date</th>
             <th scope="col">SKU</th>
             <th scope="col">Quantity</th>
             <th scope="col">Delivery Date</th>
@@ -38,7 +38,7 @@
             <td>{{quantity}}</td>
             <td>{{date}}</td>
             <td>S${{cost}}</td>
-            <td><a href="" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i></a></td>
+            <td><a href="{{url_for('admin.inventory.retrieve_products')}}" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i></a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -53,7 +53,6 @@
             <th scope="col">Order</th>
             <th scope="col">Date</th>
             <th scope="col">Paid</th>
-            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -80,7 +79,6 @@
             </td>
             <td>{{date}}</td>
             <td>${{paid}}</td>
-            <td><a href="" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i></a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -95,7 +93,6 @@
             <th scope="col">Time</th>
             <th scope="col">Last View</th>
             <th scope="col">Last Event</th>
-            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -106,7 +103,6 @@
             <td>{{time}}</td>
             <td>{{last_view}}</td>
             <td>{{last_action}}</td>
-            <td><a href="" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i></a></td>
         </tr>
         {% endfor %}
     </tbody>
