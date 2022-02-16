@@ -173,19 +173,23 @@ def checkout():
 
         if year < exp_yy :
             checkoutFunc()
+            payment_dict[payment.get_card_number()] = payment
+            set_db('payment','payment', payment_dict)
+            current_user.set_cartStatus('Purchased')
+            return redirect(url_for('main.home'))
 
         elif year == exp_yy :
             if month < exp_mm:
                 checkoutFunc()
+                payment_dict[payment.get_card_number()] = payment
+                set_db('payment','payment', payment_dict)
+                current_user.set_cartStatus('Purchased')
+                return redirect(url_for('main.home'))
             else:
-                print("card is expired")
+                session['card_expired'] = payment.get_card_number()
         else:
-            print("card is expired")
-
-        payment_dict[payment.get_card_number()] = payment
-        set_db('payment','payment', payment_dict)
-        current_user.set_cartStatus('Purchased')
-        return redirect(url_for('main.home'))
+             session['card_expired'] = payment.get_card_number()
+        return redirect(url_for('main.checkout'))
     else:
         customers_dict = get_db('users', 'Customers')
 
