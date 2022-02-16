@@ -211,15 +211,16 @@ def cancel():
 def myOrders():
     user_id = current_user.get_customer_id()
     orders_dict = get_db('orders', 'orders')
-    if orders_dict[user_id] is None:
-        orders_dict[user_id] = {}
         
     order_list = []
-    for key in orders_dict[user_id]:
-        order = orders_dict[user_id].get(key)
-        order_id = key
-        status = order.get_status()
-        order_list.append([order,order_id,status])
+    if orders_dict.get(user_id) is not None:
+        for key in orders_dict[user_id]:
+            order = orders_dict[user_id].get(key)
+            order_id = key
+            status = order.get_status()
+            order_list.append([order,order_id,status])
+    else:
+        order_list = []
     print(order_list)
     return render_template('myorder.html', orders_list=order_list)
 
