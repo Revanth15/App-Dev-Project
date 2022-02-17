@@ -95,8 +95,9 @@ def tops():
     category = 'T-Shirts & Tops'
     for key in products_dict:
         product = products_dict.get(key)
-        if product.get_category() == category:
-            products_list.append(product)
+        if product.get_quantity() > 0:
+            if product.get_category() == category:
+                products_list.append(product)
     return render_template('category/product.html', products_list=products_list, category = category)
 
 @main.route('/category/Jeans & Joggers')
@@ -107,8 +108,9 @@ def jeans():
     category = 'Jeans & Joggers'
     for key in products_dict:
         product = products_dict.get(key)
-        if product.get_category() == category:
-            products_list.append(product)
+        if product.get_quantity() > 0:
+            if product.get_category() == category:
+                products_list.append(product)
     return render_template('category/product.html', products_list=products_list, category = category)
 
 @main.route('/category/Shorts & Skirts')
@@ -119,8 +121,9 @@ def shorts():
     category = 'Shorts & Skirts'
     for key in products_dict:
         product = products_dict.get(key)
-        if product.get_category() == category:
-            products_list.append(product)
+        if product.get_quantity() > 0:
+            if product.get_category() == category:
+                products_list.append(product)
     return render_template('category/product.html', products_list=products_list, category = category)
 
 @main.route('/category/Dresses')
@@ -131,8 +134,9 @@ def dresses():
     category = 'Dresses'
     for key in products_dict:
         product = products_dict.get(key)
-        if product.get_category() == category:
-            products_list.append(product)
+        if product.get_quantity() > 0:
+            if product.get_category() == category:
+                products_list.append(product)
 
     return render_template('category/product.html', products_list=products_list, category = category)
 
@@ -144,8 +148,9 @@ def hoodies():
     category = 'Hoodies'
     for key in products_dict:
         product = products_dict.get(key)
-        if product.get_category() == category:
-            products_list.append(product)
+        if product.get_quantity() > 0:
+            if product.get_category() == category:
+                products_list.append(product)
     return render_template('category/product.html', products_list=products_list, category = category)
 
 @main.route('/checkout', methods=['GET', 'POST'])

@@ -74,13 +74,24 @@ def delete_cart():
 def update_cart():
     user_id = current_user.get_customer_id()
     cart_dict = get_db('cart', 'cart')
+    products_dict = get_db('products', 'products')
     sku = str(request.args.get('sku'))
     quantity = int(request.args.get('quantity'))
-    # subtotal = int(request.args.get('subtotal'))
-    # print(subtotal)
+    product_quantity = products_dict[sku].get_quantity()
     if int(quantity) <= 0:
         quantity = 1
-    cart_dict[user_id][0].update({sku: quantity})
+    if product_quantity == 0:
+        cart_dict[user_id][0].pop(sku)
+        session['out of stock'] = products_dict[sku].get_product_name()
+    elif product_quantity < 10:
+        quantity = product_quantity
+        session['low in stock'] = products_dict[sku].get_product_name()
+        cart_dict[user_id][0].update({sku: quantity})
+    else:
+        quantity = 10
+        session['buying too much'] = products_dict[sku].get_product_name()
+        cart_dict[user_id][0].update({sku: quantity})
+    
     set_db('cart', 'cart', cart_dict)
     return '1'
 
