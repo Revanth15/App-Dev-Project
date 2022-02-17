@@ -23,6 +23,13 @@ def cart():
             cart_dict[user_id][0].update({sku: 1})
 
         set_db('cart', 'cart', cart_dict)
+
+        customer_dict = get_db('users', 'Customers')
+        customer = customer_dict[user_id]
+        customer.set_cartStatus('Items in cart', True)
+        customer_dict[user_id] = customer
+        set_db('users', 'Customer', customer_dict)
+
     cart_dict = get_db('cart', 'cart')
     product_dict = get_db('products', 'products')
     cart = cart_dict.get(user_id)

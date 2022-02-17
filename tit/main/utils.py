@@ -42,8 +42,10 @@ def checkoutFunc():
     spools = current_user.get_spools() + int(order_total)
     customer = customers_dict[user_id]
     customer.set_spools(spools)
-    print(order_total)
-    print(spools)
+
+    # set cart status
+    customer.set_cartStatus('Purchased')
+
     customers_dict[user_id] = customer
 
     # minus qty
@@ -55,11 +57,12 @@ def checkoutFunc():
         product.set_quantity(qty)
 
     for sku in products_dict:
-            if products_dict[sku].get_quantity() == 0:
-                set_notifications(f'{sku} is out of stock', 'OOS', 'Click here to go to restock', 'inventory.retrieve_products', sku)
-            elif products_dict[sku].get_quantity() < 30:
-                set_notifications(f'{sku} is low in stock', 'LS', 'Click here to go to restock', 'inventory.retrieve_products' , sku)
-        
+        if products_dict[sku].get_quantity() == 0:
+            set_notifications(f'{sku} is out of stock', 'OOS', 'Click here to go to restock', 'inventory.retrieve_products', sku)
+        elif products_dict[sku].get_quantity() < 30:
+            set_notifications(f'{sku} is low in stock', 'LS', 'Click here to go to restock', 'inventory.retrieve_products' , sku)
+    
+
     cart_dict.pop(int(user_id))
     print(cart_dict)
     set_db('cart', 'cart', cart_dict)

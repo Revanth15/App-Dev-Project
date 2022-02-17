@@ -39,37 +39,6 @@ $('#fileselect').change(function() {
     }
 })
 
-
-var config = {
-    aspect_ratio: 1,
-    plugins: {
-        title: {
-            display: true,
-            align: 'start',
-            text: 'Restocks by SKU',
-            font: {
-                family: "'Roboto', sans-serif",
-                size: 24,
-            },
-            color: [
-                'rgba(0, 0, 0, 1)'
-            ],
-            padding: {
-                top: 20
-            }
-        }
-    },
-    scales: {
-        yAxis: {
-            min: 0,
-            suggestedMax: 10
-        }
-    }
-    
-}
-config.animation = false
-
-
 const restockctx = document.getElementById('restockChart').getContext('2d');
 const restockChart = new Chart(restockctx, {
     type: 'bar',
@@ -97,18 +66,44 @@ const restockChart = new Chart(restockctx, {
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Restocks by product',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        },
+        animation: false
+        
+    }
 });
 
-config.plugins.title.text = 'Out of Stocks by SKU'
 const outofstockctx = document.getElementById('outofstockChart').getContext('2d');
 const outofstockChart = new Chart(outofstockctx, {
     type: 'bar',
     data: {
-        labels: data[2].x,
+        labels: data[1].x,
         datasets: [{
-            label: 'Stocks',
-            data: data[2].y,
+            label: '#',
+            data: data[1].y,
             backgroundColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
@@ -128,10 +123,37 @@ const outofstockChart = new Chart(outofstockctx, {
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Low stocks by product',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        },
+        animation: false
+        
+    }
 });
 
-config.plugins.title.text = 'Inventory Health';
+
 const backgroundColor = []
 data[3].y.forEach(element => {
     console.log(element)
@@ -143,8 +165,6 @@ data[3].y.forEach(element => {
         backgroundColor.push('green')
     }
 });
-console.log(backgroundColor)
-console.log(data[3].y)
 const productQtyctx = document.getElementById('productQtyChart').getContext('2d');
 const productQtyChart = new Chart(productQtyctx, {
     type: 'bar',
@@ -158,10 +178,36 @@ const productQtyChart = new Chart(productQtyctx, {
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Inventory Health',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        },
+        animation: false
+        
+    }
 });
 
-config.plugins.title.text = 'Revenue this month';
 const revenuectx = document.getElementById('revenueChart').getContext('2d');
 const revenueChart = new Chart(revenuectx, {
     type: 'line',
@@ -195,7 +241,7 @@ const revenueChart = new Chart(revenuectx, {
             title: {
                 display: true,
                 align: 'start',
-                text: 'Revenue over time',
+                text: 'Revenue Over time',
                 font: {
                     family: "'Roboto', sans-serif",
                     size: 24,
@@ -213,13 +259,12 @@ const revenueChart = new Chart(revenuectx, {
                 min: 0,
                 suggestedMax: 10
             }
-        }
+        },
+        animation: false
         
     }
 });
 
-
-config.plugins.title.text = 'Sales this month';
 const salesctx = document.getElementById('salesChart').getContext('2d');
 const salesChart = new Chart(salesctx, {
     type: 'line',
@@ -253,7 +298,7 @@ const salesChart = new Chart(salesctx, {
             title: {
                 display: true,
                 align: 'start',
-                text: 'Sales over time',
+                text: 'Sales this month',
                 font: {
                     family: "'Roboto', sans-serif",
                     size: 24,
@@ -271,7 +316,8 @@ const salesChart = new Chart(salesctx, {
                 min: 0,
                 suggestedMax: 10
             }
-        }
+        },
+        animation: false
         
     }
 });
@@ -334,8 +380,6 @@ const visitorChart = new Chart(visitorctx, {
 });
 
 
-
-config.plugins.title.text = 'Cart Status';
 const piectx = document.getElementById('pieChart').getContext('2d');
 const pieChart = new Chart(piectx, {
     type: 'pie',
@@ -363,5 +407,32 @@ const pieChart = new Chart(piectx, {
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Cart Status',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        },
+        animation: false
+        
+    }
 });

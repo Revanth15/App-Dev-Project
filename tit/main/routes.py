@@ -175,7 +175,6 @@ def checkout():
             checkoutFunc()
             payment_dict[payment.get_card_number()] = payment
             set_db('payment','payment', payment_dict)
-            current_user.set_cartStatus('Purchased')
             return redirect(url_for('main.home'))
 
         elif year == exp_yy :
@@ -183,7 +182,7 @@ def checkout():
                 checkoutFunc()
                 payment_dict[payment.get_card_number()] = payment
                 set_db('payment','payment', payment_dict)
-                current_user.set_cartStatus('Purchased')
+
                 return redirect(url_for('main.home'))
             else:
                 session['card_expired'] = payment.get_card_number()
@@ -202,9 +201,9 @@ def checkout():
 @main.route('/cancelOrder')
 @login_required
 def cancel():
-    user_dict = get_db('users', 'Customers')
-    user = user_dict[current_user.get_customer_id()]
     if current_user.get_role() == 'Customer':
+        user_dict = get_db('users', 'Customers')
+        user = user_dict[current_user.get_customer_id()]
         user.set_cartStatus('Cancelled')
         user_dict[user.get_customer_id()] = user
         set_db('users', 'Customers', user_dict)

@@ -1,29 +1,4 @@
-var config = {
-    aspect_ratio: 1,
-    plugins: {
-        title: {
-            display: true,
-            align: 'start',
-            text: 'Inventory Health',
-            font: {
-                family: "'Roboto', sans-serif",
-                size: 24,
-            },
-            color: [
-                'rgba(0, 0, 0, 1)'
-            ],
-            padding: {
-                top: 20
-            }
-        }
-    },
-    scales: {
-        yAxis: {
-            min: 0,
-            suggestedMax: 10
-        }
-    }
-}
+
 const backgroundColor = []
 data[3].y.forEach(element => {
     console.log(element)
@@ -41,17 +16,40 @@ const restockChart = new Chart(restockctx, {
     data: {
         labels: data[3].x,
         datasets: [{
-            label: '# Orders',
+            label: 'Stocks',
             data: data[3].y,
             backgroundColor: backgroundColor,
             borderColor: backgroundColor,
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Inventory Health',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        }
+    }
 });
-
-config.plugins.title.text = 'Vistors Today'
 const outofstockctx = document.getElementById('outofstockChart').getContext('2d');
 const outofstockChart = new Chart(outofstockctx, {
     type: 'bar',
@@ -79,13 +77,36 @@ const outofstockChart = new Chart(outofstockctx, {
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Visitors Today',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        }
+    }
 });
 
-config.plugins.title.text = 'Revenue this month'
-
-const productQtyctx = document.getElementById('productQtyChart').getContext('2d');
-const productQtyChart = new Chart(productQtyctx, {
+const revenuectx = document.getElementById('revenueChart').getContext('2d');
+const revenueChart = new Chart(revenuectx, {
     type: 'line',
     data: {
         labels: data[4].x,
@@ -111,6 +132,31 @@ const productQtyChart = new Chart(productQtyctx, {
             borderWidth: 1
         }]
     },
-    options: config
+    options: {
+        aspect_ratio: 1,
+        plugins: {
+            title: {
+                display: true,
+                align: 'start',
+                text: 'Revenue Over time',
+                font: {
+                    family: "'Roboto', sans-serif",
+                    size: 24,
+                },
+                color: [
+                    'rgba(0, 0, 0, 1)'
+                ],
+                padding: {
+                    top: 20
+                }
+            }
+        },
+        scales: {
+            yAxis: {
+                min: 0,
+                suggestedMax: 10
+            }
+        },
+        animation: false
+    }
 });
-

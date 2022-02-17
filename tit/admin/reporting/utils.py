@@ -96,9 +96,9 @@ def get_data():
     for user in order_db.values():
         for order in user.values():
             if order.get_created(flag='obj').year == current_time().year:
-                total = 0 if revenue_dict.get(order.get_created('%Y-%m')) is None else revenue_dict.get(order.get_created('%Y-%m'))
+                total = 0 if revenue_dict.get(order.get_created('%m-%d')) is None else revenue_dict.get(order.get_created('%m-%d'))
                 total += order.get_total_price()
-                revenue_dict[order.get_created('%Y-%m')] = total
+                revenue_dict[order.get_created('%m-%d')] = total
     data.append(db_add_manual(revenue_dict))
 
     datalist = []
@@ -124,6 +124,15 @@ def get_data():
         datalist.append(user.get_cartStatus(0))
     data.append(db_count_occurence(datalist))
 
+    product_db = get_db('products', 'products')
+    for sku in product_db:
+        product = product_db[sku]
+        if product.get_product_name() not in data[0]['x']:
+            data[0]['x'].append(str(product))
+        if sku not in data[1]['x']:
+            data[1]['x'].append(sku)
+        if sku not in data[2]['x']:
+            data[1]['x'].append(sku)
     print(data)
     return data
 

@@ -29,7 +29,7 @@ class Customer(User):
 
     def get_cartStatus(self, index):
         if self.__cartStatus[0] == 'Purchased':
-            if self.__cartStatus[1]-datetime.datetime.now() < datetime.timedelta(days=30):
+            if datetime.datetime.now()-self.__cartStatus[1] > datetime.timedelta(days=7):
                 self.__cartStatus[0] = 'Empty'
             return self.__cartStatus[index]
         else:
@@ -47,7 +47,15 @@ class Customer(User):
     def set_spools(self, spools):
         self.__spools = spools
 
-    def set_cartStatus(self, status):
-        print(status)
-        self.__cartStatus[0] = status
-        print(self.__cartStatus)
+    def set_cartStatus(self, status, force=False):
+        if force:
+            self.__cartStatus[0]= status
+        elif status == 'Empty' and self.__cartStatus[0] == 'Purchased':
+            if datetime.datetime.now()-self.__cartStatus[1] > datetime.timedelta(days=7):
+                self.__cartStatus[0] = status
+        elif status == 'Items in cart' and self.__cartStatus[0] == 'Cancelled':
+            if datetime.datetime.now()-self.__cartStatus[1] > datetime.timedelta(days=7):
+                self.__cartStatus[0] = status
+        else:
+            self.__cartStatus[0]= status
+

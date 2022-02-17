@@ -53,6 +53,6 @@ class Product:
         self.__category = category
 
     def __str__(self):
-        return self.get_product_name()
+        return f'{self.get_product_name()} ({self.get_sku()})'
     
 

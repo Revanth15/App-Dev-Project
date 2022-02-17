@@ -64,17 +64,22 @@
             <li>
               <a class="dropdown-item" href="{{url_for('main.accounts.sign_up')}}">Sign Up</a>
             </li>
-            {%endif%}
-            {% if current_user.is_authenticated %}
+            {% else %}
             <li>
               <a class="dropdown-item" href="{{url_for('main.myOrders')}}">My Orders</a>
             </li>
             <li>
               <a class="dropdown-item" href="#">{{current_user.get_spools() if current_user.get_role()=='Customer' else '0'}} Spools</a>
             </li>
+            {% if current_user.get_role() == 'Customer' %}
             <li>
               <a class="dropdown-item" href="{{url_for('main.accounts.retrieveProfile')}}">My Profile</a>
             </li>
+            {% else %}
+            <li>
+              <a class="dropdown-item" href="{{url_for('admin.dashboard')}}">Admin Dashboard</a>
+            </li>
+            {% endif %}
             <li>
               <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
             </li>
