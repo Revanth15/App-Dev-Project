@@ -4,8 +4,20 @@
 
 {% block content %}
 <link rel="stylesheet" href="../static/styles/cart.css">
-
 <div class="row">
+  {% if 'low in stock' in session %}
+  <div class="alert alert-warning alert-dismissible">
+    {{ session.pop('low in stock', None) }} is/are low in stock.
+  </div>
+  {% elif 'out of stock' in session %}
+  <div class="alert alert-warning alert-dismissible">
+    {{ session.pop('out of stock', None) }} is out of stock so they have been removed from your cart .
+  </div>
+  {% elif 'buying too much' in session %}
+  <div class="alert alert-warning alert-dismissible">
+    You can only buy 10 of {{ session.pop('buying too much', None) }}.
+  </div>
+  {% endif %}
   <div class="container content-section col-12 col-md-9">
     <div class="card cart-card">
       <div class="card-header">
